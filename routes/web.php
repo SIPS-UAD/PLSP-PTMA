@@ -3,13 +3,17 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
+// Route::get('/', function () {
+//     return Inertia::render('welcome');
+// })->name('home');
 
-Route::get('/landingpage', function () {
-    return Inertia::render('landingpage/index');
+Route::get('/', function () {
+    return Inertia::render('landingpage/beranda/index');
 })->name('landingpage');
+
+Route::get('/tentang', function () {
+    return Inertia::render('landingpage/tentang/index');
+})->name('landingpage.tentang');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

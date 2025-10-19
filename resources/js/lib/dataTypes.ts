@@ -22,8 +22,8 @@ export type Container = {
 // DATA
 
 export const navigationsLink: NavLink[] = [
-  { text: "BERANDA", link: "/" },
-  { text: "TENTANG", link: "/about" },
+  { text: "Baa", link: "/" },
+  { text: "TENTANG", link: "/tentang" },
   { text: "PERATURAN", link: "/rules" },
   { text: "PENDIRIAN LSP", link: "/about" },
   { text: "MATERI PELATIHAN", link: "/materials" },
