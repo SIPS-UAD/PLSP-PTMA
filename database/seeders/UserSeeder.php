@@ -20,11 +20,11 @@ class UserSeeder extends Seeder
             User::firstOrCreate(
                 ['email' => "user{$i}@example.com"],
                 [
+                    'name' => $faker->name(),
                     'email' => "user{$i}@example.com",
                     'password' => Hash::make('password'),
                     'nama_lsp' => $faker->company(),
                     'nama_ptma' => $faker->companySuffix(),
-                    'nama_ketua' => $faker->name(),
                     'no_hp' => $faker->phoneNumber(),
                     'role' => $faker->randomElement($roles),
                 ]
