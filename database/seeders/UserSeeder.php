@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
         $faker = Faker::create();
 
         // Beberapa akun contoh
-        $roles = ['admin', 'user', 'organizer'];
+        $roles = ['member', 'admin', 'super_admin'];
 
         for ($i = 1; $i <= 6; $i++) {
             User::firstOrCreate(
