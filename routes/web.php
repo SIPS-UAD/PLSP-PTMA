@@ -50,6 +50,65 @@ Route::get('/sumber-daya/tuk', function () {
     return Inertia::render('landingpage/sumberDaya/TUK/index');
 })->name('landingpage.sumber-daya.tuk');
 
+// Page Materi
+Route::get('/materi/internalisasi', function () {
+    return Inertia::render('landingpage/materi/internalisasi/index');
+})->name('landingpage.materi.internalisasi');
+
+Route::get('/materi/pelatihan-asesor', function () {
+    return Inertia::render('landingpage/materi/pelatihanAsesor/index');
+})->name('landingpage.materi.pelatihan-asesor');
+
+Route::get('/materi/penyusunan-dokumen', function () {
+    return Inertia::render('landingpage/materi/penyusunanDokumen/index');
+})->name('landingpage.materi.penyusunan-dokumen');
+
+// Page Pendirian Lisensi
+Route::get('/pendirian-lisensi/apresiasi', function () {
+    return Inertia::render('landingpage/pendirianLisensi/apresiasi/index');
+})->name('landingpage.pendirian-lisensi/apresiasi');
+
+Route::get('/pendirian-lisensi/pendirian-lsp', function () {
+    return Inertia::render('landingpage/pendirianLisensi/pendirianLSP/index');
+})->name('landingpage.pendirian-lisensi/pendirian-lsp');
+
+Route::get('/pendirian-lisensi/pengajuan-fa', function () {
+    return Inertia::render('landingpage/pendirianLisensi/pengajuanFA/index');
+})->name('landingpage.pendirian-lisensi/pengajuan-fa');
+
+Route::get('/pendirian-lisensi/pengajuan-skema-sertifikasi', function () {
+    return Inertia::render('landingpage/pendirianLisensi/pengajuanSkemaSertifikasi/index');
+})->name('landingpage.pendirian-lisensi/pengajuan-skema-sertifikasi');
+
+Route::get('/pendirian-lisensi/pengajuan-witness', function () {
+    return Inertia::render('landingpage/pendirianLisensi/pengajuanWitness/index');
+})->name('landingpage.pendirian-lisensi/pengajuan-witness');
+
+Route::get('/pendirian-lisensi/prl', function () {
+    return Inertia::render('landingpage/pendirianLisensi/PRL/index');
+})->name('landingpage.pendirian-lisensi/prl');
+
+// Page Regulasi
+Route::get('/regulasi/iku-pt', function () {
+    return Inertia::render('landingpage/regulasi/IKUPErguruanTinggi/index');
+})->name('landingpage.regulasi.iku-pt');
+
+Route::get('/regulasi/peraturan-baru', function () {
+    return Inertia::render('landingpage/regulasi/peraturanBaru/index');
+})->name('landingpage.regulasi.peraturan-baru');
+
+Route::get('/regulasi/peraturan-bnsp', function () {
+    return Inertia::render('landingpage/regulasi/peraturanBNSP/index');
+})->name('landingpage.regulasi.peraturan-bnsp');
+
+Route::get('/regulasi/peraturan-dasar', function () {
+    return Inertia::render('landingpage/regulasi/peraturanDasar/index');
+})->name('landingpage.regulasi.peraturan-dasar');
+
+Route::get('/regulasi/proses-lisensi', function () {
+    return Inertia::render('landingpage/regulasi/prosesLisensi/index');
+})->name('landingpage.regulasi.proses-lisensi');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
