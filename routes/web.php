@@ -33,6 +33,7 @@ Route::get('/anggota/terlisensi-BNSP', function () {
     return Inertia::render('landingpage/anggota/terlisensiBNSP/index');
 })->name('landingpage.anggota.terlisensi-BNSP');
 
+
 // Page Sumber Daya
 Route::get('/sumber-daya/asesor', function () {
     return Inertia::render('landingpage/sumberDaya/asesor/index');
@@ -50,6 +51,7 @@ Route::get('/sumber-daya/tuk', function () {
     return Inertia::render('landingpage/sumberDaya/TUK/index');
 })->name('landingpage.sumber-daya.tuk');
 
+
 // Page Materi
 Route::get('/materi/internalisasi', function () {
     return Inertia::render('landingpage/materi/internalisasi/index');
@@ -62,6 +64,7 @@ Route::get('/materi/pelatihan-asesor', function () {
 Route::get('/materi/penyusunan-dokumen', function () {
     return Inertia::render('landingpage/materi/penyusunanDokumen/index');
 })->name('landingpage.materi.penyusunan-dokumen');
+
 
 // Page Pendirian Lisensi
 Route::get('/pendirian-lisensi/apresiasi', function () {
@@ -88,6 +91,7 @@ Route::get('/pendirian-lisensi/prl', function () {
     return Inertia::render('landingpage/pendirianLisensi/PRL/index');
 })->name('landingpage.pendirian-lisensi/prl');
 
+
 // Page Regulasi
 Route::get('/regulasi/iku-pt', function () {
     return Inertia::render('landingpage/regulasi/IKUPErguruanTinggi/index');
@@ -108,6 +112,42 @@ Route::get('/regulasi/peraturan-dasar', function () {
 Route::get('/regulasi/proses-lisensi', function () {
     return Inertia::render('landingpage/regulasi/prosesLisensi/index');
 })->name('landingpage.regulasi.proses-lisensi');
+
+
+// Page Tentang
+Route::get('/tentang/profil', function () {
+    return Inertia::render('landingpage/tentang/profil/index');
+})->name('landingpage.tentang.profil');
+
+Route::get('/tentang/ad', function () {
+    return Inertia::render('landingpage/tentang/ad/index');
+})->name('landingpage.tentang.ad');
+
+Route::get('/tentang/anggaran-rumah-tangga', function () {
+    return Inertia::render('landingpage/tentang/anggaranRumahTangga/index');
+})->name('landingpage.tentang.anggaran-rumah-tangga');
+
+Route::get('/tentang/hasil-rakernas', function () {
+    return Inertia::render('landingpage/tentang/hasilRakernas/index');
+})->name('landingpage.tentang.hasil-rakernas');
+
+Route::get('/tentang/hasil-munas', function () {
+    return Inertia::render('landingpage/tentang/hasilMunas/index');
+})->name('landingpage.tentang.hasil-munas');
+
+
+// Page Kegiatan
+Route::get('/kegiatan', function () {
+    return Inertia::render('landingpage/kegiatan/index');
+})->name('landingpage.kegiatan');
+
+
+// Page Berita
+Route::get('/berita', function () {
+    return Inertia::render('landingpage/berita/index');
+})->name('landingpage.berita');
+
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
