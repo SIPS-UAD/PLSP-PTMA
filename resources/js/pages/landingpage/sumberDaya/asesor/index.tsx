@@ -1,16 +1,17 @@
 import React from 'react'
-import Layout from '../../../layouts/landingpage/landingpage-layout'
+import Layout from '../../../../layouts/landingpage/landingpage-layout'
 
-const page = () => {
+
+const index = () => {
   return (
     <Layout>
       <section className="h-svh container pt-16 ">
         <h1 className="text-3xl font-bold underline">
-            TENTANG
+            Asesor
         </h1>
       </section>
     </Layout>
   )
 }
 
-export default page
+export default index
