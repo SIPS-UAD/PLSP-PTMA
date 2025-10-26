@@ -8,17 +8,17 @@ use Inertia\Inertia;
 // })->name('home');
 
 Route::get('/', function () {
-    return Inertia::render('landingpage/beranda/index');
-})->name('landingpage');
+    return Inertia::render('landingpage/beranda/page');
+})->name('home');
 
 Route::get('/tentang', function () {
-    return Inertia::render('landingpage/tentang/index');
+    return Inertia::render('landingpage/tentang/page');
 })->name('landingpage.tentang');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
-    })->name('dashboard');
+    })->name('dashboard'); 
 });
 
 require __DIR__.'/settings.php';

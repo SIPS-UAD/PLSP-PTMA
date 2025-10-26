@@ -19,10 +19,11 @@ export type Container = {
   title: string;
   children: React.ReactNode;
 };
+
 // DATA
 
 export const navigationsLink: NavLink[] = [
-  { text: "Baa", link: "/" },
+  { text: "BERANDA", link: "/" },
   { text: "TENTANG", link: "/tentang" },
   { text: "PERATURAN", link: "/rules" },
   { text: "PENDIRIAN LSP", link: "/about" },
