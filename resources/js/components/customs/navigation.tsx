@@ -1,5 +1,5 @@
 'use client';
-import { navigationsLink } from '@/lib/dataTypes';
+import { navigationsLink } from '@/lib/navigation';
 import { login } from '@/routes';
 import { Link } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
