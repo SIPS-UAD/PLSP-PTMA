@@ -13,7 +13,7 @@ class CommentController extends Controller
   {
     $comments = Comment::with(['user', 'post'])->latest()->paginate(10);
 
-    return Inertia::render('comments/index', [
+    return Inertia::render('admin/comments/index', [
       'comments' => $comments
     ]);
   }
@@ -22,7 +22,7 @@ class CommentController extends Controller
   {
     $posts = Post::all(['id_post', 'judul']);
 
-    return Inertia::render('comments/create', [
+    return Inertia::render('admin/comments/create', [
       'posts' => $posts
     ]);
   }
@@ -46,7 +46,7 @@ class CommentController extends Controller
   {
     $comment->load(['user', 'post']);
 
-    return Inertia::render('comments/show', [
+    return Inertia::render('admin/comments/show', [
       'comment' => $comment
     ]);
   }
@@ -55,7 +55,7 @@ class CommentController extends Controller
   {
     $posts = Post::all(['id_post', 'judul']);
 
-    return Inertia::render('comments/edit', [
+    return Inertia::render('admin/comments/edit', [
       'comment' => $comment,
       'posts' => $posts
     ]);
