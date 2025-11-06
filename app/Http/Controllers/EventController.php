@@ -12,14 +12,14 @@ class EventController extends Controller
   {
     $events = Event::latest()->paginate(10);
 
-    return Inertia::render('events/index', [
+    return Inertia::render('admin/events/index', [
       'events' => $events
     ]);
   }
 
   public function create()
   {
-    return Inertia::render('events/create');
+    return Inertia::render('admin/events/create');
   }
 
   public function store(Request $request)
@@ -38,7 +38,7 @@ class EventController extends Controller
 
   public function edit(Event $event)
   {
-    return Inertia::render('events/edit', [
+    return Inertia::render('admin/events/edit', [
       'event' => $event
     ]);
   }
