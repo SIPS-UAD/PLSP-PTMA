@@ -11,6 +11,7 @@ import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Edit, Plus, Trash2 } from 'lucide-react';
+import { formatDate } from '@/lib/dateFormat';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -78,7 +79,7 @@ export default function EventsIndex({ events }: EventsProps) {
                                     <TableCell className="max-w-md truncate">
                                         {event.deskripsi}
                                     </TableCell>
-                                    <TableCell>{event.tanggal}</TableCell>
+                                    <TableCell>{formatDate(event.tanggal)}</TableCell>
                                     <TableCell className="text-right">
                                         <div className="flex justify-end gap-2">
                                             <Link

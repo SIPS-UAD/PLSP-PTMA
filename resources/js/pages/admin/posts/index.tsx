@@ -1,5 +1,11 @@
 import { Button } from '@/components/ui/button';
 import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
     Table,
     TableBody,
     TableCell,
@@ -10,7 +16,9 @@ import {
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Edit, Plus, Trash2 } from 'lucide-react';
+import { ChevronDown, Edit, Plus, Trash2 } from 'lucide-react';
+import { formatDate } from '@/lib/dateFormat';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -40,6 +48,24 @@ interface PostsProps {
 }
 
 export default function PostsIndex({ posts }: PostsProps) {
+    const [sortedPosts, setSortedPosts] = useState(posts.data);
+    const [currentSort, setCurrentSort] = useState('all');
+
+    const handleSort = (category: string) => {
+        setCurrentSort(category);
+        if (category === 'all') {
+            setSortedPosts(posts.data);
+        } else {
+            setSortedPosts(
+                posts.data.filter((post) => post.kategori === category)
+            );
+        }
+    };
+
+    const uniqueCategories = Array.from(
+        new Set(posts.data.map((post) => post.kategori))
+    );
+
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this post?')) {
             router.delete(`/posts/${id}`);
@@ -66,7 +92,35 @@ export default function PostsIndex({ posts }: PostsProps) {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Title</TableHead>
-                                <TableHead>Category</TableHead>
+                                <TableHead>
+                                    <div className="flex items-center gap-2">
+                                        Category
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="sm">
+                                                    <ChevronDown className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="start">
+                                                <DropdownMenuItem
+                                                    onClick={() => handleSort('all')}
+                                                >
+                                                    All Categories
+                                                </DropdownMenuItem>
+                                                {uniqueCategories.map((category) => (
+                                                    <DropdownMenuItem
+                                                        key={category}
+                                                        onClick={() =>
+                                                            handleSort(category)
+                                                        }
+                                                    >
+                                                        {category}
+                                                    </DropdownMenuItem>
+                                                ))}
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+                                </TableHead>
                                 <TableHead>Author</TableHead>
                                 <TableHead>Date</TableHead>
                                 <TableHead className="text-right">
@@ -75,14 +129,14 @@ export default function PostsIndex({ posts }: PostsProps) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {posts.data.map((post) => (
+                            {sortedPosts.map((post) => (
                                 <TableRow key={post.id_post}>
                                     <TableCell className="font-medium">
                                         {post.judul}
                                     </TableCell>
                                     <TableCell>{post.kategori}</TableCell>
                                     <TableCell>{post.user.name}</TableCell>
-                                    <TableCell>{post.tanggal}</TableCell>
+                                    <TableCell>{formatDate(post.tanggal)}</TableCell>
                                     <TableCell className="text-right">
                                         <div className="flex justify-end gap-2">
                                             <Link
