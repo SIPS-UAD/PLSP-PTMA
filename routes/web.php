@@ -4,8 +4,14 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\SumberDayaController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\MateriController;
+use App\Http\Controllers\PendirianLisensiController;
+use App\Http\Controllers\RegulasiController;
+use App\Http\Controllers\TentangController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -15,129 +21,93 @@ Route::get('/landing', function () {
     return Inertia::render('landingpage/beranda/index');
 })->name('landingpage');
 
-Route::get('/tentang', function () {
-    return Inertia::render('landingpage/tentang/index');
-})->name('landingpage.tentang');
+Route::get('/tentang', [TentangController::class, 'index'])
+    ->name('landingpage.tentang');
+
+Route::prefix('tentang')->name('landingpage.tentang.')->group(function () {
+    Route::get('/profil', [TentangController::class, 'profil'])
+        ->name('profil');
+    
+    Route::get('/ad', [TentangController::class, 'ad'])
+        ->name('ad');
+    
+    Route::get('/anggaran-rumah-tangga', [TentangController::class, 'anggaranRumahTangga'])
+        ->name('anggaran-rumah-tangga');
+    
+    Route::get('/hasil-rakernas', [TentangController::class, 'hasilRakernas'])
+        ->name('hasil-rakernas');
+    
+    Route::get('/hasil-munas', [TentangController::class, 'hasilMunas'])
+        ->name('hasil-munas');
+});
 
 
 // Page Anggota
-Route::get('/anggota/form-isian', function () {
-    return Inertia::render('landingpage/anggota/formIsian/index');
-})->name('landingpage.anggota.form-isian');
-
-Route::get('/anggota/proses-lisensi-BNSP', function () {
-    return Inertia::render('landingpage/anggota/prosesLisensiBNSP/index');
-})->name('landingpage.anggota.proses-lisensi-BNSP');
-
-Route::get('/anggota/tamu-kegiatan', function () {
-    return Inertia::render('landingpage/anggota/tamuKegiatan/index');
-})->name('landingpage.anggota.tamu-kegiatan');
-
-Route::get('/anggota/terlisensi-BNSP', function () {
-    return Inertia::render('landingpage/anggota/terlisensiBNSP/index');
-})->name('landingpage.anggota.terlisensi-BNSP');
+Route::prefix('anggota')->name('landingpage.anggota.')->group(function () {
+    Route::get('/form-isian', [AnggotaController::class, 'formIsian'])->name('form-isian');
+    Route::get('/proses-lisensi-BNSP', [AnggotaController::class, 'prosesLisensiBNSP'])->name('proses-lisensi-BNSP');
+    Route::get('/sk-pimpinan-ptma', [AnggotaController::class, 'skPimpinanPTMA'])->name('sk-pimpinan-ptma');
+    Route::get('/tamu-kegiatan', [AnggotaController::class, 'tamuKegiatan'])->name('tamu-kegiatan');
+    Route::get('/terlisensi-BNSP', [AnggotaController::class, 'terlisensiBNSP'])->name('terlisensi-BNSP');
+});
 
 
 // Page Sumber Daya
-Route::get('/sumber-daya/asesor', function () {
-    return Inertia::render('landingpage/sumberDaya/asesor/index');
-})->name('landingpage.sumber-daya.asesor');
-
-Route::get('/sumber-daya/cma', function () {
-    return Inertia::render('landingpage/sumberDaya/CMA/index');
-})->name('landingpage.sumber-daya.cma');
-
-Route::get('/sumber-daya/skema-sertifikasi', function () {
-    return Inertia::render('landingpage/sumberDaya/skemaSertifikasi/index');
-})->name('landingpage.sumber-daya.skema-sertifikasi');
-
-Route::get('/sumber-daya/tuk', function () {
-    return Inertia::render('landingpage/sumberDaya/TUK/index');
-})->name('landingpage.sumber-daya.tuk');
+Route::prefix('sumber-daya')->name('landingpage.sumber-daya.')->group(function () {
+    Route::get('/asesor', [SumberDayaController::class, 'asesor'])->name('asesor');
+    Route::get('/cma', [SumberDayaController::class, 'cma'])->name('cma');
+    Route::get('/skema-sertifikasi', [SumberDayaController::class, 'skemaSertifikasi'])->name('skema-sertifikasi');
+    Route::get('/tuk', [SumberDayaController::class, 'tuk'])->name('tuk');
+});
 
 
 // Page Materi
-Route::get('/materi/internalisasi', function () {
-    return Inertia::render('landingpage/materi/internalisasi/index');
-})->name('landingpage.materi.internalisasi');
-
-Route::get('/materi/pelatihan-asesor', function () {
-    return Inertia::render('landingpage/materi/pelatihanAsesor/index');
-})->name('landingpage.materi.pelatihan-asesor');
-
-Route::get('/materi/penyusunan-dokumen', function () {
-    return Inertia::render('landingpage/materi/penyusunanDokumen/index');
-})->name('landingpage.materi.penyusunan-dokumen');
+Route::prefix('materi')->name('landingpage.materi.')->group(function () {
+    Route::get('/internalisasi', [MateriController::class, 'internalisasi'])->name('internalisasi');
+    Route::get('/pelatihan-asesor', [MateriController::class, 'pelatihanAsesor'])->name('pelatihan-asesor');
+    Route::get('/penyusunan-dokumen', [MateriController::class, 'penyusunanDokumen'])->name('penyusunan-dokumen');
+});
 
 
 // Page Pendirian Lisensi
-Route::get('/pendirian-lisensi/apresiasi', function () {
-    return Inertia::render('landingpage/pendirianLisensi/apresiasi/index');
-})->name('landingpage.pendirian-lisensi/apresiasi');
-
-Route::get('/pendirian-lisensi/pendirian-lsp', function () {
-    return Inertia::render('landingpage/pendirianLisensi/pendirianLSP/index');
-})->name('landingpage.pendirian-lisensi/pendirian-lsp');
-
-Route::get('/pendirian-lisensi/pengajuan-fa', function () {
-    return Inertia::render('landingpage/pendirianLisensi/pengajuanFA/index');
-})->name('landingpage.pendirian-lisensi/pengajuan-fa');
-
-Route::get('/pendirian-lisensi/pengajuan-skema-sertifikasi', function () {
-    return Inertia::render('landingpage/pendirianLisensi/pengajuanSkemaSertifikasi/index');
-})->name('landingpage.pendirian-lisensi/pengajuan-skema-sertifikasi');
-
-Route::get('/pendirian-lisensi/pengajuan-witness', function () {
-    return Inertia::render('landingpage/pendirianLisensi/pengajuanWitness/index');
-})->name('landingpage.pendirian-lisensi/pengajuan-witness');
-
-Route::get('/pendirian-lisensi/prl', function () {
-    return Inertia::render('landingpage/pendirianLisensi/PRL/index');
-})->name('landingpage.pendirian-lisensi/prl');
+Route::prefix('pendirian-lisensi')->name('landingpage.pendirian-lisensi.')->group(function () {
+    Route::get('/apresiasi', [PendirianLisensiController::class, 'apresiasi'])
+        ->name('apresiasi');
+    
+    Route::get('/pendirian-lsp', [PendirianLisensiController::class, 'pendirianLSP'])
+        ->name('pendirian-lsp');
+    
+    Route::get('/pengajuan-fa', [PendirianLisensiController::class, 'pengajuanFA'])
+        ->name('pengajuan-fa');
+    
+    Route::get('/pengajuan-skema-sertifikasi', [PendirianLisensiController::class, 'pengajuanSkemaSertifikasi'])
+        ->name('pengajuan-skema-sertifikasi');
+    
+    Route::get('/pengajuan-witness', [PendirianLisensiController::class, 'pengajuanWitness'])
+        ->name('pengajuan-witness');
+    
+    Route::get('/prl', [PendirianLisensiController::class, 'prl'])
+        ->name('prl');
+});
 
 
 // Page Regulasi
-Route::get('/regulasi/iku-pt', function () {
-    return Inertia::render('landingpage/regulasi/IKUPErguruanTinggi/index');
-})->name('landingpage.regulasi.iku-pt');
-
-Route::get('/regulasi/peraturan-baru', function () {
-    return Inertia::render('landingpage/regulasi/peraturanBaru/index');
-})->name('landingpage.regulasi.peraturan-baru');
-
-Route::get('/regulasi/peraturan-bnsp', function () {
-    return Inertia::render('landingpage/regulasi/peraturanBNSP/index');
-})->name('landingpage.regulasi.peraturan-bnsp');
-
-Route::get('/regulasi/peraturan-dasar', function () {
-    return Inertia::render('landingpage/regulasi/peraturanDasar/index');
-})->name('landingpage.regulasi.peraturan-dasar');
-
-Route::get('/regulasi/proses-lisensi', function () {
-    return Inertia::render('landingpage/regulasi/prosesLisensi/index');
-})->name('landingpage.regulasi.proses-lisensi');
-
-
-// Page Tentang
-Route::get('/tentang/profil', function () {
-    return Inertia::render('landingpage/tentang/profil/index');
-})->name('landingpage.tentang.profil');
-
-Route::get('/tentang/ad', function () {
-    return Inertia::render('landingpage/tentang/ad/index');
-})->name('landingpage.tentang.ad');
-
-Route::get('/tentang/anggaran-rumah-tangga', function () {
-    return Inertia::render('landingpage/tentang/anggaranRumahTangga/index');
-})->name('landingpage.tentang.anggaran-rumah-tangga');
-
-Route::get('/tentang/hasil-rakernas', function () {
-    return Inertia::render('landingpage/tentang/hasilRakernas/index');
-})->name('landingpage.tentang.hasil-rakernas');
-
-Route::get('/tentang/hasil-munas', function () {
-    return Inertia::render('landingpage/tentang/hasilMunas/index');
-})->name('landingpage.tentang.hasil-munas');
+Route::prefix('regulasi')->name('landingpage.regulasi.')->group(function () {
+    Route::get('/iku-pt', [RegulasiController::class, 'ikuPerguruanTinggi'])
+        ->name('iku-pt');
+    
+    Route::get('/peraturan-baru', [RegulasiController::class, 'peraturanBaru'])
+        ->name('peraturan-baru');
+    
+    Route::get('/peraturan-bnsp', [RegulasiController::class, 'peraturanBNSP'])
+        ->name('peraturan-bnsp');
+    
+    Route::get('/peraturan-dasar', [RegulasiController::class, 'peraturanDasar'])
+        ->name('peraturan-dasar');
+    
+    Route::get('/proses-lisensi', [RegulasiController::class, 'prosesLisensi'])
+        ->name('proses-lisensi');
+});
 
 
 // Page Kegiatan
