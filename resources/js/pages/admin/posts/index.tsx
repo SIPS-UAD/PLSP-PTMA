@@ -16,7 +16,7 @@ import {
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { ChevronDown, Edit, Plus, Trash2 } from 'lucide-react';
+import { ChevronDown, Edit, Eye, Plus, Trash2 } from 'lucide-react';
 import { formatDate } from '@/lib/dateFormat';
 import { useState } from 'react';
 
@@ -139,6 +139,14 @@ export default function PostsIndex({ posts }: PostsProps) {
                                     <TableCell>{formatDate(post.tanggal)}</TableCell>
                                     <TableCell className="text-right">
                                         <div className="flex justify-end gap-2">
+                                            <Link href={`/posts/${post.id_post}`}>
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                >
+                                                    <Eye className="h-4 w-4" />
+                                                </Button>
+                                            </Link>
                                             <Link
                                                 href={`/posts/${post.id_post}/edit`}
                                             >
