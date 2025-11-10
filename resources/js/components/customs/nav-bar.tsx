@@ -56,7 +56,7 @@ const NavBar = () => {
                         </div>
 
                         {/* Desktop Navigation Links */}
-                        <div className="hidden md:flex items-center space-x-1">
+                        <div className="hidden lg:flex items-center space-x-1">
                             {navigationsLink.map((item) => (
                                 <div
                                     key={item.text}
@@ -105,7 +105,7 @@ const NavBar = () => {
                         {/* Mobile Menu Button */}
                         <button
                             onClick={toggleMobileMenu}
-                            className="md:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 transition-colors"
+                            className="lg:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 transition-colors"
                             aria-label="Toggle menu"
                             aria-expanded={mobileMenuOpen}
                         >
@@ -141,7 +141,7 @@ const NavBar = () => {
 
             {/* Full Screen Mobile Menu Overlay */}
             {mobileMenuOpen && (
-                <div className="fixed inset-0 z-50 md:hidden">
+                <div className="fixed inset-0 z-50 lg:hidden">
                     {/* Backdrop */}
                     <div
                         className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"
