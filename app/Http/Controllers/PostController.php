@@ -12,14 +12,14 @@ class PostController extends Controller
   {
     $posts = Post::with('user')->latest()->paginate(10);
 
-    return Inertia::render('posts/index', [
+    return Inertia::render('admin/posts/index', [
       'posts' => $posts
     ]);
   }
 
   public function create()
   {
-    return Inertia::render('posts/create');
+    return Inertia::render('admin/posts/create');
   }
 
   public function store(Request $request)
@@ -41,7 +41,7 @@ class PostController extends Controller
 
   public function edit(Post $post)
   {
-    return Inertia::render('posts/edit', [
+    return Inertia::render('admin/posts/edit', [
       'post' => $post
     ]);
   }

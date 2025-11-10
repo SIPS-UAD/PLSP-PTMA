@@ -45,12 +45,64 @@ export default function Register() {
                             </div>
 
                             <div className="grid gap-2">
+                                <Label htmlFor="nama_lsp">Nama LSP</Label>
+                                <Input
+                                    id="nama_lsp"
+                                    type="text"
+                                    required
+                                    tabIndex={2}
+                                    name="nama_lsp"
+                                    placeholder="Nama LSP"
+                                />
+                                <InputError message={errors.nama_lsp} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="nama_ptma">Nama PTMA</Label>
+                                <Input
+                                    id="nama_ptma"
+                                    type="text"
+                                    required
+                                    tabIndex={3}
+                                    name="nama_ptma"
+                                    placeholder="Nama PTMA"
+                                />
+                                <InputError message={errors.nama_ptma} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="nama_ketua">Nama Ketua</Label>
+                                <Input
+                                    id="nama_ketua"
+                                    type="text"
+                                    required
+                                    tabIndex={4}
+                                    name="nama_ketua"
+                                    placeholder="Nama Ketua"
+                                />
+                                <InputError message={errors.nama_ketua} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="no_hp">Nomor HP</Label>
+                                <Input
+                                    id="no_hp"
+                                    type="tel"
+                                    required
+                                    tabIndex={5}
+                                    name="no_hp"
+                                    placeholder="Nomor HP"
+                                />
+                                <InputError message={errors.no_hp} />
+                            </div>
+
+                            <div className="grid gap-2">
                                 <Label htmlFor="email">Email address</Label>
                                 <Input
                                     id="email"
                                     type="email"
                                     required
-                                    tabIndex={2}
+                                    tabIndex={6}
                                     autoComplete="email"
                                     name="email"
                                     placeholder="email@example.com"
