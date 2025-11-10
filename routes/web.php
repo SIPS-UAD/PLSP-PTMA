@@ -6,11 +6,11 @@ use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return Inertia::render('welcome');
 })->name('home');
 
-Route::get('/landing', function () {
+Route::get('/', function () {
     return Inertia::render('landingpage/beranda/index');
 })->name('landingpage');
 

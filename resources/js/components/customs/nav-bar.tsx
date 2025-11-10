@@ -1,121 +1,107 @@
-import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
-    navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu';
-import { navigationsLink } from '@/lib/navigation';
-import { cn } from '@/lib/utils';
-import { login } from '@/routes';
 import { Link } from '@inertiajs/react';
-import React from 'react';
-import AppLogoIcon from '../app-logo-icon';
+import { navigationsLink } from '@/lib/navigation';
+import { useState } from 'react';
 
-export function NavBar() {
+const NavBar = () => {
+    const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
     return (
-        <header className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container flex h-14 items-center">
-                <div className="mr-4 hidden md:flex">
-                    <Link href="/" className="mr-6 flex items-center space-x-2">
-                        <AppLogoIcon className="size-6 text-blue-muhi" />
-                        <span className="hidden font-bold text-blue-muhi sm:inline-block">
-                            PLSP PTMA
-                        </span>
-                    </Link>
-                </div>
-
-                <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-                    <NavigationMenu>
-                        <NavigationMenuList>
-                            {navigationsLink.map((nav) => (
-                                <NavigationMenuItem key={nav.text}>
-                                    {nav.children ? (
-                                        <>
-                                            <NavigationMenuTrigger className="bg-transparent text-blue-muhi hover:bg-accent/50 focus:bg-accent/50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50">
-                                                {nav.text}
-                                            </NavigationMenuTrigger>
-                                            <NavigationMenuContent>
-                                                <ul className="grid w-[200px] gap-3 p-4 md:w-[250px] lg:w-[300px]">
-                                                    {nav.children.map(
-                                                        (child) => (
-                                                            <ListItem
-                                                                key={child.text}
-                                                                href={
-                                                                    child.link
-                                                                }
-                                                                title={
-                                                                    child.text
-                                                                }
-                                                            />
-                                                        ),
-                                                    )}
-                                                </ul>
-                                            </NavigationMenuContent>
-                                        </>
-                                    ) : (
-                                        <Link
-                                            href={nav.link}
-                                            legacyBehavior
-                                            passHref
-                                        >
-                                            <NavigationMenuLink
-                                                className={cn(
-                                                    navigationMenuTriggerStyle(),
-                                                    'bg-transparent text-blue-muhi hover:bg-accent/50 focus:bg-accent/50',
-                                                )}
-                                            >
-                                                {nav.text}
-                                            </NavigationMenuLink>
-                                        </Link>
-                                    )}
-                                </NavigationMenuItem>
-                            ))}
-                        </NavigationMenuList>
-                    </NavigationMenu>
-
-                    <div className="ml-4 flex items-center gap-2">
-                        <Link
-                            href={login()}
-                            className="font-semibold text-green-muhi transition-colors hover:text-green-muhi/80"
-                        >
-                            LOGIN
+        <nav className="bg-white dark:bg-gray-800 shadow-md">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center h-16">
+                    {/* Logo/Brand */}
+                    <div className="flex-shrink-0">
+                        <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white">
+                            PLSP-PTMA
                         </Link>
                     </div>
-                </div>
-            </div>
-        </header>
-    );
-}
 
-const ListItem = React.forwardRef<
-    React.ElementRef<typeof Link>,
-    React.ComponentPropsWithoutRef<typeof Link> & { title: string }
->(({ className, title, children, ...props }, ref) => {
-    return (
-        <li>
-            <NavigationMenuLink asChild>
-                <Link
-                    ref={ref}
-                    className={cn(
-                        'block space-y-1 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
-                        className,
-                    )}
-                    {...props}
-                >
-                    <div className="text-sm leading-none font-medium">
-                        {title}
+                    {/* Navigation Links */}
+                    <div className="hidden md:flex items-center space-x-1">
+                        {navigationsLink.map((item) => (
+                            <div
+                                key={item.text}
+                                className="relative"
+                                onMouseEnter={() => item.children && setOpenDropdown(item.text)}
+                                onMouseLeave={() => setOpenDropdown(null)}
+                            >
+                                <Link
+                                    href={item.link}
+                                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                >
+                                    {item.text}
+                                </Link>
+
+                                {/* Dropdown Menu */}
+                                {item.children && openDropdown === item.text && (
+                                    <div className="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50">
+                                        {item.children.map((child) => (
+                                            <Link
+                                                key={child.text}
+                                                href={child.link}
+                                                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            >
+                                                {child.text}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                     </div>
-                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        {children}
-                    </p>
-                </Link>
-            </NavigationMenuLink>
-        </li>
+
+                    {/* Mobile Menu Button */}
+                    <div className="md:hidden">
+                        <button
+                            onClick={() => setOpenDropdown(openDropdown ? null : 'mobile')}
+                            className="p-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                            <svg
+                                className="h-6 w-6"
+                                fill="none"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Mobile Menu */}
+                {openDropdown === 'mobile' && (
+                    <div className="md:hidden py-2">
+                        {navigationsLink.map((item) => (
+                            <div key={item.text}>
+                                <Link
+                                    href={item.link}
+                                    className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                >
+                                    {item.text}
+                                </Link>
+                                {item.children && (
+                                    <div className="pl-6">
+                                        {item.children.map((child) => (
+                                            <Link
+                                                key={child.text}
+                                                href={child.link}
+                                                className="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            >
+                                                {child.text}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </nav>
     );
-});
-ListItem.displayName = 'ListItem';
+};
 
 export default NavBar;

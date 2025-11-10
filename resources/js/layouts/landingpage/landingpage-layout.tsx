@@ -1,7 +1,7 @@
 import Footer from '@/components/customs/footer';
 import NavBar from '@/components/customs/nav-bar';
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const LandingPageLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
             <NavBar />
@@ -13,4 +13,4 @@ const layout = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
-export default layout;
+export default LandingPageLayout;
