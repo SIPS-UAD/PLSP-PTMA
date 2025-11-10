@@ -3,10 +3,6 @@ import { type NavLink } from '@/types';
 // Main Navigation Links
 export const navigationsLink: NavLink[] = [
     {
-        text: 'BERANDA',
-        link: '/',
-    },
-    {
         text: 'TENTANG',
         link: '/tentang/profil',
         children: [
