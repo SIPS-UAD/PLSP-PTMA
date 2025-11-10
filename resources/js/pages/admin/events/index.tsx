@@ -17,8 +17,8 @@ import {
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Calendar, Edit, Plus, Search, Trash2, Upload, Users } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { Calendar, Edit, Eye, Plus, Trash2, Users } from 'lucide-react';
+import { formatDate } from '@/lib/dateFormat';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -102,95 +102,52 @@ export default function EventsIndex({ events }: EventsProps) {
                     </Card>
                 </div>
 
-                {/* Main Content */}
-                <Card>
-                    <CardHeader>
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <CardTitle>Events</CardTitle>
-                                <CardDescription>
-                                    Manage and organize your events here.
-                                </CardDescription>
-                            </div>
-                            <div className="flex gap-2">
-                                <Button variant="outline">
-                                    <Upload className="mr-2 h-4 w-4" />
-                                    Import
-                                </Button>
-                                <Link href="/events/create">
-                                    <Button>
-                                        <Plus className="mr-2 h-4 w-4" />
-                                        Create Event
-                                    </Button>
-                                </Link>
-                            </div>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        {/* Search and Filter */}
-                        <div className="flex items-center gap-4 mb-6">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input
-                                    placeholder="Search events..."
-                                    className="pl-10"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Table */}
-                        <div className="rounded-lg border">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Title</TableHead>
-                                        <TableHead>Description</TableHead>
-                                        <TableHead>Date</TableHead>
-                                        <TableHead className="text-right">
-                                            Actions
-                                        </TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {events.data.map((event) => (
-                                        <TableRow key={event.id_event}>
-                                            <TableCell className="font-medium">
-                                                {event.judul}
-                                            </TableCell>
-                                            <TableCell className="max-w-md truncate">
-                                                {event.deskripsi}
-                                            </TableCell>
-                                            <TableCell>
-                                                {new Date(event.tanggal).toLocaleDateString()}
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <div className="flex justify-end gap-2">
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        asChild
-                                                    >
-                                                        <Link href={`/events/${event.id_event}/edit`}>
-                                                            <Edit className="h-4 w-4" />
-                                                        </Link>
-                                                    </Button>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        onClick={() => handleDelete(event.id_event)}
-                                                        className="text-destructive hover:text-destructive"
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </div>
-                    </CardContent>
-                </Card>
+                <div className="rounded-lg border">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Title</TableHead>
+                                <TableHead>Description</TableHead>
+                                <TableHead>Date</TableHead>
+                                <TableHead className="text-right">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {events.data.map((event) => (
+                                <TableRow key={event.id_event}>
+                                    <TableCell className="font-medium">
+                                        {event.judul}
+                                    </TableCell>
+                                    <TableCell className="max-w-md truncate">
+                                        {event.deskripsi}
+                                    </TableCell>
+                                    <TableCell>{formatDate(event.tanggal)}</TableCell>
+                                    <TableCell className="text-right">
+                                        <div className="flex justify-end gap-2">
+                                            <Link href={`/events/${event.id_event}`}>
+                                                <Button variant="outline" size="sm">
+                                                    <Eye className="h-4 w-4" />
+                                                </Button>
+                                            </Link>
+                                            <Link href={`/events/${event.id_event}/edit`}>
+                                                <Button variant="outline" size="sm">
+                                                    <Edit className="h-4 w-4" />
+                                                </Button>
+                                            </Link>
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() => handleDelete(event.id_event)}
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
             </div>
         </AppLayout>
     );
