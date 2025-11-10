@@ -146,3 +146,19 @@
         @apply bg-background text-foreground;
     }
 }
+
+@layer utilities {
+    .nav-gradient-border {
+        position: relative;
+    }
+
+    .nav-gradient-border::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(to right, var(--color-blue-muhi), var(--color-green-muhi));
+    }
+}
