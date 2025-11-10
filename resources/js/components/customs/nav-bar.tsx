@@ -50,8 +50,12 @@ const NavBar = () => {
                     <div className="flex justify-between items-center h-16">
                         {/* Logo/Brand */}
                         <div className="flex-shrink-0">
-                            <Link href="/" className="text-xl font-bold text-gray-900">
-                                PLSP-PTMA
+                            <Link href="/" className="flex items-center">
+                                <img 
+                                    src="/plsp-ptma-logo.svg" 
+                                    alt="PLSP-PTMA" 
+                                    className="h-10 w-auto"
+                                />
                             </Link>
                         </div>
 
