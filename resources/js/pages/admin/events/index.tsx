@@ -10,7 +10,8 @@ import {
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { Edit, Plus, Trash2 } from 'lucide-react';
+import { Edit, Eye, Plus, Trash2 } from 'lucide-react';
+import { formatDate } from '@/lib/dateFormat';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -64,9 +65,7 @@ export default function EventsIndex({ events }: EventsProps) {
                                 <TableHead>Title</TableHead>
                                 <TableHead>Description</TableHead>
                                 <TableHead>Date</TableHead>
-                                <TableHead className="text-right">
-                                    Actions
-                                </TableHead>
+                                <TableHead className="text-right">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -78,25 +77,23 @@ export default function EventsIndex({ events }: EventsProps) {
                                     <TableCell className="max-w-md truncate">
                                         {event.deskripsi}
                                     </TableCell>
-                                    <TableCell>{event.tanggal}</TableCell>
+                                    <TableCell>{formatDate(event.tanggal)}</TableCell>
                                     <TableCell className="text-right">
                                         <div className="flex justify-end gap-2">
-                                            <Link
-                                                href={`/events/${event.id_event}/edit`}
-                                            >
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                >
+                                            <Link href={`/events/${event.id_event}`}>
+                                                <Button variant="outline" size="sm">
+                                                    <Eye className="h-4 w-4" />
+                                                </Button>
+                                            </Link>
+                                            <Link href={`/events/${event.id_event}/edit`}>
+                                                <Button variant="outline" size="sm">
                                                     <Edit className="h-4 w-4" />
                                                 </Button>
                                             </Link>
                                             <Button
                                                 variant="destructive"
                                                 size="sm"
-                                                onClick={() =>
-                                                    handleDelete(event.id_event)
-                                                }
+                                                onClick={() => handleDelete(event.id_event)}
                                             >
                                                 <Trash2 className="h-4 w-4" />
                                             </Button>

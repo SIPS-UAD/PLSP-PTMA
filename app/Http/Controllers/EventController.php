@@ -8,60 +8,67 @@ use Inertia\Inertia;
 
 class EventController extends Controller
 {
-  public function index()
-  {
-    $events = Event::latest()->paginate(10);
+    public function index()
+    {
+        $events = Event::latest()->paginate(10);
 
-    return Inertia::render('admin/events/index', [
-      'events' => $events
-    ]);
-  }
+        return Inertia::render('admin/events/index', [
+            'events' => $events
+        ]);
+    }
 
-  public function create()
-  {
-    return Inertia::render('admin/events/create');
-  }
+    public function create()
+    {
+        return Inertia::render('admin/events/create');
+    }
 
-  public function store(Request $request)
-  {
-    $validated = $request->validate([
-      'judul' => 'required|string|max:255',
-      'deskripsi' => 'required|string',
-      'tanggal' => 'required|date',
-    ]);
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'tanggal' => 'required|date',
+        ]);
 
-    Event::create($validated);
+        Event::create($validated);
 
-    return redirect()->route('events.index')
-      ->with('success', 'Event created successfully.');
-  }
+        return redirect()->route('events.index')
+            ->with('success', 'Event created successfully.');
+    }
 
-  public function edit(Event $event)
-  {
-    return Inertia::render('admin/events/edit', [
-      'event' => $event
-    ]);
-  }
+    public function edit(Event $event)
+    {
+        return Inertia::render('admin/events/edit', [
+            'event' => $event
+        ]);
+    }
 
-  public function update(Request $request, Event $event)
-  {
-    $validated = $request->validate([
-      'judul' => 'required|string|max:255',
-      'deskripsi' => 'required|string',
-      'tanggal' => 'required|date',
-    ]);
+    public function update(Request $request, Event $event)
+    {
+        $validated = $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'tanggal' => 'required|date',
+        ]);
 
-    $event->update($validated);
+        $event->update($validated);
 
-    return redirect()->route('events.index')
-      ->with('success', 'Event updated successfully.');
-  }
+        return redirect()->route('events.index')
+            ->with('success', 'Event updated successfully.');
+    }
 
-  public function destroy(Event $event)
-  {
-    $event->delete();
+    public function destroy(Event $event)
+    {
+        $event->delete();
 
-    return redirect()->route('events.index')
-      ->with('success', 'Event deleted successfully.');
-  }
+        return redirect()->route('events.index')
+            ->with('success', 'Event deleted successfully.');
+    }
+
+    public function show(Event $event)
+    {
+        return Inertia::render('admin/events/show', [
+            'event' => $event
+        ]);
+    }
 }
