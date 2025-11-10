@@ -148,10 +148,6 @@
 }
 
 @layer utilities {
-    .nav-gradient-border {
-        position: relative;
-    }
-
     .nav-gradient-border::after {
         content: '';
         position: absolute;
@@ -160,5 +156,6 @@
         right: 0;
         height: 4px;
         background: linear-gradient(to right, var(--color-blue-muhi), var(--color-green-muhi));
+        z-index: 1;
     }
 }
