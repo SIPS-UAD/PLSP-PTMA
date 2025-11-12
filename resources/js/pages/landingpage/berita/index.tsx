@@ -1,7 +1,7 @@
 import React from 'react'
 import Layout from '../../../layouts/landingpage/landingpage-layout'
 
-const index = () => {
+const page = () => {
   return (
     <Layout>
       <section className="h-svh container pt-16 ">
@@ -13,4 +13,4 @@ const index = () => {
   )
 }
 
-export default index
+export default page

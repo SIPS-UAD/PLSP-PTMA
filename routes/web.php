@@ -13,11 +13,11 @@ use App\Http\Controllers\PendirianLisensiController;
 use App\Http\Controllers\RegulasiController;
 use App\Http\Controllers\TentangController;
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return Inertia::render('welcome');
 })->name('home');
 
-Route::get('/landing', function () {
+Route::get('/', function () {
     return Inertia::render('landingpage/beranda/index');
 })->name('landingpage');
 
@@ -40,6 +40,7 @@ Route::prefix('tentang')->name('landingpage.tentang.')->group(function () {
     Route::get('/hasil-munas', [TentangController::class, 'hasilMunas'])
         ->name('hasil-munas');
 });
+
 
 
 // Page Anggota

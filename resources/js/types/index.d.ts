@@ -39,5 +39,18 @@ export interface User {
     two_factor_enabled?: boolean;
     created_at: string;
     updated_at: string;
+    role?: 'Admin' | 'Super Admin' | 'Anggota'; // Add role to existing User type
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export type NavLink = {
+    link: string;
+    text: string;
+    children?: NavLink[];
+};
+
+export type Card = {
+    title: string;
+    imageUrl: string;
+    date: string;
+};
