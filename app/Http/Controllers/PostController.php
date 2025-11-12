@@ -68,4 +68,11 @@ class PostController extends Controller
     return redirect()->route('posts.index')
       ->with('success', 'Post deleted successfully.');
   }
+
+  public function show(Post $post)
+  {
+    return Inertia::render('admin/posts/show', [
+      'post' => $post->load('user')
+    ]);
+  }
 }
