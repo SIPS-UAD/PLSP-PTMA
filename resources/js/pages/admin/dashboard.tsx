@@ -19,7 +19,7 @@ import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { PenSquare, CalendarPlus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { PenSquare, CalendarPlus, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import { formatDate } from '@/lib/dateFormat';
 import { useState } from 'react';
 
@@ -173,10 +173,14 @@ export default function Dashboard({ latestPosts, latestEvents }: DashboardProps)
                                     <TableCell>{formatDate(item.tanggal)}</TableCell>
                                     <TableCell className="text-right">
                                         <Link href={`/${item.type}s/${item.id}`}>
-                                            <Button variant="outline" size="sm">
-                                                View
-                                            </Button>
-                                        </Link>
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                > 
+                                                    <Eye className="h-4 w-4" />
+                                                    View
+                                                </Button>
+                                            </Link>
                                     </TableCell>
                                 </TableRow>
                             ))}
