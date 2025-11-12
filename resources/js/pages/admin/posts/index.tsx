@@ -136,10 +136,6 @@ export default function PostsIndex({ posts }: PostsProps) {
                                 </CardDescription>
                             </div>
                             <div className="flex gap-2">
-                                <Button variant="outline">
-                                    <Upload className="mr-2 h-4 w-4" />
-                                    Import
-                                </Button>
                                 <Link href="/posts/create">
                                     <Button>
                                         <Plus className="mr-2 h-4 w-4" />
