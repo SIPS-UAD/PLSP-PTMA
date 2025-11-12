@@ -1,5 +1,5 @@
-import { Link } from '@inertiajs/react';
 import { navigationsLink } from '@/lib/navigation';
+import { Link } from '@inertiajs/react';
 import { useState } from 'react';
 import MobileMenu from './mobile-menu';
 
@@ -34,35 +34,38 @@ const NavBar = () => {
 
     return (
         <>
-            <nav className="bg-white shadow-md fixed top-0 left-0 right-0 z-40 nav-gradient-border">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center h-16">
+            <nav className="nav-gradient-border fixed top-0 right-0 left-0 z-40 bg-white shadow-md">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="flex h-16 items-center justify-between">
                         {/* Logo/Brand */}
                         <div className="flex-shrink-0">
                             <Link href="/" className="flex items-center">
-                                <img 
-                                    src="/plsp-ptma-logo.svg" 
-                                    alt="PLSP-PTMA" 
+                                <img
+                                    src="/plsp-ptma-logo.svg"
+                                    alt="PLSP-PTMA"
                                     className="h-10 w-auto"
                                 />
                             </Link>
                         </div>
 
                         {/* Desktop Navigation Links */}
-                        <div className="hidden lg:flex items-center space-x-1">
+                        <div className="hidden items-center space-x-1 lg:flex">
                             {navigationsLink.map((item) => (
                                 <div
                                     key={item.text}
                                     className="relative"
-                                    onMouseEnter={() => item.children && setOpenDropdown(item.text)}
+                                    onMouseEnter={() =>
+                                        item.children &&
+                                        setOpenDropdown(item.text)
+                                    }
                                     onMouseLeave={() => setOpenDropdown(null)}
                                 >
-                                    <Link
-                                        href={item.link}
-                                        className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-1"
-                                    >
-                                        <span>{item.text}</span>
-                                        {item.children && (
+                                    {item.children ? (
+                                        <button
+                                            type="button"
+                                            className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+                                        >
+                                            <span>{item.text}</span>
                                             <svg
                                                 className="h-4 w-4"
                                                 fill="none"
@@ -74,23 +77,31 @@ const NavBar = () => {
                                             >
                                                 <path d="M19 9l-7 7-7-7" />
                                             </svg>
-                                        )}
-                                    </Link>
+                                        </button>
+                                    ) : (
+                                        <Link
+                                            href={item.link}
+                                            className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+                                        >
+                                            <span>{item.text}</span>
+                                        </Link>
+                                    )}
 
                                     {/* Desktop Dropdown Menu */}
-                                    {item.children && openDropdown === item.text && (
-                                        <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-md shadow-lg py-1 z-50">
-                                            {item.children.map((child) => (
-                                                <Link
-                                                    key={child.text}
-                                                    href={child.link}
-                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                >
-                                                    {child.text}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    )}
+                                    {item.children &&
+                                        openDropdown === item.text && (
+                                            <div className="absolute top-full left-0 z-50 mt-1 w-56 rounded-md bg-white py-1 shadow-lg">
+                                                {item.children.map((child) => (
+                                                    <Link
+                                                        key={child.text}
+                                                        href={child.link}
+                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    >
+                                                        {child.text}
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        )}
                                 </div>
                             ))}
                         </div>
@@ -98,7 +109,7 @@ const NavBar = () => {
                         {/* Mobile Menu Button */}
                         <button
                             onClick={toggleMobileMenu}
-                            className="lg:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 transition-colors"
+                            className="rounded-md p-2 text-gray-700 transition-colors hover:bg-gray-100 lg:hidden"
                             aria-label="Toggle menu"
                             aria-expanded={mobileMenuOpen}
                         >
