@@ -53,18 +53,6 @@ export const navigationsLink: NavLink[] = [
         ],
     },
 ];
-
-    // {
-    //     text: 'TENTANG',
-    //     link: '/tentang/profil',
-    //     children: [
-    //         { text: 'Profil', link: '/tentang/profil' },
-    //         { text: 'Anggaran Dasar', link: '/tentang/ad' },
-    //         { text: 'Anggaran Rumah Tangga', link: '/tentang/anggaran-rumah-tangga' },
-    //         { text: 'Hasil Rakernas', link: '/tentang/hasil-rakernas' },
-    //         { text: 'Hasil Munas', link: '/tentang/hasil-munas' },
-    //     ],
-    // },
     
 export const tentangLink: NavLink[] = [
             { text: 'Profil', link: '/tentang/profil' },
@@ -73,19 +61,8 @@ export const tentangLink: NavLink[] = [
             { text: 'Hasil Rakernas', link: '/tentang/hasil-rakernas' },
             { text: 'Hasil Munas', link: '/tentang/hasil-munas' },
 ];
-    // {
-    //     text: 'SUMBER DAYA',
-    //     link: '/sumber-daya/asesor',
-    //     children: [
-    //         { text: 'Asesor', link: '/sumber-daya/asesor' },
-    //         { text: 'CMA', link: '/sumber-daya/cma' },
-    //         { text: 'Skema Sertifikasi', link: '/sumber-daya/skema-sertifikasi' },
-    //         { text: 'TUK', link: '/sumber-daya/tuk' },
-    //     ],
-    // },
 
 export const sumberDayaLink: NavLink[] = [
-
             { text: 'Asesor', link: '/sumber-daya/asesor' },
             { text: 'CMA', link: '/sumber-daya/cma' },
             { text: 'Skema Sertifikasi', link: '/sumber-daya/skema-sertifikasi' },
