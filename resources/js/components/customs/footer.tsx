@@ -1,4 +1,4 @@
-import { navigationsLink, tentangLink, sumberDayaLink } from '@/lib/navigation';
+import {  tentangLink, sumberDayaLink } from '@/lib/navigation';
 import { Link } from '@inertiajs/react';
 
 const Footer = () => {
@@ -34,23 +34,6 @@ const Footer = () => {
 
                 {/* KONTEN FOOTER */}
                 <div id="contents_footer" className="flex flex-wrap">
-                    {/* <div
-                        id="shortlink"
-                        className="mt-8 basis-1/2 md:basis-1/3 xl:basis-1/4"
-                    >
-                        <h1 className="mb-2 font-bold">AKSI CEPAT</h1>
-                        <div className="flex flex-col gap-1 pl-2">
-                            {navigationsLink.map((nav) => (
-                                <Link
-                                    className="mx-1 box-border w-fit border-b-1 border-transparent pt-1 hover:border-white"
-                                    key={nav.text}
-                                    href={nav.link}
-                                >
-                                    {nav.text}
-                                </Link>
-                            ))}
-                        </div>
-                    </div> */}
                     <div
                         id="tentang"
                         className="mt-8 basis-1/2 md:basis-1/3 xl:basis-1/4"
