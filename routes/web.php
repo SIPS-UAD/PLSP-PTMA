@@ -42,6 +42,7 @@ Route::prefix('tentang')->name('landingpage.tentang.')->group(function () {
 });
 
 
+
 // Page Anggota
 Route::prefix('anggota')->name('landingpage.anggota.')->group(function () {
     Route::get('/form-isian', [AnggotaController::class, 'formIsian'])->name('form-isian');
