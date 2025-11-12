@@ -129,12 +129,6 @@ export default function CommentsIndex({ comments }: CommentsProps) {
                                     Manage and moderate user comments across all posts
                                 </CardDescription>
                             </div>
-                            <Link href="/comments/create">
-                                <Button>
-                                    <Plus className="mr-2 h-4 w-4" />
-                                    Add Comment
-                                </Button>
-                            </Link>
                         </div>
                     </CardHeader>
                     <CardContent>
@@ -161,7 +155,6 @@ export default function CommentsIndex({ comments }: CommentsProps) {
                                         <TableHead>Comment</TableHead>
                                         <TableHead>Post</TableHead>
                                         <TableHead>Author</TableHead>
-                                        <TableHead>Status</TableHead>
                                         <TableHead>Date</TableHead>
                                         <TableHead className="text-right">
                                             Actions
@@ -179,38 +172,12 @@ export default function CommentsIndex({ comments }: CommentsProps) {
                                             </TableCell>
                                             <TableCell>{comment.user.name}</TableCell>
                                             <TableCell>
-                                                <span
-                                                    className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
-                                                        comment.status ===
-                                                        'approved'
-                                                            ? 'bg-green-50 text-green-700'
-                                                            : comment.status ===
-                                                              'spam'
-                                                            ? 'bg-red-50 text-red-700'
-                                                            : 'bg-yellow-50 text-yellow-700'
-                                                    }`}
-                                                >
-                                                    {comment.status || 'pending'}
-                                                </span>
-                                            </TableCell>
-                                            <TableCell>
                                                 {new Date(
                                                     comment.created_at,
                                                 ).toLocaleDateString()}
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <div className="flex justify-end gap-2">
-                                                    <Button
-                                                        variant="outline"
-                                                        size="sm"
-                                                        asChild
-                                                    >
-                                                        <Link
-                                                            href={`/comments/${comment.id_comment}/edit`}
-                                                        >
-                                                            <Edit className="h-4 w-4" />
-                                                        </Link>
-                                                    </Button>
                                                     <Button
                                                         variant="destructive"
                                                         size="sm"
