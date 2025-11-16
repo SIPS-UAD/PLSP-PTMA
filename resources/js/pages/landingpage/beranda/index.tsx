@@ -3,7 +3,7 @@ import Welcome from '@/components/customs/welcome';
 const page = () => {
     return (
         <LandingPageLayout>
-            <section className="container h-svh pt-10"> 
+            <section className="container h-svh pt-6"> 
                 <Welcome />
             </section>
         </LandingPageLayout>
