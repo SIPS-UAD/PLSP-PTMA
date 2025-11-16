@@ -54,3 +54,10 @@ export type Card = {
     imageUrl: string;
     date: string;
 };
+
+export type NewsData = {
+    image_link: string;
+    title: string;
+    release_date: string;
+    content: string;
+};
