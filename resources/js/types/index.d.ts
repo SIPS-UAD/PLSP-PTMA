@@ -56,6 +56,7 @@ export type Card = {
 };
 
 export type NewsData = {
+    id : string;
     image_link: string;
     title: string;
     release_date: string;

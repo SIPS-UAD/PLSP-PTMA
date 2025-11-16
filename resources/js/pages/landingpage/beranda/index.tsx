@@ -1,27 +1,30 @@
+import DocumentLink from '@/components/customs/document-link';
 import NewsCard from '@/components/customs/news-card';
 import Welcome from '@/components/customs/welcome';
 import CardsLayout from '@/layouts/landingpage/cards-layout';
 import LandingPageLayout from '@/layouts/landingpage/landingpage-layout';
+import MaterialsLayout from '@/layouts/landingpage/materials-layout';
 import { dummyNewsData } from '@/lib/newsData';
 
 const page = () => {
     return (
         <LandingPageLayout>
-            <section className="container h-auto pt-6 flex flex-col items-center xl:px-20">
+            <section className="container flex h-auto flex-col items-center pt-6 xl:px-20">
                 <Welcome />
                 {/* main content */}
-                <section className="flex container mt-2 gap-1">
+                <section className="container mt-2 flex flex-col gap-1 xl:flex-row">
                     {/* aside content */}
 
                     {/* content news section  */}
-                    <section className='xl:w-3/4 '>
+                    <section className="xl:w-3/4">
                         {/* header news section  */}
-                        <div className='bg-blue-200 h-30'>dd</div>
+                        <div className="h-30 bg-blue-200">dd</div>
                         {/* card container section */}
                         <CardsLayout>
                             {dummyNewsData.map((news) => (
                                 <NewsCard
-                                    key={news.title}
+                                    key={news.id}
+                                    id={news.id}
                                     image_link={news.image_link}
                                     title={news.title}
                                     release_date={news.release_date}
@@ -30,7 +33,16 @@ const page = () => {
                             ))}
                         </CardsLayout>
                     </section>
-                    <aside className='bg-green-200 xl:w-1/4 hidden xl:block'>dfd</aside>
+                    <aside className="flex flex-col px-1 md:flex-row xl:block xl:w-1/4 xl:px-3">
+                        <MaterialsLayout>
+                            <DocumentLink />
+                            <DocumentLink />
+                        </MaterialsLayout>
+                        <MaterialsLayout>
+                            <DocumentLink />
+                            <DocumentLink />
+                        </MaterialsLayout>
+                    </aside>
                 </section>
             </section>
         </LandingPageLayout>
