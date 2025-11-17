@@ -58,6 +58,20 @@ export const dummyNewsData: NewsData[] = [
     title: "Startup Edukasi Lokal Dapatkan Pendanaan Seri B Senilai $50 Juta",
     release_date: "2025-11-10T15:55:00Z",
     content: "Curabitur blandit tempus porttitor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum. Nulla vitae elit libero, a pharetra augue."
+  },
+    {
+    id: "n9",
+    image_link: "https://picsum.photos/seed/news7/600/400",
+    title: "Studi Terbaru: Pola Tidur Fleksibel Lebih Efektif untuk Produktivitas",
+    release_date: "2025-11-11T07:05:00Z",
+    content: "Vestibulum id ligula porta felis euismod semper. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus, nisi erat porttitor ligula."
+  },
+  {
+    id: "n10",
+    image_link: "https://picsum.photos/seed/news8/600/400",
+    title: "Startup Edukasi Lokal Dapatkan Pendanaan Seri B Senilai $50 Juta",
+    release_date: "2025-11-10T15:55:00Z",
+    content: "Curabitur blandit tempus porttitor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum. Nulla vitae elit libero, a pharetra augue."
   }
 
 ];

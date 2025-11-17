@@ -21,7 +21,7 @@ const page = () => {
                         <div className="h-30 bg-blue-200">dd</div>
                         {/* card container section */}
                         <CardsLayout>
-                            {dummyNewsData.map((news) => (
+                            {dummyNewsData.splice(0,8).map((news) => (
                                 <NewsCard
                                     key={news.id}
                                     id={news.id}
@@ -34,13 +34,14 @@ const page = () => {
                         </CardsLayout>
                     </section>
                     <aside className="flex flex-col px-1 md:flex-row xl:block xl:w-1/4 xl:px-3">
-                        <MaterialsLayout>
-                            <DocumentLink />
-                            <DocumentLink />
+                        <MaterialsLayout section_title='Materi'>
+                            <DocumentLink document_link="Materi Internal" />
+                            <DocumentLink document_link="Materi PLSP" />
+                            <DocumentLink document_link="Materi Pelatihan" />
                         </MaterialsLayout>
-                        <MaterialsLayout>
-                            <DocumentLink />
-                            <DocumentLink />
+                        <MaterialsLayout section_title='Dokumen'>
+                            <DocumentLink document_link="Dokumen Internal" />
+                            <DocumentLink document_link="Dokumen Eksternal" />
                         </MaterialsLayout>
                     </aside>
                 </section>
