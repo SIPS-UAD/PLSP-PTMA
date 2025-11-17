@@ -68,7 +68,7 @@ export const dummyNewsData: NewsData[] = [
   },
   {
     id: "n10",
-    image_link: "https://picsum.photos/seed/news8/600/400",
+    image_link: "https://picsum.photos/seed/map/800/400",
     title: "Startup Edukasi Lokal Dapatkan Pendanaan Seri B Senilai $50 Juta",
     release_date: "2025-11-10T15:55:00Z",
     content: "Curabitur blandit tempus porttitor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum. Nulla vitae elit libero, a pharetra augue."
