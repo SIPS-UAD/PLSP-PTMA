@@ -1,9 +1,11 @@
 const Welcome = () => {
     return (
-        <section className=" container mx-auto h-auto text-white flex justify-center">
-            <div className="container m-auto flex flex-col justify-center items-start bg-linear-to-r from-blue-muhi to-green-muhi px-4 text-center w-auto h-30 sm:rounded-md  md:h-36 md:px-20 md:rounded-xl md:mx-2 ">
-                <h6 className=" text-xs font-normal md:text-xl ">Selamat Datang di</h6>
-                <h1 className="text-md text-start font-bold sm:text-xl md:text-2xl xl:text-3xl">
+        <section className=" mx-auto flex h-auto justify-center text-white">
+            <div className=" m-auto flex h-30 w-full flex-col items-start justify-center bg-linear-to-r from-blue-muhi to-green-muhi px-4 text-start sm:rounded-md md:mx-2 md:h-36 md:rounded-xl md:px-20 lg:h-44">
+                <h6 className="w-full text-xs font-normal md:text-xl">
+                    Selamat Datang di
+                </h6>
+                <h1 className="text-md font-bold sm:text-xl md:text-2xl xl:text-4xl">
                     Perkumpulan Lembaga Sertifikasi Profesi Perguruan Tinggi
                     Muhammadiyah 'Aisiyah
                 </h1>

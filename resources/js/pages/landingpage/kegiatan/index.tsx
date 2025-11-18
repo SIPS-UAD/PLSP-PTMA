@@ -1,16 +1,25 @@
-import React from 'react'
-import Layout from '../../../layouts/landingpage/landingpage-layout'
+import NewsCard from '@/components/customs/news-card';
+import SectionCardsLayout from '@/layouts/landingpage/section-cards-layout';
+import { dummyNewsData } from '@/lib/newsData';
+import Layout from '../../../layouts/landingpage/landingpage-layout';
 
 const index = () => {
-  return (
-    <Layout>
-      <section className="h-svh container pt-16 ">
-        <h1 className="text-3xl font-bold underline">
-            Kegiatan
-        </h1>
-      </section>
-    </Layout>
-  )
-}
+    return (
+        <Layout>
+            <SectionCardsLayout section_title="Kegiatan">
+                {dummyNewsData.splice(0, 8).map((news) => (
+                    <NewsCard
+                        key={news.id}
+                        id={news.id}
+                        image_link={news.image_link}
+                        title={news.title}
+                        release_date={news.release_date}
+                        content={news.content}
+                    />
+                ))}
+            </SectionCardsLayout>
+        </Layout>
+    );
+};
 
-export default index
+export default index;

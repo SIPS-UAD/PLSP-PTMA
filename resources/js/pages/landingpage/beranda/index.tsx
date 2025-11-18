@@ -10,7 +10,7 @@ import { dummyNewsData } from '@/lib/newsData';
 const page = () => {
     return (
         <LandingPageLayout>
-            <section className="container flex h-auto flex-col items-center pt-6 xl:px-20">
+            <section className="container flex h-auto flex-col items-center pt-6 xl:px-20 ">
                 <Welcome />
 
                 <section className="container mt-2 flex flex-col gap-1 xl:flex-row">

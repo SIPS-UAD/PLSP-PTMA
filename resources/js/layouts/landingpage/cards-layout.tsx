@@ -8,7 +8,7 @@ const CardsLayout = ({ children }: { children: ReactNode }) => {
             <SectionTitle section_title="Berita">
                 <FaRegNewspaper className="scale-150 text-green-muhi" />
             </SectionTitle>
-            <div className="grid gap-2 pt-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 [&>*:nth-child(n+5)]:hidden xl:[&>*:nth-child(n+5)]:block md:[&>*:nth-child(n+7)]:block">
+            <div className="grid gap-2 pt-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 [&>*:nth-child(n+5)]:hidden md:[&>*:nth-child(n+5)]:block md:[&>*:nth-child(n+7)]:hidden xl:[&>*:nth-child(n+7)]:block">
                 {children}
             </div>
         </section>

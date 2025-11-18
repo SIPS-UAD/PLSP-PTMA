@@ -4,10 +4,10 @@ import {
     CarouselContent,
     CarouselItem,
 } from '@/components/ui/carousel';
+import { dummyNewsData } from '@/lib/newsData';
 import { formatDate } from '@/lib/utils';
 import Autoplay from 'embla-carousel-autoplay';
 import { FaRegNewspaper } from 'react-icons/fa';
-import { dummyNewsData } from '@/lib/newsData';
 
 const KegiatanLayout = () => {
     return (
@@ -16,7 +16,7 @@ const KegiatanLayout = () => {
                 <FaRegNewspaper className="scale-150 text-green-muhi" />
             </SectionTitle>
 
-            <div className="mt-4">
+            <div className="mt-2">
                 <Carousel
                     plugins={[
                         Autoplay({
@@ -33,7 +33,7 @@ const KegiatanLayout = () => {
                         {dummyNewsData.map((item) => (
                             <CarouselItem
                                 key={item.id}
-                                className="pl-4 basis-full"
+                                className="basis-full pl-4"
                             >
                                 <div className="group relative h-64 w-full cursor-pointer overflow-hidden rounded-xl shadow-md">
                                     <img
