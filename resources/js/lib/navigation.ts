@@ -12,7 +12,7 @@ export const navigationsLink: NavLink[] = [
     },
     {
         text: 'MATERI',
-        link: '/materi/internalisasi',
+        link: '/materi',
         children: [
             { text: 'Internalisasi', link: '/materi/internalisasi' },
             { text: 'Pelatihan Asesor', link: '/materi/pelatihan-asesor' },
@@ -21,7 +21,7 @@ export const navigationsLink: NavLink[] = [
     },
     {
         text: 'ANGGOTA',
-        link: '/anggota/form-isian',
+        link: '/anggota',
         children: [
             { text: 'Form Isian', link: '/anggota/form-isian' },
             { text: 'Proses Lisensi BNSP', link: '/anggota/proses-lisensi-BNSP' },
@@ -31,7 +31,7 @@ export const navigationsLink: NavLink[] = [
     },
     {
         text: 'REGULASI',
-        link: '/regulasi/iku-pt',
+        link: '/regulasi',
         children: [
             { text: 'IKU Perguruan Tinggi', link: '/regulasi/iku-pt' },
             { text: 'Peraturan Baru', link: '/regulasi/peraturan-baru' },
@@ -42,7 +42,7 @@ export const navigationsLink: NavLink[] = [
     },
     {
         text: 'PENDIRIAN LISENSI',
-        link: '/pendirian-lisensi/apresiasi',
+        link: '/pendirian-lisensi',
         children: [
             { text: 'Apresiasi', link: '/pendirian-lisensi/apresiasi' },
             { text: 'Pendirian LSP', link: '/pendirian-lisensi/pendirian-lsp' },
@@ -53,18 +53,6 @@ export const navigationsLink: NavLink[] = [
         ],
     },
 ];
-
-    // {
-    //     text: 'TENTANG',
-    //     link: '/tentang/profil',
-    //     children: [
-    //         { text: 'Profil', link: '/tentang/profil' },
-    //         { text: 'Anggaran Dasar', link: '/tentang/ad' },
-    //         { text: 'Anggaran Rumah Tangga', link: '/tentang/anggaran-rumah-tangga' },
-    //         { text: 'Hasil Rakernas', link: '/tentang/hasil-rakernas' },
-    //         { text: 'Hasil Munas', link: '/tentang/hasil-munas' },
-    //     ],
-    // },
     
 export const tentangLink: NavLink[] = [
             { text: 'Profil', link: '/tentang/profil' },
@@ -73,19 +61,8 @@ export const tentangLink: NavLink[] = [
             { text: 'Hasil Rakernas', link: '/tentang/hasil-rakernas' },
             { text: 'Hasil Munas', link: '/tentang/hasil-munas' },
 ];
-    // {
-    //     text: 'SUMBER DAYA',
-    //     link: '/sumber-daya/asesor',
-    //     children: [
-    //         { text: 'Asesor', link: '/sumber-daya/asesor' },
-    //         { text: 'CMA', link: '/sumber-daya/cma' },
-    //         { text: 'Skema Sertifikasi', link: '/sumber-daya/skema-sertifikasi' },
-    //         { text: 'TUK', link: '/sumber-daya/tuk' },
-    //     ],
-    // },
 
 export const sumberDayaLink: NavLink[] = [
-
             { text: 'Asesor', link: '/sumber-daya/asesor' },
             { text: 'CMA', link: '/sumber-daya/cma' },
             { text: 'Skema Sertifikasi', link: '/sumber-daya/skema-sertifikasi' },
