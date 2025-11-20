@@ -1,12 +1,31 @@
 import { navigationsLink } from '@/lib/navigation';
 import { Link } from '@inertiajs/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import MobileMenu from './mobile-menu';
 
 const NavBar = () => {
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
+    // 2. Buat Ref untuk menyimpan timer
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    // 3. Fungsi Logic Hover: Hapus timer jika mouse masuk kembali
+    const handleMouseEnter = (text: string) => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = null;
+        }
+        setOpenDropdown(text);
+    };
+
+    // 4. Fungsi Logic Leave: Beri jeda sebelum menutup (biar gak langsung ilang)
+    const handleMouseLeave = () => {
+        timeoutRef.current = setTimeout(() => {
+            setOpenDropdown(null);
+        }, 200); 
+    };
 
     const toggleMobileMenu = () => {
         setMobileMenuOpen(!mobileMenuOpen);
@@ -56,9 +75,9 @@ const NavBar = () => {
                                     className="relative"
                                     onMouseEnter={() =>
                                         item.children &&
-                                        setOpenDropdown(item.text)
+                                        handleMouseEnter(item.text)
                                     }
-                                    onMouseLeave={() => setOpenDropdown(null)}
+                                    onMouseLeave={handleMouseLeave}
                                 >
                                     {item.children ? (
                                         <button
