@@ -24,7 +24,7 @@ const NavBar = () => {
     const handleMouseLeave = () => {
         timeoutRef.current = setTimeout(() => {
             setOpenDropdown(null);
-        }, 200); 
+        }, 200);
     };
 
     const toggleMobileMenu = () => {
@@ -123,6 +123,7 @@ const NavBar = () => {
                                         )}
                                 </div>
                             ))}
+                            <Link href="/login" className="ml-10  flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-green-700 transition-colors hover:bg-green-100">LOGIN</Link>
                         </div>
 
                         {/* Mobile Menu Button */}
