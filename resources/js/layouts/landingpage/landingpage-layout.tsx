@@ -5,7 +5,7 @@ const LandingPageLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
             <NavBar />
-            <main className="flex h-auto flex-col items-center pt-14 antialiased">
+            <main className="flex h-auto flex-col items-center pt-12 antialiased md:pt-14">
                 {children}
             </main>
             <Footer />
