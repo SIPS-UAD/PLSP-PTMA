@@ -75,13 +75,10 @@ export default function EventsIndex({ events }: EventsProps) {
 
     // Filter events based on search query
     const filteredEvents = useMemo(() => {
-        if (!searchQuery.trim()) return events.data;
-        const q = searchQuery.toLowerCase();
-        return events.data.filter(
-            (e) =>
-                e.judul.toLowerCase().includes(q) ||
-                e.deskripsi.toLowerCase().includes(q) ||
-                formatDate(e.tanggal).toLowerCase().includes(q),
+        const q = searchQuery.trim().toLowerCase();
+        if (!q) return events.data;
+        return events.data.filter((e) =>
+            e.judul.toLowerCase().includes(q),
         );
     }, [events.data, searchQuery]);
 
@@ -180,7 +177,7 @@ export default function EventsIndex({ events }: EventsProps) {
                             <div className="relative flex-1">
                                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
-                                    placeholder="Search events by title, description or date..."
+                                    placeholder="Search events by title..."
                                     className="pl-10 pr-10"
                                     value={searchQuery}
                                     onChange={(e) => handleSearch(e.target.value)}

@@ -23,11 +23,12 @@ import {
     Search,
     Filter,
     Plus,
-    Edit,
+    Eye,
     Trash2,
     AlertCircle,
     CheckCircle,
 } from 'lucide-react';
+import { useState, useMemo } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -43,6 +44,7 @@ interface Comment {
         name: string;
     };
     post: {
+        id_post: number;
         judul: string;
     };
     status?: 'pending' | 'approved' | 'spam';
@@ -60,6 +62,17 @@ interface CommentsProps {
 }
 
 export default function CommentsIndex({ comments }: CommentsProps) {
+    const [searchQuery, setSearchQuery] = useState('');
+
+    // Filter comments based on search query (search in comment content only)
+    const filteredComments = useMemo(() => {
+        const q = searchQuery.trim().toLowerCase();
+        if (!q) return comments.data;
+        return comments.data.filter((comment) =>
+            comment.isi_komentar.toLowerCase().includes(q)
+        );
+    }, [comments.data, searchQuery]);
+
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this comment?')) {
             router.delete(`/comments/${id}`);
@@ -137,14 +150,12 @@ export default function CommentsIndex({ comments }: CommentsProps) {
                             <div className="relative flex-1">
                                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
-                                    placeholder="Search comments..."
+                                    placeholder="Search comments by content..."
                                     className="pl-10"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
                                 />
                             </div>
-                            <Button variant="outline" className="flex gap-2">
-                                <Filter className="h-4 w-4" />
-                                Filter
-                            </Button>
                         </div>
 
                         {/* Table */}
@@ -162,40 +173,60 @@ export default function CommentsIndex({ comments }: CommentsProps) {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {comments.data.map((comment) => (
-                                        <TableRow key={comment.id_comment}>
-                                            <TableCell className="max-w-md truncate">
-                                                {comment.isi_komentar}
-                                            </TableCell>
-                                            <TableCell className="font-medium">
-                                                {comment.post.judul}
-                                            </TableCell>
-                                            <TableCell>{comment.user.name}</TableCell>
-                                            <TableCell>
-                                                {new Date(
-                                                    comment.created_at,
-                                                ).toLocaleDateString()}
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <div className="flex justify-end gap-2">
-                                                    <Button
-                                                        variant="destructive"
-                                                        size="sm"
-                                                        onClick={() =>
-                                                            handleDelete(
-                                                                comment.id_comment,
-                                                            )
-                                                        }
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
+                                    {filteredComments.length > 0 ? (
+                                        filteredComments.map((comment) => (
+                                            <TableRow key={comment.id_comment}>
+                                                <TableCell className="max-w-md truncate">
+                                                    {comment.isi_komentar}
+                                                </TableCell>
+                                                <TableCell className="font-medium">
+                                                    {comment.post.judul}
+                                                </TableCell>
+                                                <TableCell>{comment.user.name}</TableCell>
+                                                <TableCell>
+                                                    {new Date(
+                                                        comment.created_at,
+                                                    ).toLocaleDateString()}
+                                                </TableCell>
+                                                <TableCell className="text-right">
+                                                    <div className="flex justify-end gap-2">
+                                                        <Link href={`/posts/${comment.post.id_post}`}>
+                                                            <Button variant="outline" size="sm">
+                                                                <Eye className="h-4 w-4" />
+                                                            </Button>
+                                                        </Link>
+                                                        <Button
+                                                            variant="destructive"
+                                                            size="sm"
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    comment.id_comment,
+                                                                )
+                                                            }
+                                                        >
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
+                                                No comments found matching your search.
                                             </TableCell>
                                         </TableRow>
-                                    ))}
+                                    )}
                                 </TableBody>
                             </Table>
                         </div>
+
+                        {/* Search results info */}
+                        {searchQuery && (
+                            <div className="mt-4 text-sm text-muted-foreground">
+                                Found {filteredComments.length} comment{filteredComments.length !== 1 ? 's' : ''} matching "{searchQuery}"
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             </div>
