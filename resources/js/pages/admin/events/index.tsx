@@ -47,8 +47,7 @@ interface EventsProps {
 }
 
 export default function EventsIndex({ events }: EventsProps) {
-    const [query, setQuery] = useState('');
-    const [showImport, setShowImport] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const now = useMemo(() => new Date(), []);
     const upcomingCount = useMemo(
@@ -74,21 +73,30 @@ export default function EventsIndex({ events }: EventsProps) {
         }).length;
     }, [events.data]);
 
-    const filtered = useMemo(() => {
-        if (!query.trim()) return events.data;
-        const q = query.toLowerCase();
+    // Filter events based on search query
+    const filteredEvents = useMemo(() => {
+        if (!searchQuery.trim()) return events.data;
+        const q = searchQuery.toLowerCase();
         return events.data.filter(
             (e) =>
                 e.judul.toLowerCase().includes(q) ||
                 e.deskripsi.toLowerCase().includes(q) ||
                 formatDate(e.tanggal).toLowerCase().includes(q),
         );
-    }, [events.data, query]);
+    }, [events.data, searchQuery]);
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this event?')) {
             router.delete(`/events/${id}`);
         }
+    };
+
+    const handleSearch = (value: string) => {
+        setSearchQuery(value);
+    };
+
+    const clearSearch = () => {
+        setSearchQuery('');
     };
 
     return (
@@ -99,7 +107,7 @@ export default function EventsIndex({ events }: EventsProps) {
                 {/* Stats Overview */}
                 <div className="grid gap-4 md:grid-cols-3">
                     <Card>
-                        <CardHeader className="flex items-center justify-between pb-2">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
                                 Total Events
                             </CardTitle>
@@ -114,7 +122,7 @@ export default function EventsIndex({ events }: EventsProps) {
                     </Card>
 
                     <Card>
-                        <CardHeader className="flex items-center justify-between pb-2">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
                                 Upcoming Events
                             </CardTitle>
@@ -129,7 +137,7 @@ export default function EventsIndex({ events }: EventsProps) {
                     </Card>
 
                     <Card>
-                        <CardHeader className="flex items-center justify-between pb-2">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
                                 This Week
                             </CardTitle>
@@ -156,7 +164,6 @@ export default function EventsIndex({ events }: EventsProps) {
                             </div>
 
                             <div className="flex items-center gap-2">
-
                                 <Link href="/events/create">
                                     <Button>
                                         <Plus className="mr-2 h-4 w-4" />
@@ -174,10 +181,18 @@ export default function EventsIndex({ events }: EventsProps) {
                                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
                                     placeholder="Search events by title, description or date..."
-                                    className="pl-10"
-                                    value={query}
-                                    onChange={(e) => setQuery(e.target.value)}
+                                    className="pl-10 pr-10"
+                                    value={searchQuery}
+                                    onChange={(e) => handleSearch(e.target.value)}
                                 />
+                                {searchQuery && (
+                                    <button
+                                        onClick={clearSearch}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                    >
+                                        ✕
+                                    </button>
+                                )}
                             </div>
                         </div>
 
@@ -194,48 +209,56 @@ export default function EventsIndex({ events }: EventsProps) {
                                 </TableHeader>
 
                                 <TableBody>
-                                    {filtered.map((event) => (
-                                        <TableRow key={event.id_event}>
-                                            <TableCell className="font-medium">
-                                                {event.judul}
-                                            </TableCell>
-                                            <TableCell className="max-w-md truncate">
-                                                {event.deskripsi}
-                                            </TableCell>
-                                            <TableCell>{formatDate(event.tanggal)}</TableCell>
-                                            <TableCell className="text-right">
-                                                <div className="flex justify-end gap-2">
-                                                    <Link href={`/events/${event.id_event}`}>
-                                                        <Button variant="outline" size="sm">
-                                                            <Eye className="h-4 w-4" />
+                                    {filteredEvents.length > 0 ? (
+                                        filteredEvents.map((event) => (
+                                            <TableRow key={event.id_event}>
+                                                <TableCell className="font-medium">
+                                                    {event.judul}
+                                                </TableCell>
+                                                <TableCell className="max-w-md truncate">
+                                                    {event.deskripsi}
+                                                </TableCell>
+                                                <TableCell>{formatDate(event.tanggal)}</TableCell>
+                                                <TableCell className="text-right">
+                                                    <div className="flex justify-end gap-2">
+                                                        <Link href={`/events/${event.id_event}`}>
+                                                            <Button variant="outline" size="sm">
+                                                                <Eye className="h-4 w-4" />
+                                                            </Button>
+                                                        </Link>
+                                                        <Link href={`/events/${event.id_event}/edit`}>
+                                                            <Button variant="outline" size="sm">
+                                                                <Edit className="h-4 w-4" />
+                                                            </Button>
+                                                        </Link>
+                                                        <Button
+                                                            variant="destructive"
+                                                            size="sm"
+                                                            onClick={() => handleDelete(event.id_event)}
+                                                        >
+                                                            <Trash2 className="h-4 w-4" />
                                                         </Button>
-                                                    </Link>
-                                                    <Link href={`/events/${event.id_event}/edit`}>
-                                                        <Button variant="outline" size="sm">
-                                                            <Edit className="h-4 w-4" />
-                                                        </Button>
-                                                    </Link>
-                                                    <Button
-                                                        variant="destructive"
-                                                        size="sm"
-                                                        onClick={() => handleDelete(event.id_event)}
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                    {filtered.length === 0 && (
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
+                                    ) : (
                                         <TableRow>
-                                            <TableCell colSpan={4} className="text-center py-6">
-                                                No events found.
+                                            <TableCell colSpan={4} className="text-center py-6 text-muted-foreground">
+                                                No events found matching your search criteria.
                                             </TableCell>
                                         </TableRow>
                                     )}
                                 </TableBody>
                             </Table>
                         </div>
+
+                        {/* Search results info */}
+                        {searchQuery && (
+                            <div className="mt-4 text-sm text-muted-foreground">
+                                Found {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''} matching "{searchQuery}"
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             </div>
