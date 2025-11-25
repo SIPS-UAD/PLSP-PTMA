@@ -1,7 +1,7 @@
+import { RichTextEditor } from '@/components/rich-text-editor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
@@ -9,11 +9,11 @@ import { Head, useForm } from '@inertiajs/react';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Posts',
-        href: '/posts',
+        href: "/posts",
     },
     {
         title: 'Create',
-        href: '/posts/create',
+        href: "/posts/create",
     },
 ];
 
@@ -27,7 +27,7 @@ export default function PostsCreate() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/posts');
+        post("/posts");
     };
 
     return (
@@ -55,14 +55,10 @@ export default function PostsCreate() {
 
                     <div className="space-y-2">
                         <Label htmlFor="deskripsi">Description</Label>
-                        <Textarea
-                            id="deskripsi"
+                        <RichTextEditor
                             value={data.deskripsi}
-                            onChange={(e) =>
-                                setData('deskripsi', e.target.value)
-                            }
-                            rows={6}
-                            required
+                            onChange={(value) => setData('deskripsi', value)}
+                            placeholder="Write your post description..."
                         />
                         {errors.deskripsi && (
                             <p className="text-sm text-red-600">
