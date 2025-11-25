@@ -20,6 +20,7 @@ import {
     Folder,
     LayoutGrid,
     MessageSquare,
+    Users,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -43,6 +44,11 @@ const mainNavItems: NavItem[] = [
         title: 'Comments',
         href: '/comments',
         icon: MessageSquare,
+    },
+    {
+        title: 'Users',
+        href: '/users',
+        icon: Users,
     },
 ];
 

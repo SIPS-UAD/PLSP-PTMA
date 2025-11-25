@@ -64,8 +64,8 @@ export default function EventsEdit({ event }: EventsEditProps) {
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="deskripsi">Description</Label>
-                        <Textarea
+                       <Label htmlFor="deskripsi">Description</Label>
+                       <Textarea
                             id="deskripsi"
                             value={data.deskripsi}
                             onChange={(e) =>
