@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -65,10 +66,27 @@ class EventController extends Controller
             ->with('success', 'Event deleted successfully.');
     }
 
-    public function show(Event $event)
+    public function show($id)
     {
+        $event = Event::findOrFail($id);
+
+        // Ambil data pendaftar event
+        $registrants = DB::table('pendaftaran_events')
+            ->join('users', 'pendaftaran_events.id_user', '=', 'users.id_user')
+            ->where('pendaftaran_events.id_event', $id)
+            ->select(
+                'pendaftaran_events.id',
+                'users.name as nama',
+                'users.nama_lsp',
+                'users.nama_ptma',
+                'users.email',
+                'users.no_hp'
+            )
+            ->get();
+
         return Inertia::render('admin/events/show', [
-            'event' => $event
+            'event' => $event,
+            'registrants' => $registrants,
         ]);
     }
 }

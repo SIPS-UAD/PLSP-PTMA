@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Users } from 'lucide-react';
 import { formatDate } from '@/lib/dateFormat';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -24,11 +26,21 @@ interface Event {
     tanggal: string;
 }
 
-interface EventShowProps {
-    event: Event;
+interface Registrant {
+    id: number;
+    nama: string;
+    nama_lsp: string;
+    nama_ptma: string;
+    email: string;
+    no_hp: string;
 }
 
-export default function EventShow({ event }: EventShowProps) {
+interface EventShowProps {
+    event: Event;
+    registrants: Registrant[];
+}
+
+export default function EventShow({ event, registrants = [] }: EventShowProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`View Event - ${event.judul}`} />
@@ -66,6 +78,60 @@ export default function EventShow({ event }: EventShowProps) {
                             <h3 className="text-base font-semibold">Description</h3>
                             <p className="whitespace-pre-line">{event.deskripsi}</p>
                         </div>
+                    </CardContent>
+                </Card>
+
+                {/* Daftar Pendaftar Event */}
+                <Card>
+                    <CardHeader>
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <Users className="h-5 w-5" />
+                                <CardTitle>Event Registrants</CardTitle>
+                            </div>
+                            <Badge variant="secondary" className="text-sm">
+                                {registrants.length} {registrants.length === 1 ? 'Registrant' : 'Registrants'}
+                            </Badge>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        {registrants.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-12 text-center">
+                                <Users className="h-12 w-12 text-muted-foreground/50 mb-4" />
+                                <p className="text-muted-foreground">No registrants yet</p>
+                            </div>
+                        ) : (
+                            <div className="rounded-md border">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead className="w-[50px]">No</TableHead>
+                                            <TableHead>Name</TableHead>
+                                            <TableHead>LSP</TableHead>
+                                            <TableHead>PTMA</TableHead>
+                                            <TableHead>Email</TableHead>
+                                            <TableHead>Phone</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {registrants.map((registrant, index) => (
+                                            <TableRow key={registrant.id}>
+                                                <TableCell className="font-medium">
+                                                    {index + 1}
+                                                </TableCell>
+                                                <TableCell className="font-medium">
+                                                    {registrant.nama}
+                                                </TableCell>
+                                                <TableCell>{registrant.nama_lsp}</TableCell>
+                                                <TableCell>{registrant.nama_ptma}</TableCell>
+                                                <TableCell>{registrant.email}</TableCell>
+                                                <TableCell>{registrant.no_hp}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             </div>
