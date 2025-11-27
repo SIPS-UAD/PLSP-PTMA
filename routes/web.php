@@ -12,6 +12,7 @@ use App\Http\Controllers\MateriController;
 use App\Http\Controllers\PendirianLisensiController;
 use App\Http\Controllers\RegulasiController;
 use App\Http\Controllers\TentangController;
+use App\Http\Controllers\UserController;
 
 Route::get('/home', function () {
     return Inertia::render('welcome');
@@ -128,10 +129,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('posts', PostController::class);
-
     Route::resource('events', EventController::class);
-
     Route::resource('comments', CommentController::class);
+    
+    // User Management Routes
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::post('users/{id}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
 })->name('dashboard');
 
 

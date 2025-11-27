@@ -26,8 +26,12 @@ export default function AuthCardLayout({
                     href={home()}
                     className="flex items-center gap-2 self-center font-medium"
                 >
-                    <div className="flex h-9 w-9 items-center justify-center">
-                        <AppLogoIcon className="size-9 fill-current text-black" />
+                    <div className="flex h-12 w-12 items-center justify-center">
+                        <img
+                            src="/plsp-ptma-logo.svg"
+                            alt="PLSP PTMA"
+                            className="h-12 w-12 object-contain"
+                        />
                     </div>
                 </Link>
 

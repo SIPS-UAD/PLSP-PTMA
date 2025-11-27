@@ -1,11 +1,10 @@
 import { Button } from '@/components/ui/button';
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
     Table,
     TableBody,
@@ -18,8 +17,10 @@ import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { FileText, Search, Upload, Plus, Edit, Trash2, Users, TrendingUp } from 'lucide-react';
+import { ChevronDown, Edit, Eye, FileText, Plus, Search, Trash2, TrendingUp, Upload, Users } from 'lucide-react';
+import { formatDate } from '@/lib/dateFormat';
 import { useState, useMemo } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -49,33 +50,9 @@ interface PostsProps {
 }
 
 export default function PostsIndex({ posts }: PostsProps) {
-    const [searchQuery, setSearchQuery] = useState('');
     const [sortedPosts, setSortedPosts] = useState(posts.data);
     const [currentSort, setCurrentSort] = useState('all');
-
-    // Filter posts based on search query and category
-    const filteredPosts = useMemo(() => {
-        let result = posts.data;
-
-        // Apply category filter
-        if (currentSort !== 'all') {
-            result = result.filter((post) => post.kategori === currentSort);
-        }
-
-        // Apply search filter
-        if (searchQuery.trim()) {
-            const query = searchQuery.toLowerCase();
-            result = result.filter(
-                (post) =>
-                    post.judul.toLowerCase().includes(query) ||
-                    post.deskripsi.toLowerCase().includes(query) ||
-                    post.kategori.toLowerCase().includes(query) ||
-                    post.user.name.toLowerCase().includes(query)
-            );
-        }
-
-        return result;
-    }, [posts.data, searchQuery, currentSort]);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const handleSort = (category: string) => {
         setCurrentSort(category);
@@ -98,13 +75,14 @@ export default function PostsIndex({ posts }: PostsProps) {
         }
     };
 
-    const handleSearch = (value: string) => {
-        setSearchQuery(value);
-    };
-
-    const clearSearch = () => {
-        setSearchQuery('');
-    };
+    // Filter hanya berdasarkan judul (case-insensitive)
+    const filteredPosts = useMemo(() => {
+        const q = searchQuery.trim().toLowerCase();
+        if (!q) return sortedPosts;
+        return sortedPosts.filter((post) =>
+            post.judul.toLowerCase().includes(q)
+        );
+    }, [sortedPosts, searchQuery]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -178,121 +156,107 @@ export default function PostsIndex({ posts }: PostsProps) {
                         </div>
                     </CardHeader>
                     <CardContent>
-                        {/* Search */}
+                        {/* Search and Filter */}
                         <div className="flex items-center gap-4 mb-6">
                             <div className="relative flex-1">
                                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
-                                    placeholder="Search posts by title, description, category, or author..."
-                                    className="pl-10 pr-10"
+                                    placeholder="Search posts by title..."
+                                    className="pl-10"
                                     value={searchQuery}
-                                    onChange={(e) => handleSearch(e.target.value)}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
                                 />
-                                {searchQuery && (
-                                    <button
-                                        onClick={clearSearch}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                                    >
-                                        ✕
-                                    </button>
-                                )}
                             </div>
                         </div>
 
-                        {/* Category Filter Buttons */}
-                        <div className="mb-6 flex flex-wrap gap-2">
-                            <Button
-                                variant={currentSort === 'all' ? 'default' : 'outline'}
-                                size="sm"
-                                onClick={() => handleSort('all')}
-                            >
-                                All
-                            </Button>
-                            {uniqueCategories.map((category) => (
-                                <Button
-                                    key={category}
-                                    variant={currentSort === category ? 'default' : 'outline'}
-                                    size="sm"
-                                    onClick={() => handleSort(category)}
-                                >
-                                    {category}
-                                </Button>
+                <div className="rounded-lg border">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Title</TableHead>
+                                <TableHead>
+                                    <div className="flex items-center gap-2">
+                                        Category
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="sm">
+                                                    <ChevronDown className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="start">
+                                                <DropdownMenuItem
+                                                    onClick={() => handleSort('all')}
+                                                >
+                                                    All Categories
+                                                </DropdownMenuItem>
+                                                {uniqueCategories.map((category) => (
+                                                    <DropdownMenuItem
+                                                        key={category}
+                                                        onClick={() =>
+                                                            handleSort(category)
+                                                        }
+                                                    >
+                                                        {category}
+                                                    </DropdownMenuItem>
+                                                ))}
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+                                </TableHead>
+                                <TableHead>Author</TableHead>
+                                <TableHead>Date</TableHead>
+                                <TableHead className="text-right">
+                                    Actions
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {filteredPosts.map((post) => (
+                                <TableRow key={post.id_post}>
+                                    <TableCell className="font-medium">
+                                        {post.judul}
+                                    </TableCell>
+                                    <TableCell>{post.kategori}</TableCell>
+                                    <TableCell>{post.user.name}</TableCell>
+                                    <TableCell>{formatDate(post.tanggal)}</TableCell>
+                                    <TableCell className="text-right">
+                                        <div className="flex justify-end gap-2">
+                                            <Link href={`/posts/${post.id_post}`}>
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                >
+                                                    <Eye className="h-4 w-4" />
+                                                </Button>
+                                            </Link>
+                                            <Link
+                                                href={`/posts/${post.id_post}/edit`}
+                                            >
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                >
+                                                    <Edit className="h-4 w-4" />
+                                                </Button>
+                                            </Link>
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() =>
+                                                    handleDelete(post.id_post)
+                                                }
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
                             ))}
-                        </div>
-
-                        {/* Table */}
-                        <div className="rounded-lg border">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Title</TableHead>
-                                        <TableHead>Description</TableHead>
-                                        <TableHead>Category</TableHead>
-                                        <TableHead>Author</TableHead>
-                                        <TableHead>Date</TableHead>
-                                        <TableHead className="text-right">Actions</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {filteredPosts.length > 0 ? (
-                                        filteredPosts.map((post) => (
-                                            <TableRow key={post.id_post}>
-                                                <TableCell className="font-medium">
-                                                    {post.judul}
-                                                </TableCell>
-                                                <TableCell className="max-w-md truncate">
-                                                    {post.deskripsi}
-                                                </TableCell>
-                                                <TableCell>
-                                                    <span className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium bg-blue-50 text-blue-700">
-                                                        {post.kategori}
-                                                    </span>
-                                                </TableCell>
-                                                <TableCell>{post.user.name}</TableCell>
-                                                <TableCell>
-                                                    {new Date(post.tanggal).toLocaleDateString()}
-                                                </TableCell>
-                                                <TableCell className="text-right">
-                                                    <div className="flex justify-end gap-2">
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            asChild
-                                                        >
-                                                            <Link href={`/posts/${post.id_post}/edit`}>
-                                                                <Edit className="h-4 w-4" />
-                                                            </Link>
-                                                        </Button>
-                                                        <Button
-                                                            variant="destructive"
-                                                            size="sm"
-                                                            onClick={() => handleDelete(post.id_post)}
-                                                        >
-                                                            <Trash2 className="h-4 w-4" />
-                                                        </Button>
-                                                    </div>
-                                                </TableCell>
-                                            </TableRow>
-                                        ))
-                                    ) : (
-                                        <TableRow>
-                                            <TableCell colSpan={6} className="text-center py-6 text-muted-foreground">
-                                                No posts found matching your search criteria.
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </div>
-
-                        {/* Search results info */}
-                        {searchQuery && (
-                            <div className="mt-4 text-sm text-muted-foreground">
-                                Found {filteredPosts.length} post{filteredPosts.length !== 1 ? 's' : ''} matching "{searchQuery}"
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
+                        </TableBody>
+                    </Table>
+                </div>
+                </CardContent>
+            </Card>
             </div>
         </AppLayout>
     );
