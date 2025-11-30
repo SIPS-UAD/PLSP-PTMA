@@ -14,6 +14,7 @@ class LoginResponse implements LoginResponseContract
 
     $redirectPath = match ($user->role) {
       'admin', 'super_admin' => '/dashboard',
+      'member' => '/user-dashboard',
       default => '/',
     };
 

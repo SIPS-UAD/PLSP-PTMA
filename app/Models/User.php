@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -37,12 +38,12 @@ class User extends Authenticatable
     }
 
     // Relationships
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'id_user', 'id_user');
     }
 
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class, 'id_user', 'id_user');
     }
@@ -51,5 +52,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Event::class, 'pendaftaran_events', 'id_user', 'id_event')
             ->withTimestamps();
+    }
+
+    public function pendaftaranEvents(): HasMany
+    {
+        return $this->hasMany(PendaftaranEvent::class, 'id_user', 'id_user');
     }
 }
