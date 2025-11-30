@@ -19,7 +19,21 @@ class PostController extends Controller
 
   public function create()
   {
-    return Inertia::render('admin/posts/create');
+    // Ambil kategori unik dari database
+    $categories = Post::select('kategori')
+      ->distinct()
+      ->whereNotNull('kategori')
+      ->orderBy('kategori')
+      ->pluck('kategori')
+      ->map(fn($kategori) => [
+        'value' => $kategori,
+        'label' => ucfirst($kategori)
+      ])
+      ->toArray();
+
+    return Inertia::render('admin/posts/create', [
+      'categories' => $categories
+    ]);
   }
 
   public function store(Request $request)
@@ -27,11 +41,11 @@ class PostController extends Controller
     $validated = $request->validate([
       'judul' => 'required|string|max:255',
       'deskripsi' => 'required|string',
-      'tanggal' => 'required|date',
       'kategori' => 'required|string|max:255',
     ]);
 
     $validated['id_user'] = auth()->id();
+    $validated['tanggal'] = now()->toDateString(); // Set tanggal otomatis ke hari ini
 
     Post::create($validated);
 
@@ -41,8 +55,21 @@ class PostController extends Controller
 
   public function edit(Post $post)
   {
+    // Ambil kategori unik dari database
+    $categories = Post::select('kategori')
+      ->distinct()
+      ->whereNotNull('kategori')
+      ->orderBy('kategori')
+      ->pluck('kategori')
+      ->map(fn($kategori) => [
+        'value' => $kategori,
+        'label' => ucfirst($kategori)
+      ])
+      ->toArray();
+
     return Inertia::render('admin/posts/edit', [
-      'post' => $post
+      'post' => $post,
+      'categories' => $categories
     ]);
   }
 
@@ -51,9 +78,10 @@ class PostController extends Controller
     $validated = $request->validate([
       'judul' => 'required|string|max:255',
       'deskripsi' => 'required|string',
-      'tanggal' => 'required|date',
       'kategori' => 'required|string|max:255',
     ]);
+
+    $validated['tanggal'] = now()->toDateString(); // Update tanggal ke hari ini saat diedit
 
     $post->update($validated);
 
