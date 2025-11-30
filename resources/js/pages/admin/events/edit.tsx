@@ -1,8 +1,9 @@
+import { RichTextEditor } from '@/components/rich-text-editor';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
+import { formatDateForInput } from '@/lib/formatDate';
 import { BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 
@@ -32,7 +33,7 @@ export default function EventsEdit({ event }: EventsEditProps) {
     const { data, setData, put, processing, errors } = useForm({
         judul: event.judul,
         deskripsi: event.deskripsi,
-        tanggal: event.tanggal,
+        tanggal: formatDateForInput(event.tanggal),
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -64,15 +65,11 @@ export default function EventsEdit({ event }: EventsEditProps) {
                     </div>
 
                     <div className="space-y-2">
-                       <Label htmlFor="deskripsi">Description</Label>
-                       <Textarea
-                            id="deskripsi"
+                        <Label htmlFor="deskripsi">Description</Label>
+                        <RichTextEditor
                             value={data.deskripsi}
-                            onChange={(e) =>
-                                setData('deskripsi', e.target.value)
-                            }
-                            rows={6}
-                            required
+                            onChange={(value) => setData('deskripsi', value)}
+                            placeholder="Write your event description..."
                         />
                         {errors.deskripsi && (
                             <p className="text-sm text-red-600">
