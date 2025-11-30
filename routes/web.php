@@ -22,6 +22,10 @@ Route::get('/', function () {
     return Inertia::render('landingpage/beranda/index');
 })->name('landingpage');
 
+Route::get('/user-dashboard', function () {
+    return Inertia::render('user/index');
+})->name('user');
+
 Route::get('/tentang', [TentangController::class, 'index'])
     ->name('landingpage.tentang');
 
