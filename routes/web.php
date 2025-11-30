@@ -13,6 +13,7 @@ use App\Http\Controllers\PendirianLisensiController;
 use App\Http\Controllers\RegulasiController;
 use App\Http\Controllers\TentangController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserDashboardController;
 
 Route::get('/home', function () {
     return Inertia::render('welcome');
@@ -23,7 +24,7 @@ Route::get('/', function () {
 })->name('landingpage');
 
 Route::middleware(['auth', 'verified', 'role:member'])->group(function () {
-    Route::get('/user-dashboard', fn() => Inertia::render('user/index'))->name('user-dashboard');
+    Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user-dashboard');
 });
 
 Route::get('/tentang', [TentangController::class, 'index'])
