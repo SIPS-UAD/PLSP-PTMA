@@ -31,16 +31,19 @@ export interface SharedData {
 }
 
 export interface User {
-    id: number;
+    id_user: number;
     name: string;
     email: string;
+    nama_lsp?: string;
+    nama_ptma?: string;
+    no_hp?: string;
     avatar?: string;
     email_verified_at: string | null;
     two_factor_enabled?: boolean;
     created_at: string;
     updated_at: string;
-    role?: 'Admin' | 'Super Admin' | 'Anggota'; // Add role to existing User type
-    [key: string]: unknown; // This allows for additional properties...
+    role: 'member' | 'admin' | 'super_admin'; 
+    [key: string]: unknown;
 }
 
 export type NavLink = {
@@ -56,7 +59,7 @@ export type Card = {
 };
 
 export type NewsData = {
-    id : string;
+    id: string;
     image_link: string;
     title: string;
     release_date: string;

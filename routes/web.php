@@ -22,9 +22,9 @@ Route::get('/', function () {
     return Inertia::render('landingpage/beranda/index');
 })->name('landingpage');
 
-Route::get('/user-dashboard', function () {
-    return Inertia::render('user/index');
-})->name('user');
+Route::middleware(['auth', 'verified', 'role:member'])->group(function () {
+    Route::get('/user-dashboard', fn() => Inertia::render('user/index'))->name('user-dashboard');
+});
 
 Route::get('/tentang', [TentangController::class, 'index'])
     ->name('landingpage.tentang');
@@ -32,16 +32,16 @@ Route::get('/tentang', [TentangController::class, 'index'])
 Route::prefix('tentang')->name('landingpage.tentang.')->group(function () {
     Route::get('/profil', [TentangController::class, 'profil'])
         ->name('profil');
-    
+
     Route::get('/ad', [TentangController::class, 'ad'])
         ->name('ad');
-    
+
     Route::get('/anggaran-rumah-tangga', [TentangController::class, 'anggaranRumahTangga'])
         ->name('anggaran-rumah-tangga');
-    
+
     Route::get('/hasil-rakernas', [TentangController::class, 'hasilRakernas'])
         ->name('hasil-rakernas');
-    
+
     Route::get('/hasil-munas', [TentangController::class, 'hasilMunas'])
         ->name('hasil-munas');
 });
@@ -79,19 +79,19 @@ Route::prefix('materi')->name('landingpage.materi.')->group(function () {
 Route::prefix('pendirian-lisensi')->name('landingpage.pendirian-lisensi.')->group(function () {
     Route::get('/apresiasi', [PendirianLisensiController::class, 'apresiasi'])
         ->name('apresiasi');
-    
+
     Route::get('/pendirian-lsp', [PendirianLisensiController::class, 'pendirianLSP'])
         ->name('pendirian-lsp');
-    
+
     Route::get('/pengajuan-fa', [PendirianLisensiController::class, 'pengajuanFA'])
         ->name('pengajuan-fa');
-    
+
     Route::get('/pengajuan-skema-sertifikasi', [PendirianLisensiController::class, 'pengajuanSkemaSertifikasi'])
         ->name('pengajuan-skema-sertifikasi');
-    
+
     Route::get('/pengajuan-witness', [PendirianLisensiController::class, 'pengajuanWitness'])
         ->name('pengajuan-witness');
-    
+
     Route::get('/prl', [PendirianLisensiController::class, 'prl'])
         ->name('prl');
 });
@@ -101,16 +101,16 @@ Route::prefix('pendirian-lisensi')->name('landingpage.pendirian-lisensi.')->grou
 Route::prefix('regulasi')->name('landingpage.regulasi.')->group(function () {
     Route::get('/iku-pt', [RegulasiController::class, 'ikuPerguruanTinggi'])
         ->name('iku-pt');
-    
+
     Route::get('/peraturan-baru', [RegulasiController::class, 'peraturanBaru'])
         ->name('peraturan-baru');
-    
+
     Route::get('/peraturan-bnsp', [RegulasiController::class, 'peraturanBNSP'])
         ->name('peraturan-bnsp');
-    
+
     Route::get('/peraturan-dasar', [RegulasiController::class, 'peraturanDasar'])
         ->name('peraturan-dasar');
-    
+
     Route::get('/proses-lisensi', [RegulasiController::class, 'prosesLisensi'])
         ->name('proses-lisensi');
 });
@@ -129,13 +129,13 @@ Route::get('/berita', function () {
 
 
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin,super_admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('posts', PostController::class);
     Route::resource('events', EventController::class);
     Route::resource('comments', CommentController::class);
-    
+
     // User Management Routes
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('users/{id}', [UserController::class, 'show'])->name('users.show');
@@ -143,5 +143,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 })->name('dashboard');
 
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';

@@ -1,9 +1,11 @@
 import { navigationsLink } from '@/lib/navigation';
-import { Link } from '@inertiajs/react';
+import { SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 import MobileMenu from './mobile-menu';
 
 const NavBar = () => {
+    const { auth } = usePage<SharedData>().props;
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -49,6 +51,20 @@ const NavBar = () => {
             }
             return newSet;
         });
+    };
+
+    // Determine dashboard link based on user role
+    const getDashboardLink = () => {
+        if (!auth.user) {
+            return '/login';
+        }
+        return auth.user.role === 'admin' || auth.user.role === 'super_admin'
+            ? '/dashboard'
+            : '/user-dashboard';
+    };
+
+    const getAuthButtonText = () => {
+        return auth.user ? 'DASHBOARD' : 'LOGIN';
     };
 
     return (
@@ -123,7 +139,12 @@ const NavBar = () => {
                                         )}
                                 </div>
                             ))}
-                            <Link href="/login" className="ml-10  flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-green-700 transition-colors hover:bg-green-100">LOGIN</Link>
+                            <Link
+                                href={getDashboardLink()}
+                                className="ml-10 flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-green-700 transition-colors hover:bg-green-100"
+                            >
+                                {getAuthButtonText()}
+                            </Link>
                         </div>
 
                         {/* Mobile Menu Button */}
