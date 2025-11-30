@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import Color from '@tiptap/extension-color';
 import Image from '@tiptap/extension-image';
@@ -652,29 +652,6 @@ export function RichTextEditor({
                         >
                             <Redo className="h-4 w-4" />
                         </Button>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <TabsList>
-                            <TabsTrigger
-                                value="edit"
-                                onClick={() => setActiveTab('edit')}
-                                className={cn(
-                                    activeTab === 'edit' && 'bg-muted',
-                                )}
-                            >
-                                Edit
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="preview"
-                                onClick={() => setActiveTab('preview')}
-                                className={cn(
-                                    activeTab === 'preview' && 'bg-muted',
-                                )}
-                            >
-                                Preview
-                            </TabsTrigger>
-                        </TabsList>
                     </div>
                 </div>
 
