@@ -122,6 +122,10 @@ Route::get('/berita', function () {
     return Inertia::render('landingpage/berita/index');
 })->name('landingpage.berita');
 
+Route::get('/detail', function () {
+    return Inertia::render('landingpage/berita/detail/index');
+})->name('landingpage.berita.detail');
+
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
