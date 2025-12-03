@@ -17,9 +17,9 @@ import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { ChevronDown, Edit, Eye, FileText, Plus, Search, Trash2, TrendingUp, Upload, Users } from 'lucide-react';
+import { ChevronDown, Edit, Eye, FileText, Plus, Search, Trash2, Calendar, TrendingUp } from 'lucide-react';
 import { formatDate } from '@/lib/dateFormat';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -47,12 +47,18 @@ interface PostsProps {
         current_page: number;
         last_page: number;
     };
+    totalPostsCount: number;
 }
 
-export default function PostsIndex({ posts }: PostsProps) {
+export default function PostsIndex({ posts, totalPostsCount }: PostsProps) {
     const [sortedPosts, setSortedPosts] = useState(posts.data);
     const [currentSort, setCurrentSort] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
+
+    // Refetch data when page is revisited or after successful action
+    useEffect(() => {
+        setSortedPosts(posts.data);
+    }, [posts.data]);
 
     const handleSort = (category: string) => {
         setCurrentSort(category);
@@ -84,6 +90,37 @@ export default function PostsIndex({ posts }: PostsProps) {
         );
     }, [sortedPosts, searchQuery]);
 
+    // Calculate dynamic statistics
+    const stats = useMemo(() => {
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        // Gunakan totalPostsCount dari backend - ini adalah total SEMUA posts
+        const totalPosts = totalPostsCount;
+
+        // Untuk postsThisMonth dan postsThisYear, filter dari posts.data (10 items halaman saat ini)
+        // Tapi kita perlu fetch ALL posts untuk akurat
+        const postsThisMonth = posts.data.filter((post) => {
+            const postDate = new Date(post.tanggal);
+            return (
+                postDate.getMonth() === currentMonth &&
+                postDate.getFullYear() === currentYear
+            );
+        }).length;
+
+        const postsThisYear = posts.data.filter((post) => {
+            const postDate = new Date(post.tanggal);
+            return postDate.getFullYear() === currentYear;
+        }).length;
+
+        return {
+            totalPosts,
+            postsThisMonth,
+            postsThisYear,
+        };
+    }, [totalPostsCount, posts.data]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Posts Management" />
@@ -99,37 +136,37 @@ export default function PostsIndex({ posts }: PostsProps) {
                             <FileText className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{posts.data.length}</div>
+                            <div className="text-2xl font-bold">{stats.totalPosts}</div>
                             <p className="text-xs text-muted-foreground">
-                                +12 from last month
+                                All posts in the system
                             </p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                Total Views
+                                Posts This Month
                             </CardTitle>
-                            <Users className="h-4 w-4 text-muted-foreground" />
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">2,350</div>
+                            <div className="text-2xl font-bold">{stats.postsThisMonth}</div>
                             <p className="text-xs text-muted-foreground">
-                                +180 this week
+                                Created this month
                             </p>
                         </CardContent>
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                Engagement Rate
+                                Posts This Year
                             </CardTitle>
                             <TrendingUp className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">4.5%</div>
+                            <div className="text-2xl font-bold">{stats.postsThisYear}</div>
                             <p className="text-xs text-muted-foreground">
-                                +0.7% from last week
+                                Created this year
                             </p>
                         </CardContent>
                     </Card>
@@ -169,94 +206,102 @@ export default function PostsIndex({ posts }: PostsProps) {
                             </div>
                         </div>
 
-                <div className="rounded-lg border">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Title</TableHead>
-                                <TableHead>
-                                    <div className="flex items-center gap-2">
-                                        Category
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="sm">
-                                                    <ChevronDown className="h-4 w-4" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="start">
-                                                <DropdownMenuItem
-                                                    onClick={() => handleSort('all')}
-                                                >
-                                                    All Categories
-                                                </DropdownMenuItem>
-                                                {uniqueCategories.map((category) => (
-                                                    <DropdownMenuItem
-                                                        key={category}
-                                                        onClick={() =>
-                                                            handleSort(category)
-                                                        }
-                                                    >
-                                                        {category}
-                                                    </DropdownMenuItem>
-                                                ))}
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </div>
-                                </TableHead>
-                                <TableHead>Author</TableHead>
-                                <TableHead>Date</TableHead>
-                                <TableHead className="text-right">
-                                    Actions
-                                </TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {filteredPosts.map((post) => (
-                                <TableRow key={post.id_post}>
-                                    <TableCell className="font-medium">
-                                        {post.judul}
-                                    </TableCell>
-                                    <TableCell>{post.kategori}</TableCell>
-                                    <TableCell>{post.user.name}</TableCell>
-                                    <TableCell>{formatDate(post.tanggal)}</TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <Link href={`/posts/${post.id_post}`}>
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                >
-                                                    <Eye className="h-4 w-4" />
-                                                </Button>
-                                            </Link>
-                                            <Link
-                                                href={`/posts/${post.id_post}/edit`}
-                                            >
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                >
-                                                    <Edit className="h-4 w-4" />
-                                                </Button>
-                                            </Link>
-                                            <Button
-                                                variant="destructive"
-                                                size="sm"
-                                                onClick={() =>
-                                                    handleDelete(post.id_post)
-                                                }
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </div>
-                </CardContent>
-            </Card>
+                        <div className="rounded-lg border">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Title</TableHead>
+                                        <TableHead>
+                                            <div className="flex items-center gap-2">
+                                                Category
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant="ghost" size="sm">
+                                                            <ChevronDown className="h-4 w-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="start">
+                                                        <DropdownMenuItem
+                                                            onClick={() => handleSort('all')}
+                                                        >
+                                                            All Categories
+                                                        </DropdownMenuItem>
+                                                        {uniqueCategories.map((category) => (
+                                                            <DropdownMenuItem
+                                                                key={category}
+                                                                onClick={() =>
+                                                                    handleSort(category)
+                                                                }
+                                                            >
+                                                                {category}
+                                                            </DropdownMenuItem>
+                                                        ))}
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </div>
+                                        </TableHead>
+                                        <TableHead>Author</TableHead>
+                                        <TableHead>Date</TableHead>
+                                        <TableHead className="text-right">
+                                            Actions
+                                        </TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {filteredPosts.length > 0 ? (
+                                        filteredPosts.map((post) => (
+                                            <TableRow key={post.id_post}>
+                                                <TableCell className="font-medium">
+                                                    {post.judul}
+                                                </TableCell>
+                                                <TableCell>{post.kategori}</TableCell>
+                                                <TableCell>{post.user.name}</TableCell>
+                                                <TableCell>{formatDate(post.tanggal)}</TableCell>
+                                                <TableCell className="text-right">
+                                                    <div className="flex justify-end gap-2">
+                                                        <Link href={`/posts/${post.id_post}`}>
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                            >
+                                                                <Eye className="h-4 w-4" />
+                                                            </Button>
+                                                        </Link>
+                                                        <Link
+                                                            href={`/posts/${post.id_post}/edit`}
+                                                        >
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                            >
+                                                                <Edit className="h-4 w-4" />
+                                                            </Button>
+                                                        </Link>
+                                                        <Button
+                                                            variant="destructive"
+                                                            size="sm"
+                                                            onClick={() =>
+                                                                handleDelete(post.id_post)
+                                                            }
+                                                        >
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
+                                                No posts found matching your search.
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
         </AppLayout>
     );

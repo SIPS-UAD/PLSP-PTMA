@@ -10,10 +10,12 @@ class PostController extends Controller
 {
   public function index()
   {
-    $posts = Post::with('user')->latest()->paginate(10);
+    $totalCount = Post::count();
+    $posts = Post::with('user')->latest()->paginate();
 
     return Inertia::render('admin/posts/index', [
-      'posts' => $posts
+      'posts' => $posts,
+      'totalPostsCount' => $totalCount
     ]);
   }
 
