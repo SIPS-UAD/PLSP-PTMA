@@ -21,7 +21,6 @@ export default function EventsCreate() {
     const { data, setData, post, processing, errors } = useForm({
         judul: '',
         deskripsi: '',
-        tanggal: '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -62,22 +61,6 @@ export default function EventsCreate() {
                         {errors.deskripsi && (
                             <p className="text-sm text-red-600">
                                 {errors.deskripsi}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label htmlFor="tanggal">Date</Label>
-                        <Input
-                            id="tanggal"
-                            type="date"
-                            value={data.tanggal}
-                            onChange={(e) => setData('tanggal', e.target.value)}
-                            required
-                        />
-                        {errors.tanggal && (
-                            <p className="text-sm text-red-600">
-                                {errors.tanggal}
                             </p>
                         )}
                     </div>

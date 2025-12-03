@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
-import { formatDateForInput } from '@/lib/formatDate';
 import { BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 
@@ -33,7 +32,6 @@ export default function EventsEdit({ event }: EventsEditProps) {
     const { data, setData, put, processing, errors } = useForm({
         judul: event.judul,
         deskripsi: event.deskripsi,
-        tanggal: formatDateForInput(event.tanggal),
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -74,22 +72,6 @@ export default function EventsEdit({ event }: EventsEditProps) {
                         {errors.deskripsi && (
                             <p className="text-sm text-red-600">
                                 {errors.deskripsi}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label htmlFor="tanggal">Date</Label>
-                        <Input
-                            id="tanggal"
-                            type="date"
-                            value={data.tanggal}
-                            onChange={(e) => setData('tanggal', e.target.value)}
-                            required
-                        />
-                        {errors.tanggal && (
-                            <p className="text-sm text-red-600">
-                                {errors.tanggal}
                             </p>
                         )}
                     </div>
