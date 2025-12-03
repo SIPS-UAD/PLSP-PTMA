@@ -68,7 +68,7 @@ export default function PostsCreate({ categories = [] }: PostsCreateProps) {
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
                 <h1 className="text-2xl font-semibold">Create New Post</h1>
 
-                <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
+                <form onSubmit={handleSubmit} className="w-full space-y-6">
                     <div className="space-y-2">
                         <Label htmlFor="judul">Title</Label>
                         <Input
