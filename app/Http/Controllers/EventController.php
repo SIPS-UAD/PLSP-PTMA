@@ -28,8 +28,9 @@ class EventController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'tanggal' => 'required|date',
         ]);
+
+        $validated['tanggal'] = now()->toDateString(); // Set tanggal otomatis ke hari ini
 
         Event::create($validated);
 
@@ -49,8 +50,9 @@ class EventController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            'tanggal' => 'required|date',
         ]);
+
+        $validated['tanggal'] = now()->toDateString(); // Update tanggal ke hari ini saat diedit
 
         $event->update($validated);
 
