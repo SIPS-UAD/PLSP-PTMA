@@ -7,7 +7,8 @@ import LandingPageLayout from '@/layouts/landingpage/landingpage-layout';
 import MaterialsLayout from '@/layouts/landingpage/materials-layout';
 import { dummyNewsData } from '@/lib/newsData';
 
-const Page = () => {
+const Page = ({ post, events }) => {
+    console.log({ post, events });
     return (
         <LandingPageLayout>
             <section className="container flex h-auto flex-col items-center pt-6 xl:px-20">

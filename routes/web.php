@@ -21,8 +21,8 @@ Route::get('/home', function () {
 
 Route::get('/', function () {
     return Inertia::render('landingpage/beranda/index', [
-        'posts' => \App\Models\Post::with('user')->latest()->take(6)->get(),
-        'events' => \App\Models\Event::with('user')->latest()->take(6)->get(),
+        'posts' => \App\Models\Post::latest()->take(6)->get(),
+        'events' => \App\Models\Event::latest()->take(6)->get(),
     ]);
 })->name('landingpage');
 
@@ -116,16 +116,12 @@ Route::prefix('regulasi')->name('landingpage.regulasi.')->group(function () {
 
 
 Route::get('/kegiatan', function () {
-    return Inertia::render('landingpage/kegiatan/index', [
-        'events' => \App\Models\Event::with('user')->latest()->paginate(12),
-    ]);
+    return Inertia::render('landingpage/kegiatan/index');
 })->name('landingpage.kegiatan');
 
 
 Route::get('/berita', function () {
-    return Inertia::render('landingpage/berita/index', [
-        'posts' => \App\Models\Post::with('user')->latest()->paginate(12),
-    ]);
+    return Inertia::render('landingpage/berita/index');
 })->name('landingpage.berita');
 
 
