@@ -20,7 +20,10 @@ Route::get('/home', function () {
 })->name('home');
 
 Route::get('/', function () {
-    return Inertia::render('landingpage/beranda/index');
+    return Inertia::render('landingpage/beranda/index', [
+        'posts' => \App\Models\Post::with('user')->latest()->take(6)->get(),
+        'events' => \App\Models\Event::with('user')->latest()->take(6)->get(),
+    ]);
 })->name('landingpage');
 
 Route::middleware(['auth', 'verified', 'role:member'])->group(function () {
@@ -49,7 +52,6 @@ Route::prefix('tentang')->name('landingpage.tentang.')->group(function () {
 
 
 
-// Page Anggota
 Route::prefix('anggota')->name('landingpage.anggota.')->group(function () {
     Route::get('/form-isian', [AnggotaController::class, 'formIsian'])->name('form-isian');
     Route::get('/proses-lisensi-BNSP', [AnggotaController::class, 'prosesLisensiBNSP'])->name('proses-lisensi-BNSP');
@@ -59,7 +61,6 @@ Route::prefix('anggota')->name('landingpage.anggota.')->group(function () {
 });
 
 
-// Page Sumber Daya
 Route::prefix('sumber-daya')->name('landingpage.sumber-daya.')->group(function () {
     Route::get('/asesor', [SumberDayaController::class, 'asesor'])->name('asesor');
     Route::get('/cma', [SumberDayaController::class, 'cma'])->name('cma');
@@ -68,7 +69,6 @@ Route::prefix('sumber-daya')->name('landingpage.sumber-daya.')->group(function (
 });
 
 
-// Page Materi
 Route::prefix('materi')->name('landingpage.materi.')->group(function () {
     Route::get('/internalisasi', [MateriController::class, 'internalisasi'])->name('internalisasi');
     Route::get('/pelatihan-asesor', [MateriController::class, 'pelatihanAsesor'])->name('pelatihan-asesor');
@@ -76,7 +76,6 @@ Route::prefix('materi')->name('landingpage.materi.')->group(function () {
 });
 
 
-// Page Pendirian Lisensi
 Route::prefix('pendirian-lisensi')->name('landingpage.pendirian-lisensi.')->group(function () {
     Route::get('/apresiasi', [PendirianLisensiController::class, 'apresiasi'])
         ->name('apresiasi');
@@ -98,7 +97,6 @@ Route::prefix('pendirian-lisensi')->name('landingpage.pendirian-lisensi.')->grou
 });
 
 
-// Page Regulasi
 Route::prefix('regulasi')->name('landingpage.regulasi.')->group(function () {
     Route::get('/iku-pt', [RegulasiController::class, 'ikuPerguruanTinggi'])
         ->name('iku-pt');
@@ -117,17 +115,18 @@ Route::prefix('regulasi')->name('landingpage.regulasi.')->group(function () {
 });
 
 
-// Page Kegiatan
 Route::get('/kegiatan', function () {
-    return Inertia::render('landingpage/kegiatan/index');
+    return Inertia::render('landingpage/kegiatan/index', [
+        'events' => \App\Models\Event::with('user')->latest()->paginate(12),
+    ]);
 })->name('landingpage.kegiatan');
 
 
-// Page Berita
 Route::get('/berita', function () {
-    return Inertia::render('landingpage/berita/index');
+    return Inertia::render('landingpage/berita/index', [
+        'posts' => \App\Models\Post::with('user')->latest()->paginate(12),
+    ]);
 })->name('landingpage.berita');
-
 
 
 Route::middleware(['auth', 'verified', 'role:admin,super_admin'])->group(function () {
