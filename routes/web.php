@@ -21,8 +21,8 @@ Route::get('/home', function () {
 
 Route::get('/', function () {
     return Inertia::render('landingpage/beranda/index', [
-        'posts' => \App\Models\Post::latest()->take(6)->get(),
-        'events' => \App\Models\Event::latest()->take(6)->get(),
+        'posts' => \App\Models\Post::latest()->take(8)->get(),
+        'events' => \App\Models\Event::latest()->take(8)->get(),
     ]);
 })->name('landingpage');
 
