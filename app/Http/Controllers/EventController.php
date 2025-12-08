@@ -6,6 +6,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -29,7 +30,15 @@ class EventController extends Controller
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'tanggal' => 'required|date',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $thumbnailPath = null;
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('thumbnails/events', 'public');
+        }
+
+        $validated['thumbnail'] = $thumbnailPath;
 
         Event::create($validated);
 
@@ -50,7 +59,19 @@ class EventController extends Controller
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'tanggal' => 'required|date',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $thumbnailPath = $event->thumbnail;
+
+        if ($request->hasFile('thumbnail')) {
+            if ($event->thumbnail) {
+                Storage::disk('public')->delete($event->thumbnail);
+            }
+
+            $thumbnailPath = $request->file('thumbnail')->store('thumbnails/events', 'public');
+        }
+        $validated['thumbnail'] = $thumbnailPath;
 
         $event->update($validated);
 
@@ -60,6 +81,9 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
+        if ($event->thumbnail) {
+            Storage::disk('public')->delete($event->thumbnail);
+        }
         $event->delete();
 
         return redirect()->route('events.index')
