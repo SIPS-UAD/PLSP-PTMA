@@ -34,7 +34,7 @@ import {
   Search,
   Trash2,
   TrendingUp,
-  Users,
+  Calendar,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -56,15 +56,22 @@ interface Post {
   };
 }
 
+interface Stats {
+  totalPosts: number;
+  postsThisMonth: number;
+  postsThisYear: number;
+}
+
 interface PostsProps {
   posts: {
     data: Post[];
     current_page: number;
     last_page: number;
   };
+  stats: Stats;
 }
 
-export default function PostsIndex({ posts }: PostsProps) {
+export default function PostsIndex({ posts, stats }: PostsProps) {
   const [sortedPosts, setSortedPosts] = useState(posts.data);
   const [currentSort, setCurrentSort] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -109,35 +116,37 @@ export default function PostsIndex({ posts }: PostsProps) {
               <FileText className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{posts.data.length}</div>
+              <div className="text-2xl font-bold">{stats.totalPosts}</div>
               <p className="text-xs text-muted-foreground">
-                +12 dari bulan lalu
+                Semua postingan di sistem
               </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Total Tampilan
+                Postingan Bulan Ini
               </CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">2,350</div>
-              <p className="text-xs text-muted-foreground">+180 minggu ini</p>
+              <div className="text-2xl font-bold">{stats.postsThisMonth}</div>
+              <p className="text-xs text-muted-foreground">
+                Dibuat bulan ini
+              </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Tingkat Engagement
+                Postingan Tahun Ini
               </CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">4.5%</div>
+              <div className="text-2xl font-bold">{stats.postsThisYear}</div>
               <p className="text-xs text-muted-foreground">
-                +0.7% dari minggu lalu
+                Dibuat tahun ini
               </p>
             </CardContent>
           </Card>
@@ -213,40 +222,48 @@ export default function PostsIndex({ posts }: PostsProps) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredPosts.map((post) => (
-                    <TableRow key={post.id_post}>
-                      <TableCell className="font-medium">
-                        {post.judul}
-                      </TableCell>
-                      <TableCell>{post.kategori}</TableCell>
-                      <TableCell>{post.user.name}</TableCell>
-                      <TableCell>{formatDate(post.tanggal)}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Link href={`/posts/${post.id_post}`}>
-                            <Button variant="outline" size="sm">
-                              <Eye className="h-4 w-4" />
-                              Detail
+                  {filteredPosts.length > 0 ? (
+                    filteredPosts.map((post) => (
+                      <TableRow key={post.id_post}>
+                        <TableCell className="font-medium">
+                          {post.judul}
+                        </TableCell>
+                        <TableCell>{post.kategori}</TableCell>
+                        <TableCell>{post.user.name}</TableCell>
+                        <TableCell>{formatDate(post.tanggal)}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-2">
+                            <Link href={`/posts/${post.id_post}`}>
+                              <Button variant="outline" size="sm">
+                                <Eye className="h-4 w-4" />
+                                Detail
+                              </Button>
+                            </Link>
+                            <Link href={`/posts/${post.id_post}/edit`}>
+                              <Button variant="outline" size="sm">
+                                <Edit className="h-4 w-4" />
+                                Edit
+                              </Button>
+                            </Link>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleDelete(post.id_post)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                              Hapus
                             </Button>
-                          </Link>
-                          <Link href={`/posts/${post.id_post}/edit`}>
-                            <Button variant="outline" size="sm">
-                              <Edit className="h-4 w-4" />
-                              Edit
-                            </Button>
-                          </Link>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleDelete(post.id_post)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                            Hapus
-                          </Button>
-                        </div>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
+                        Tidak ada postingan yang cocok dengan pencarian Anda.
                       </TableCell>
                     </TableRow>
-                  ))}
+                  )}
                 </TableBody>
               </Table>
             </div>
