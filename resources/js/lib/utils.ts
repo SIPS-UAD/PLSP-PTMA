@@ -11,7 +11,7 @@ export const formatDate = (dateString: string) => {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
-    timeZone: 'Asia/Jakarta', // Pastikan tanggal sesuai zona waktu Indonesia
+    timeZone: 'Asia/Jakarta', 
   };
   return new Intl.DateTimeFormat('id-ID', options).format(date);
 };
