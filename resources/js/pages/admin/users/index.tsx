@@ -85,7 +85,7 @@ export default function UsersIndex({ users }: UsersProps) {
                         <CardContent>
                             <div className="text-2xl font-bold">{users.total}</div>
                             <p className="text-xs text-muted-foreground">
-                                Registered users
+                                User yang terdaftar
                             </p>
                         </CardContent>
                     </Card>
@@ -100,7 +100,7 @@ export default function UsersIndex({ users }: UsersProps) {
                         <CardContent>
                             <div className="text-2xl font-bold">{adminCount}</div>
                             <p className="text-xs text-muted-foreground">
-                                Admin accounts
+                                Akun admin
                             </p>
                         </CardContent>
                     </Card>
@@ -108,14 +108,14 @@ export default function UsersIndex({ users }: UsersProps) {
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                Members
+                                Anggota
                             </CardTitle>
                             <UsersIcon className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{memberCount}</div>
                             <p className="text-xs text-muted-foreground">
-                                Member accounts
+                                Akun anggota
                             </p>
                         </CardContent>
                     </Card>
@@ -126,9 +126,9 @@ export default function UsersIndex({ users }: UsersProps) {
                     <CardHeader>
                         <div className="flex items-center justify-between">
                             <div>
-                                <CardTitle>Users</CardTitle>
+                                <CardTitle>Anggota</CardTitle>
                                 <CardDescription>
-                                    Manage user accounts and permissions
+                                    Kelola akun pengguna dan izin
                                 </CardDescription>
                             </div>
                         </div>
@@ -140,7 +140,7 @@ export default function UsersIndex({ users }: UsersProps) {
                             <div className="relative flex-1">
                                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
-                                    placeholder="Search users by name, email or role..."
+                                    placeholder="Cari pengguna berdasarkan nama, email, atau peran...."
                                     className="pl-10"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -153,10 +153,10 @@ export default function UsersIndex({ users }: UsersProps) {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Name</TableHead>
+                                        <TableHead>Nama</TableHead>
                                         <TableHead>Email</TableHead>
                                         <TableHead>Role</TableHead>
-                                        <TableHead>Joined</TableHead>
+                                        <TableHead>Bergabung</TableHead>
                                         <TableHead className="text-right">Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -178,7 +178,7 @@ export default function UsersIndex({ users }: UsersProps) {
                                                     <Link href={`/users/${user.id_user}`}>
                                                         <Button variant="outline" size="sm">
                                                             <UserCog className="h-4 w-4 mr-2" />
-                                                            Manage
+                                                            Kelola
                                                         </Button>
                                                     </Link>
                                                 </TableCell>
@@ -187,7 +187,7 @@ export default function UsersIndex({ users }: UsersProps) {
                                     ) : (
                                         <TableRow>
                                             <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
-                                                No users found matching your search.
+                                                Tidak ada pengguna yang ditemukan sesuai dengan pencarian Anda.
                                             </TableCell>
                                         </TableRow>
                                     )}
