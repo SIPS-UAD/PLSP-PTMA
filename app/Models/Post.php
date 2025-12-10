@@ -17,6 +17,7 @@ class Post extends Model
         'deskripsi',
         'tanggal',
         'kategori',
+        'thumbnail',
     ];
 
     protected $casts = [

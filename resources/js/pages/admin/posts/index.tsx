@@ -1,20 +1,28 @@
 import { Button } from '@/components/ui/button';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
+import { formatDate } from '@/lib/dateFormat';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { ChevronDown, Edit, Eye, FileText, Plus, Search, Trash2, Calendar, TrendingUp } from 'lucide-react';
@@ -23,21 +31,21 @@ import { useState, useMemo, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Posts Management',
-        href: '/posts',
-    },
+  {
+    title: 'Manajemen Postingan',
+    href: '/posts',
+  },
 ];
 
 interface Post {
-    id_post: number;
-    judul: string;
-    deskripsi: string;
-    tanggal: string;
-    kategori: string;
-    user: {
-        name: string;
-    };
+  id_post: number;
+  judul: string;
+  deskripsi: string;
+  tanggal: string;
+  kategori: string;
+  user: {
+    name: string;
+  };
 }
 
 interface PostsProps {
@@ -71,24 +79,21 @@ export default function PostsIndex({ posts, totalPostsCount }: PostsProps) {
         }
     };
 
-    const uniqueCategories = Array.from(
-        new Set(posts.data.map((post) => post.kategori))
-    );
+  const uniqueCategories = Array.from(
+    new Set(posts.data.map((post) => post.kategori)),
+  );
 
-    const handleDelete = (id: number) => {
-        if (confirm('Are you sure you want to delete this post?')) {
-            router.delete(`/posts/${id}`);
-        }
-    };
+  const handleDelete = (id: number) => {
+    if (confirm('Apakah Anda yakin ingin menghapus postingan ini?')) {
+      router.delete(`/posts/${id}`);
+    }
+  };
 
-    // Filter hanya berdasarkan judul (case-insensitive)
-    const filteredPosts = useMemo(() => {
-        const q = searchQuery.trim().toLowerCase();
-        if (!q) return sortedPosts;
-        return sortedPosts.filter((post) =>
-            post.judul.toLowerCase().includes(q)
-        );
-    }, [sortedPosts, searchQuery]);
+  const filteredPosts = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return sortedPosts;
+    return sortedPosts.filter((post) => post.judul.toLowerCase().includes(q));
+  }, [sortedPosts, searchQuery]);
 
     // Calculate dynamic statistics
     const stats = useMemo(() => {
@@ -303,6 +308,97 @@ export default function PostsIndex({ posts, totalPostsCount }: PostsProps) {
                     </CardContent>
                 </Card>
             </div>
-        </AppLayout>
-    );
+          </CardHeader>
+          <CardContent>
+            {/* Search and Filter */}
+            <div className="mb-6 flex items-center gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Cari postingan berdasarkan judul..."
+                  className="pl-10"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="rounded-lg border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Judul</TableHead>
+                    <TableHead>
+                      <div className="flex items-center gap-2">
+                        Kategori
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              <ChevronDown className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="start">
+                            <DropdownMenuItem onClick={() => handleSort('all')}>
+                              Semua Kategori
+                            </DropdownMenuItem>
+                            {uniqueCategories.map((category) => (
+                              <DropdownMenuItem
+                                key={category}
+                                onClick={() => handleSort(category)}
+                              >
+                                {category}
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </TableHead>
+                    <TableHead>Penulis</TableHead>
+                    <TableHead>Tanggal</TableHead>
+                    <TableHead className="text-right">Aksi</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredPosts.map((post) => (
+                    <TableRow key={post.id_post}>
+                      <TableCell className="font-medium">
+                        {post.judul}
+                      </TableCell>
+                      <TableCell>{post.kategori}</TableCell>
+                      <TableCell>{post.user.name}</TableCell>
+                      <TableCell>{formatDate(post.tanggal)}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Link href={`/posts/${post.id_post}`}>
+                            <Button variant="outline" size="sm">
+                              <Eye className="h-4 w-4" />
+                              Detail
+                            </Button>
+                          </Link>
+                          <Link href={`/posts/${post.id_post}/edit`}>
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4" />
+                              Edit
+                            </Button>
+                          </Link>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleDelete(post.id_post)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                            Hapus
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </AppLayout>
+  );
 }

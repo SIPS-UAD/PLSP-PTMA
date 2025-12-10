@@ -6,6 +6,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -28,9 +29,16 @@ class EventController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
+            'tanggal' => 'required|date',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $validated['tanggal'] = now()->toDateString(); // Set tanggal otomatis ke hari ini
+        $thumbnailPath = null;
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('thumbnails/events', 'public');
+        }
+
+        $validated['thumbnail'] = $thumbnailPath;
 
         Event::create($validated);
 
@@ -50,9 +58,20 @@ class EventController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
+            'tanggal' => 'required|date',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $validated['tanggal'] = now()->toDateString(); // Update tanggal ke hari ini saat diedit
+        $thumbnailPath = $event->thumbnail;
+
+        if ($request->hasFile('thumbnail')) {
+            if ($event->thumbnail) {
+                Storage::disk('public')->delete($event->thumbnail);
+            }
+
+            $thumbnailPath = $request->file('thumbnail')->store('thumbnails/events', 'public');
+        }
+        $validated['thumbnail'] = $thumbnailPath;
 
         $event->update($validated);
 
@@ -62,6 +81,9 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
+        if ($event->thumbnail) {
+            Storage::disk('public')->delete($event->thumbnail);
+        }
         $event->delete();
 
         return redirect()->route('events.index')
