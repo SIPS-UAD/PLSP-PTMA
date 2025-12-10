@@ -57,9 +57,14 @@ interface CommentsProps {
     last_page: number;
     total: number;
   };
+  stats: {
+    totalComments: number;
+    commentsThisMonth: number;
+    commentsThisYear: number;
+  };
 }
 
-export default function CommentsIndex({ comments }: CommentsProps) {
+export default function CommentsIndex({ comments, stats }: CommentsProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter comments based on search query (search in comment content only)
@@ -92,34 +97,34 @@ export default function CommentsIndex({ comments }: CommentsProps) {
               <MessageSquare className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{comments.total}</div>
+              <div className="text-2xl font-bold">{stats.totalComments}</div>
               <p className="text-xs text-muted-foreground">
-                +5 baru sejak minggu lalu
+                Semua komentar di sistem
               </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Menunggu Review
+                Komentar Bulan Ini
               </CardTitle>
               <AlertCircle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12</div>
-              <p className="text-xs text-muted-foreground">Perlu moderasi</p>
+              <div className="text-2xl font-bold">{stats.commentsThisMonth}</div>
+              <p className="text-xs text-muted-foreground">Dibuat bulan ini</p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Tingkat Engagement
+                Komentar Tahun Ini
               </CardTitle>
               <CheckCircle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">98%</div>
-              <p className="text-xs text-muted-foreground">Interaksi positif</p>
+              <div className="text-2xl font-bold">{stats.commentsThisYear}</div>
+              <p className="text-xs text-muted-foreground">Dibuat tahun ini</p>
             </CardContent>
           </Card>
         </div>
