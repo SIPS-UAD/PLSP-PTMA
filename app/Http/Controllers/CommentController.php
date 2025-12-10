@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class CommentController extends Controller
 {
@@ -13,8 +14,24 @@ class CommentController extends Controller
   {
     $comments = Comment::with(['user', 'post'])->latest()->paginate(10);
 
+    // Calculate statistics for comments
+    $now = Carbon::now();
+
+    $totalComments = Comment::count();
+
+    $commentsThisMonth = Comment::whereYear('created_at', $now->year)
+      ->whereMonth('created_at', $now->month)
+      ->count();
+
+    $commentsThisYear = Comment::whereYear('created_at', $now->year)->count();
+
     return Inertia::render('admin/comments/index', [
-      'comments' => $comments
+      'comments' => $comments,
+      'stats' => [
+        'totalComments' => $totalComments,
+        'commentsThisMonth' => $commentsThisMonth,
+        'commentsThisYear' => $commentsThisYear,
+      ]
     ]);
   }
 
