@@ -65,7 +65,7 @@ export default function UserShow({ user }: UserShowProps) {
                                 <ArrowLeft className="h-4 w-4" />
                             </Button>
                         </Link>
-                        <h1 className="text-2xl font-semibold">Manage User</h1>
+                        <h1 className="text-2xl font-semibold">Kelola User</h1>
                     </div>
                 </div>
 
@@ -73,14 +73,14 @@ export default function UserShow({ user }: UserShowProps) {
                     {/* User Information Card */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>User Information</CardTitle>
+                            <CardTitle>Informasi User</CardTitle>
                             <CardDescription>
-                                View user account details
+                                Lihat detail akun user
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
-                                <Label className="text-muted-foreground">Name</Label>
+                                <Label className="text-muted-foreground">Nama</Label>
                                 <div className="flex items-center gap-2">
                                     <p className="text-base font-medium">{user.name}</p>
                                 </div>
@@ -118,7 +118,7 @@ export default function UserShow({ user }: UserShowProps) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label className="text-muted-foreground">Member Since</Label>
+                                <Label className="text-muted-foreground">Anggota Sejak</Label>
                                 <div className="flex items-center gap-2">
                                     <Calendar className="h-4 w-4 text-muted-foreground" />
                                     <p className="text-base">{new Date(user.created_at).toLocaleDateString('en-US', { 
@@ -134,7 +134,7 @@ export default function UserShow({ user }: UserShowProps) {
                     {/* Password Reset Card */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Password Management</CardTitle>
+                            <CardTitle>Kelola Password</CardTitle>
                             <CardDescription>
                                 Reset user password
                             </CardDescription>
@@ -143,8 +143,8 @@ export default function UserShow({ user }: UserShowProps) {
                             <Alert>
                                 <AlertCircle className="h-4 w-4" />
                                 <AlertDescription>
-                                    As an administrator, you can reset the user's password. 
-                                    The user will be able to log in with the new password immediately.
+                                    Sebagai administrator, Anda dapat mengatur ulang kata sandi pengguna.
+                                    Pengguna akan dapat masuk dengan kata sandi baru secara langsung.
                                 </AlertDescription>
                             </Alert>
 

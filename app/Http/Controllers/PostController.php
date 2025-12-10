@@ -6,15 +6,42 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
   public function index()
   {
+    // Get all posts for statistics calculation
+    $allPosts = Post::with('user')->latest()->get();
+    
+    // Get paginated posts for table display
     $posts = Post::with('user')->latest()->paginate(10);
 
+    // Calculate statistics
+    $now = Carbon::now();
+    $currentMonth = $now->month;
+    $currentYear = $now->year;
+
+    $totalPostsCount = $allPosts->count();
+    
+    $postsThisMonth = $allPosts->filter(function($post) use ($currentMonth, $currentYear) {
+      $postDate = Carbon::parse($post->tanggal);
+      return $postDate->month == $currentMonth && $postDate->year == $currentYear;
+    })->count();
+
+    $postsThisYear = $allPosts->filter(function($post) use ($currentYear) {
+      $postDate = Carbon::parse($post->tanggal);
+      return $postDate->year == $currentYear;
+    })->count();
+
     return Inertia::render('admin/posts/index', [
-      'posts' => $posts
+      'posts' => $posts,
+      'stats' => [
+        'totalPosts' => $totalPostsCount,
+        'postsThisMonth' => $postsThisMonth,
+        'postsThisYear' => $postsThisYear,
+      ]
     ]);
   }
 
