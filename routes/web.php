@@ -4,14 +4,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\AnggotaController;
-use App\Http\Controllers\SumberDayaController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\MateriController;
-use App\Http\Controllers\PendirianLisensiController;
-use App\Http\Controllers\RegulasiController;
-use App\Http\Controllers\TentangController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
 
