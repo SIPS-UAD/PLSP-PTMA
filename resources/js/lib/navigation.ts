@@ -63,8 +63,8 @@ export const tentangLink: NavLink[] = [
 ];
 
 export const sumberDayaLink: NavLink[] = [
-            { text: 'Asesor', link: '/sumber-daya/asesor' },
-            { text: 'CMA', link: '/sumber-daya/cma' },
-            { text: 'Skema Sertifikasi', link: '/sumber-daya/skema-sertifikasi' },
-            { text: 'TUK', link: '/sumber-daya/tuk' },
+            { text: 'Data Asesor', link: '/sumber-daya/asesor' },
+            { text: 'Data CMA', link: '/sumber-daya/cma' },
+            { text: 'Data Skema Sertifikasi', link: '/sumber-daya/skema-sertifikasi' },
+            { text: 'Tempat Uji Kompetensi (TUK)', link: '/sumber-daya/tuk' },
 ];
