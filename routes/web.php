@@ -217,7 +217,9 @@ Route::prefix('regulasi')->name('landingpage.regulasi.')->group(function () {
 });
 
 Route::get('/kegiatan', function () {
-    return Inertia::render('landingpage/kegiatan/index');
+    return Inertia::render('landingpage/kegiatan/index', [
+        'events' => \App\Models\Event::latest()->get(),
+    ]);
 })->name('landingpage.kegiatan');
 
 Route::get('/berita', function () {
