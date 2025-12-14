@@ -226,6 +226,11 @@ Route::get('/berita', function () {
     ]);
 })->name('landingpage.berita');
 
+Route::get('/detail', function () {
+    return Inertia::render('landingpage/berita/detail/index');
+})->name('landingpage.berita.detail');
+
+
 Route::middleware(['auth', 'verified', 'role:admin,super_admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
