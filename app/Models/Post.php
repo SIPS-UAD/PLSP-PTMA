@@ -15,10 +15,15 @@ class Post extends Model
     protected $fillable = [
         'judul',
         'slug',
-        'konten',
+        'deskripsi',
+        'tanggal',
         'kategori',
-        'image_link',
+        'thumbnail',
         'id_user',
+    ];
+
+    protected $casts = [
+        'tanggal' => 'date',
     ];
 
     protected static function boot()
