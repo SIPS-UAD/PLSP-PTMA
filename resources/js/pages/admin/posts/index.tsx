@@ -1,3 +1,4 @@
+import Pagination from '@/components/pagination';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -26,6 +27,7 @@ import { formatDate } from '@/lib/dateFormat';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
+  Calendar,
   ChevronDown,
   Edit,
   Eye,
@@ -34,9 +36,8 @@ import {
   Search,
   Trash2,
   TrendingUp,
-  Calendar,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -67,24 +68,32 @@ interface PostsProps {
     data: Post[];
     current_page: number;
     last_page: number;
+    from: number;
+    to: number;
+    total: number;
+    links: {
+      url: string | null;
+      label: string;
+      active: boolean;
+    }[];
   };
   stats: Stats;
+  categories: string[];
+  filters: {
+    search?: string;
+    kategori?: string;
+  };
 }
 
-export default function PostsIndex({ posts, stats }: PostsProps) {
-  const [sortedPosts, setSortedPosts] = useState(posts.data);
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const handleSort = (category: string) => {
-    if (category === 'all') {
-      setSortedPosts(posts.data);
-    } else {
-      setSortedPosts(posts.data.filter((post) => post.kategori === category));
-    }
-  };
-
-  const uniqueCategories = Array.from(
-    new Set(posts.data.map((post) => post.kategori)),
+export default function PostsIndex({
+  posts,
+  stats,
+  categories,
+  filters,
+}: PostsProps) {
+  const [searchQuery, setSearchQuery] = useState(filters.search || '');
+  const [selectedCategory, setSelectedCategory] = useState(
+    filters.kategori || '',
   );
 
   const handleDelete = (id: number) => {
@@ -93,11 +102,42 @@ export default function PostsIndex({ posts, stats }: PostsProps) {
     }
   };
 
-  const filteredPosts = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return sortedPosts;
-    return sortedPosts.filter((post) => post.judul.toLowerCase().includes(q));
-  }, [sortedPosts, searchQuery]);
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+    router.get(
+      '/posts',
+      {
+        search: searchQuery,
+        kategori: selectedCategory || undefined,
+      },
+      {
+        preserveState: true,
+        replace: true,
+      },
+    );
+  };
+
+  const handleCategoryFilter = (category: string) => {
+    const newCategory = category === 'all' ? '' : category;
+    setSelectedCategory(newCategory);
+    router.get(
+      '/posts',
+      {
+        search: searchQuery || undefined,
+        kategori: newCategory || undefined,
+      },
+      {
+        preserveState: true,
+        replace: true,
+      },
+    );
+  };
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setSelectedCategory('');
+    router.get('/posts', {}, { preserveState: true, replace: true });
+  };
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -129,9 +169,7 @@ export default function PostsIndex({ posts, stats }: PostsProps) {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.postsThisMonth}</div>
-              <p className="text-xs text-muted-foreground">
-                Dibuat bulan ini
-              </p>
+              <p className="text-xs text-muted-foreground">Dibuat bulan ini</p>
             </CardContent>
           </Card>
           <Card>
@@ -143,9 +181,7 @@ export default function PostsIndex({ posts, stats }: PostsProps) {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.postsThisYear}</div>
-              <p className="text-xs text-muted-foreground">
-                Dibuat tahun ini
-              </p>
+              <p className="text-xs text-muted-foreground">Dibuat tahun ini</p>
             </CardContent>
           </Card>
         </div>
@@ -172,17 +208,44 @@ export default function PostsIndex({ posts, stats }: PostsProps) {
           </CardHeader>
           <CardContent>
             {/* Search and Filter */}
-            <div className="mb-6 flex items-center gap-4">
+            <form
+              onSubmit={handleSearch}
+              className="mb-6 flex items-center gap-4"
+            >
               <div className="relative flex-1">
                 <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   placeholder="Cari postingan berdasarkan judul..."
-                  className="pl-10"
+                  className="pr-10 pl-10"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery('');
+                      if (!selectedCategory) {
+                        router.get(
+                          '/posts',
+                          {},
+                          { preserveState: true, replace: true },
+                        );
+                      }
+                    }}
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    ✕
+                  </button>
+                )}
               </div>
-            </div>
+              <Button type="submit">Cari</Button>
+              {(searchQuery || selectedCategory) && (
+                <Button type="button" variant="outline" onClick={clearFilters}>
+                  Reset Filter
+                </Button>
+              )}
+            </form>
 
             <div className="rounded-lg border">
               <Table>
@@ -190,29 +253,35 @@ export default function PostsIndex({ posts, stats }: PostsProps) {
                   <TableRow>
                     <TableHead>Judul</TableHead>
                     <TableHead>
-                      <div className="flex items-center gap-2">
-                        Kategori
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-auto p-0 hover:bg-transparent"
+                          >
+                            <div className="flex items-center gap-2">
+                              {selectedCategory || 'Kategori'}
                               <ChevronDown className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="start">
-                            <DropdownMenuItem onClick={() => handleSort('all')}>
-                              Semua Kategori
+                            </div>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                          <DropdownMenuItem
+                            onClick={() => handleCategoryFilter('all')}
+                          >
+                            Semua Kategori
+                          </DropdownMenuItem>
+                          {categories.map((category) => (
+                            <DropdownMenuItem
+                              key={category}
+                              onClick={() => handleCategoryFilter(category)}
+                            >
+                              {category}
                             </DropdownMenuItem>
-                            {uniqueCategories.map((category) => (
-                              <DropdownMenuItem
-                                key={category}
-                                onClick={() => handleSort(category)}
-                              >
-                                {category}
-                              </DropdownMenuItem>
-                            ))}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableHead>
                     <TableHead>Penulis</TableHead>
                     <TableHead>Tanggal</TableHead>
@@ -220,8 +289,8 @@ export default function PostsIndex({ posts, stats }: PostsProps) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredPosts.length > 0 ? (
-                    filteredPosts.map((post) => (
+                  {posts.data.length > 0 ? (
+                    posts.data.map((post) => (
                       <TableRow key={post.id_post}>
                         <TableCell className="font-medium">
                           {post.judul}
@@ -257,14 +326,29 @@ export default function PostsIndex({ posts, stats }: PostsProps) {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
-                        Tidak ada postingan yang cocok dengan pencarian Anda.
+                      <TableCell
+                        colSpan={5}
+                        className="py-6 text-center text-muted-foreground"
+                      >
+                        {filters.search || filters.kategori
+                          ? 'Tidak ada postingan yang ditemukan dengan filter yang dipilih.'
+                          : 'Belum ada postingan yang dibuat.'}
                       </TableCell>
                     </TableRow>
                   )}
                 </TableBody>
               </Table>
             </div>
+
+            {/* Pagination */}
+            <Pagination
+              currentPage={posts.current_page}
+              lastPage={posts.last_page}
+              from={posts.from}
+              to={posts.to}
+              total={posts.total}
+              links={posts.links}
+            />
           </CardContent>
         </Card>
       </div>

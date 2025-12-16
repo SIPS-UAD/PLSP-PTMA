@@ -1,3 +1,4 @@
+import Pagination from '@/components/pagination';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -20,7 +21,7 @@ import { formatDate } from '@/lib/dateFormat';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Calendar, Edit, Eye, Plus, Search, Trash2, Users } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -41,12 +42,22 @@ interface EventsProps {
     data: Event[];
     current_page: number;
     last_page: number;
+    from: number;
+    to: number;
     total: number;
+    links: {
+      url: string | null;
+      label: string;
+      active: boolean;
+    }[];
+  };
+  filters: {
+    search?: string;
   };
 }
 
-export default function EventsIndex({ events }: EventsProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+export default function EventsIndex({ events, filters }: EventsProps) {
+  const [searchQuery, setSearchQuery] = useState(filters.search || '');
 
   const now = useMemo(() => new Date(), []);
   const upcomingCount = useMemo(
@@ -72,25 +83,27 @@ export default function EventsIndex({ events }: EventsProps) {
     }).length;
   }, [events.data]);
 
-  // Filter events based on search query
-  const filteredEvents = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return events.data;
-    return events.data.filter((e) => e.judul.toLowerCase().includes(q));
-  }, [events.data, searchQuery]);
-
   const handleDelete = (id: number) => {
     if (confirm('Apakah Anda yakin ingin menghapus event ini?')) {
       router.delete(`/events/${id}`);
     }
   };
 
-  const handleSearch = (value: string) => {
-    setSearchQuery(value);
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+    router.get(
+      '/events',
+      { search: searchQuery },
+      {
+        preserveState: true,
+        replace: true,
+      },
+    );
   };
 
   const clearSearch = () => {
     setSearchQuery('');
+    router.get('/events', {}, { preserveState: true, replace: true });
   };
 
   return (
@@ -163,17 +176,21 @@ export default function EventsIndex({ events }: EventsProps) {
 
           <CardContent>
             {/* Search */}
-            <div className="mb-6 flex items-center gap-4">
+            <form
+              onSubmit={handleSearch}
+              className="mb-6 flex items-center gap-4"
+            >
               <div className="relative flex-1">
                 <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   placeholder="Cari event berdasarkan judul..."
                   className="pr-10 pl-10"
                   value={searchQuery}
-                  onChange={(e) => handleSearch(e.target.value)}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 {searchQuery && (
                   <button
+                    type="button"
                     onClick={clearSearch}
                     className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
@@ -181,7 +198,8 @@ export default function EventsIndex({ events }: EventsProps) {
                   </button>
                 )}
               </div>
-            </div>
+              <Button type="submit">Cari</Button>
+            </form>
 
             {/* Table */}
             <div className="rounded-lg border">
@@ -195,8 +213,8 @@ export default function EventsIndex({ events }: EventsProps) {
                 </TableHeader>
 
                 <TableBody>
-                  {filteredEvents.length > 0 ? (
-                    filteredEvents.map((event) => (
+                  {events.data.length > 0 ? (
+                    events.data.map((event) => (
                       <TableRow key={event.id_event}>
                         <TableCell className="font-medium">
                           {event.judul}
@@ -231,11 +249,12 @@ export default function EventsIndex({ events }: EventsProps) {
                   ) : (
                     <TableRow>
                       <TableCell
-                        colSpan={4}
+                        colSpan={3}
                         className="py-6 text-center text-muted-foreground"
                       >
-                        Tidak ada event yang ditemukan sesuai kriteria
-                        pencarian.
+                        {filters.search
+                          ? `Tidak ada event yang ditemukan untuk "${filters.search}"`
+                          : 'Belum ada event yang dibuat.'}
                       </TableCell>
                     </TableRow>
                   )}
@@ -243,13 +262,15 @@ export default function EventsIndex({ events }: EventsProps) {
               </Table>
             </div>
 
-            {/* Search results info */}
-            {searchQuery && (
-              <div className="mt-4 text-sm text-muted-foreground">
-                Ditemukan {filteredEvents.length} event yang sesuai dengan "
-                {searchQuery}"
-              </div>
-            )}
+            {/* Pagination */}
+            <Pagination
+              currentPage={events.current_page}
+              lastPage={events.last_page}
+              from={events.from}
+              to={events.to}
+              total={events.total}
+              links={events.links}
+            />
           </CardContent>
         </Card>
       </div>
