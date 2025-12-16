@@ -218,7 +218,7 @@ export default function PostsIndex({ posts, stats }: PostsProps) {
                     </TableHead>
                     <TableHead>Penulis</TableHead>
                     <TableHead>Tanggal</TableHead>
-                    <TableHead className="text-right">Aksi</TableHead>
+                    <TableHead>Aksi</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -231,8 +231,8 @@ export default function PostsIndex({ posts, stats }: PostsProps) {
                         <TableCell>{post.kategori}</TableCell>
                         <TableCell>{post.user.name}</TableCell>
                         <TableCell>{formatDate(post.tanggal)}</TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
+                        <TableCell>
+                          <div className="flex gap-2">
                             <Link href={`/posts/${post.id_post}`}>
                               <Button variant="outline" size="sm">
                                 <Eye className="h-4 w-4" />

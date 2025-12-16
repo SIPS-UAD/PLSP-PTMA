@@ -189,9 +189,8 @@ export default function EventsIndex({ events }: EventsProps) {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Judul</TableHead>
-                    <TableHead>Deskripsi</TableHead>
                     <TableHead>Tanggal</TableHead>
-                    <TableHead className="text-right">Aksi</TableHead>
+                    <TableHead>Aksi</TableHead>
                   </TableRow>
                 </TableHeader>
 
@@ -202,12 +201,9 @@ export default function EventsIndex({ events }: EventsProps) {
                         <TableCell className="font-medium">
                           {event.judul}
                         </TableCell>
-                        <TableCell className="max-w-md truncate">
-                          {event.deskripsi}
-                        </TableCell>
                         <TableCell>{formatDate(event.tanggal)}</TableCell>
                         <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
+                          <div className="flex gap-2">
                             <Link href={`/events/${event.id_event}`}>
                               <Button variant="outline" size="sm">
                                 <Eye className="h-4 w-4" />
