@@ -10,12 +10,22 @@ use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::latest()->paginate(10);
+        $search = $request->input('search');
 
+        $events = Event::query()
+            ->when($search, function ($query, $search) {
+                $query->where('judul', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
         return Inertia::render('admin/events/index', [
-            'events' => $events
+            'events' => $events,
+            'filters' => [
+                'search' => $search,
+            ],
         ]);
     }
 

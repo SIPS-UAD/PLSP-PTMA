@@ -10,13 +10,25 @@ use Carbon\Carbon;
 
 class PostController extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
+    $search = $request->input('search');
+    $kategori = $request->input('kategori');
+
     // Get all posts for statistics calculation
     $allPosts = Post::with('user')->latest()->get();
-    
-    // Get paginated posts for table display
-    $posts = Post::with('user')->latest()->paginate(10);
+
+    // Get paginated posts for table display with filters
+    $posts = Post::with('user')
+      ->when($search, function ($query, $search) {
+        $query->where('judul', 'like', "%{$search}%");
+      })
+      ->when($kategori, function ($query, $kategori) {
+        $query->where('kategori', $kategori);
+      })
+      ->latest()
+      ->paginate(10)
+      ->withQueryString();
 
     // Calculate statistics
     $now = Carbon::now();
@@ -24,16 +36,24 @@ class PostController extends Controller
     $currentYear = $now->year;
 
     $totalPostsCount = $allPosts->count();
-    
-    $postsThisMonth = $allPosts->filter(function($post) use ($currentMonth, $currentYear) {
+
+    $postsThisMonth = $allPosts->filter(function ($post) use ($currentMonth, $currentYear) {
       $postDate = Carbon::parse($post->tanggal);
       return $postDate->month == $currentMonth && $postDate->year == $currentYear;
     })->count();
 
-    $postsThisYear = $allPosts->filter(function($post) use ($currentYear) {
+    $postsThisYear = $allPosts->filter(function ($post) use ($currentYear) {
       $postDate = Carbon::parse($post->tanggal);
       return $postDate->year == $currentYear;
     })->count();
+
+    // Get unique categories for filter
+    $categories = Post::select('kategori')
+      ->distinct()
+      ->whereNotNull('kategori')
+      ->orderBy('kategori')
+      ->pluck('kategori')
+      ->toArray();
 
     return Inertia::render('admin/posts/index', [
       'posts' => $posts,
@@ -41,7 +61,12 @@ class PostController extends Controller
         'totalPosts' => $totalPostsCount,
         'postsThisMonth' => $postsThisMonth,
         'postsThisYear' => $postsThisYear,
-      ]
+      ],
+      'categories' => $categories,
+      'filters' => [
+        'search' => $search,
+        'kategori' => $kategori,
+      ],
     ]);
   }
 
@@ -80,7 +105,7 @@ class PostController extends Controller
 
     $validated['thumbnail'] = $thumbnailPath;
     $validated['id_user'] = auth()->id();
-    $validated['tanggal'] = now()->toDateString(); // Set tanggal otomatis ke hari ini
+    $validated['tanggal'] = now()->toDateString();
 
     Post::create($validated);
 
@@ -128,7 +153,7 @@ class PostController extends Controller
     }
 
     $validated['thumbnail'] = $thumbnailPath;
-    $validated['tanggal'] = now()->toDateString(); // Update tanggal ke hari ini saat diedit
+    $validated['tanggal'] = now()->toDateString();
 
     $post->update($validated);
 
