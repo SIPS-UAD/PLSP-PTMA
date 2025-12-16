@@ -73,11 +73,9 @@ interface PostsProps {
 
 export default function PostsIndex({ posts, stats }: PostsProps) {
   const [sortedPosts, setSortedPosts] = useState(posts.data);
-  const [currentSort, setCurrentSort] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSort = (category: string) => {
-    setCurrentSort(category);
     if (category === 'all') {
       setSortedPosts(posts.data);
     } else {
