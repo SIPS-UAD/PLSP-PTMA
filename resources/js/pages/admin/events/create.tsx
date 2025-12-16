@@ -59,7 +59,7 @@ export default function EventsCreate() {
       <div className="flex h-full flex-1 flex-col gap-4 p-4">
         <h1 className="text-2xl font-semibold">Create New Event</h1>
 
-        <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
+        <form onSubmit={handleSubmit} className="w-full space-y-6 shadow-md p-5 rounded-lg">
           <div className="space-y-2">
             <Label htmlFor="judul">Title</Label>
             <Input

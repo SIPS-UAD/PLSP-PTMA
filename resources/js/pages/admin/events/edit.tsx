@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
+import { formatDateForInput } from '@/lib/formatDate';
 import { BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { ImageIcon, X } from 'lucide-react';
@@ -80,7 +81,7 @@ export default function EventsEdit({ event }: EventsEditProps) {
       <div className="flex h-full flex-1 flex-col gap-4 p-4">
         <h1 className="text-2xl font-semibold">Edit Event</h1>
 
-        <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
+        <form onSubmit={handleSubmit} className="w-full space-y-6 shadow-md p-5 rounded-lg">
           <div className="space-y-2">
             <Label htmlFor="judul">Title</Label>
             <Input
