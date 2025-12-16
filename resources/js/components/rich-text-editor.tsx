@@ -207,7 +207,7 @@ export function RichTextEditor({
         },
         editorProps: {
             attributes: {
-                class: 'prose prose-sm prose-headings:font-bold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-ul:list-disc prose-ul:pl-5 prose-ol:list-decimal prose-ol:pl-5 prose-li:my-0 min-h-[200px] max-w-none p-4 focus:outline-none',
+                class: 'prose prose-sm max-w-none p-4 focus:outline-none [&_h1]:text-3xl [&_h1]:mb-4 [&_h2]:text-2xl [&_h2]:mb-3 [&_h3]:text-xl [&_h3]:mb-2 [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-2 [&_li]:mb-1 min-h-[200px]',
             },
         },
     });
@@ -292,7 +292,7 @@ export function RichTextEditor({
                                 editor.chain().focus().toggleBold().run()
                             }
                             className={cn(
-                                editor.isActive('bold') && 'bg-accent',
+                                editor.isActive('bold') && 'bg-gray-300',
                             )}
                             title="Bold"
                         >
@@ -307,7 +307,7 @@ export function RichTextEditor({
                                 editor.chain().focus().toggleItalic().run()
                             }
                             className={cn(
-                                editor.isActive('italic') && 'bg-accent',
+                                editor.isActive('italic') && 'bg-gray-300',
                             )}
                             title="Italic"
                         >
@@ -322,7 +322,7 @@ export function RichTextEditor({
                                 editor.chain().focus().toggleUnderline().run()
                             }
                             className={cn(
-                                editor.isActive('underline') && 'bg-accent',
+                                editor.isActive('underline') && 'bg-gray-300',
                             )}
                             title="Underline"
                         >
@@ -337,7 +337,7 @@ export function RichTextEditor({
                                 editor.chain().focus().toggleStrike().run()
                             }
                             className={cn(
-                                editor.isActive('strike') && 'bg-accent',
+                                editor.isActive('strike') && 'bg-gray-300',
                             )}
                             title="Strikethrough"
                         >
@@ -379,7 +379,7 @@ export function RichTextEditor({
                             }
                             className={cn(
                                 editor.isActive('heading', { level: 1 }) &&
-                                    'bg-accent',
+                                    'bg-gray-300',
                             )}
                             title="Heading 1"
                         >
@@ -399,7 +399,7 @@ export function RichTextEditor({
                             }
                             className={cn(
                                 editor.isActive('heading', { level: 2 }) &&
-                                    'bg-accent',
+                                    'bg-gray-300',
                             )}
                             title="Heading 2"
                         >
@@ -419,7 +419,7 @@ export function RichTextEditor({
                             }
                             className={cn(
                                 editor.isActive('heading', { level: 3 }) &&
-                                    'bg-accent',
+                                    'bg-gray-300',
                             )}
                             title="Heading 3"
                         >
@@ -436,7 +436,7 @@ export function RichTextEditor({
                                 editor.chain().focus().toggleBulletList().run()
                             }
                             className={cn(
-                                editor.isActive('bulletList') && 'bg-accent',
+                                editor.isActive('bulletList') && 'bg-gray-300',
                             )}
                             title="Bullet List"
                         >
@@ -451,7 +451,7 @@ export function RichTextEditor({
                                 editor.chain().focus().toggleOrderedList().run()
                             }
                             className={cn(
-                                editor.isActive('orderedList') && 'bg-accent',
+                                editor.isActive('orderedList') && 'bg-gray-300',
                             )}
                             title="Numbered List"
                         >
@@ -474,7 +474,7 @@ export function RichTextEditor({
                             }
                             className={cn(
                                 editor.isActive({ textAlign: 'left' }) &&
-                                    'bg-accent',
+                                    'bg-gray-300',
                             )}
                             title="Align Left"
                         >
@@ -494,7 +494,7 @@ export function RichTextEditor({
                             }
                             className={cn(
                                 editor.isActive({ textAlign: 'center' }) &&
-                                    'bg-accent',
+                                    'bg-gray-300',
                             )}
                             title="Align Center"
                         >
@@ -514,7 +514,7 @@ export function RichTextEditor({
                             }
                             className={cn(
                                 editor.isActive({ textAlign: 'right' }) &&
-                                    'bg-accent',
+                                    'bg-gray-300',
                             )}
                             title="Align Right"
                         >
@@ -534,7 +534,7 @@ export function RichTextEditor({
                             }
                             className={cn(
                                 editor.isActive({ textAlign: 'justify' }) &&
-                                    'bg-accent',
+                                    'bg-gray-300',
                             )}
                             title="Justify"
                         >
@@ -551,7 +551,7 @@ export function RichTextEditor({
                                 editor.chain().focus().toggleBlockquote().run()
                             }
                             className={cn(
-                                editor.isActive('blockquote') && 'bg-accent',
+                                editor.isActive('blockquote') && 'bg-gray-300',
                             )}
                             title="Blockquote"
                         >
@@ -566,7 +566,7 @@ export function RichTextEditor({
                                 editor.chain().focus().toggleCodeBlock().run()
                             }
                             className={cn(
-                                editor.isActive('codeBlock') && 'bg-accent',
+                                editor.isActive('codeBlock') && 'bg-gray-300',
                             )}
                             title="Code Block"
                         >
@@ -593,7 +593,7 @@ export function RichTextEditor({
                             size="sm"
                             onClick={() => setShowLinkInput(!showLinkInput)}
                             className={cn(
-                                editor.isActive('link') && 'bg-accent',
+                                editor.isActive('link') && 'bg-gray-300',
                             )}
                             title="Add Link"
                         >
@@ -658,12 +658,12 @@ export function RichTextEditor({
                 <TabsContent value="edit">
                     <EditorContent
                         editor={editor}
-                        className="min-h-[200px] max-w-none p-4 [&_.ProseMirror]:outline-none [&_.ProseMirror]:focus:outline-none [&_.ProseMirror_li]:ml-4 [&_.ProseMirror_ol]:list-decimal [&_.ProseMirror_ol]:pl-6 [&_.ProseMirror_ul]:list-disc [&_.ProseMirror_ul]:pl-6"
+                        className="min-h-[200px] max-w-none [&_.ProseMirror]:p-4 [&_.ProseMirror]:outline-none [&_.ProseMirror]:focus:outline-none [&_.ProseMirror_h1]:text-3xl [&_.ProseMirror_h1]:font-bold [&_.ProseMirror_h1]:mb-4 [&_.ProseMirror_h1]:mt-0 [&_.ProseMirror_h2]:text-2xl [&_.ProseMirror_h2]:font-bold [&_.ProseMirror_h2]:mb-3 [&_.ProseMirror_h2]:mt-0 [&_.ProseMirror_h3]:text-xl [&_.ProseMirror_h3]:font-bold [&_.ProseMirror_h3]:mb-2 [&_.ProseMirror_h3]:mt-0 [&_.ProseMirror_p]:mb-2 [&_.ProseMirror_p]:mt-0 [&_.ProseMirror_ul]:list-disc [&_.ProseMirror_ul]:pl-6 [&_.ProseMirror_ul]:mb-2 [&_.ProseMirror_ol]:list-decimal [&_.ProseMirror_ol]:pl-6 [&_.ProseMirror_ol]:mb-2 [&_.ProseMirror_li]:mb-1"
                     />
                 </TabsContent>
                 <TabsContent value="preview">
                     <div
-                        className="prose prose-sm prose-ul:list-disc prose-ul:pl-5 prose-ol:list-decimal prose-ol:pl-5 max-w-none p-4"
+                        className="prose prose-sm max-w-none p-4 [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mb-4 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-3 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-2 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"
                         dangerouslySetInnerHTML={{ __html: value }}
                     />
                 </TabsContent>
