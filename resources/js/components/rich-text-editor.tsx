@@ -61,7 +61,10 @@ const ResizableImage = Image.extend({
       ...this.parent?.(),
       width: {
         default: null,
-        parseHTML: (element) => element.getAttribute('width'),
+        parseHTML: (element) => {
+          const width = element.getAttribute('width') || element.style.width;
+          return width ? parseInt(width) : null;
+        },
         renderHTML: (attributes) => {
           if (!attributes.width) {
             return {};
@@ -71,7 +74,10 @@ const ResizableImage = Image.extend({
       },
       height: {
         default: null,
-        parseHTML: (element) => element.getAttribute('height'),
+        parseHTML: (element) => {
+          const height = element.getAttribute('height') || element.style.height;
+          return height ? parseInt(height) : null;
+        },
         renderHTML: (attributes) => {
           if (!attributes.height) {
             return {};
@@ -84,41 +90,75 @@ const ResizableImage = Image.extend({
   addNodeView() {
     return ({ node, getPos, editor }) => {
       const container = document.createElement('div');
-      container.className = 'relative inline-block group';
+      container.className = 'relative inline-block group my-2';
 
       const img = document.createElement('img');
       img.src = node.attrs.src;
       img.alt = node.attrs.alt || '';
-      img.className = 'max-w-full h-auto rounded-lg';
+      img.className = 'max-w-full h-auto rounded-lg border border-gray-200';
 
+      // Apply saved dimensions or set initial size
       if (node.attrs.width) {
         img.style.width = node.attrs.width + 'px';
+      } else {
+        // Set a default max-width for new images
+        img.style.maxWidth = '100%';
       }
+
       if (node.attrs.height) {
         img.style.height = node.attrs.height + 'px';
+      } else {
+        img.style.height = 'auto';
       }
 
       const resizeHandle = document.createElement('div');
       resizeHandle.className =
-        'absolute bottom-0 right-0 w-4 h-4 bg-blue-500 rounded-full cursor-se-resize opacity-0 group-hover:opacity-100 transition-opacity';
+        'absolute bottom-0 right-0 w-4 h-4 bg-blue-500 rounded-full cursor-se-resize opacity-0 group-hover:opacity-100 transition-opacity z-10';
+      resizeHandle.title = 'Drag to resize';
+
+      const deleteButton = document.createElement('button');
+      deleteButton.className =
+        'absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center hover:bg-red-600';
+      deleteButton.innerHTML = '×';
+      deleteButton.title = 'Delete image';
+      deleteButton.onclick = (e) => {
+        e.preventDefault();
+        const pos = getPos();
+        if (typeof pos === 'number') {
+          editor
+            .chain()
+            .focus()
+            .deleteRange({ from: pos, to: pos + node.nodeSize })
+            .run();
+        }
+      };
 
       let isResizing = false;
       let startX = 0;
       let startWidth = 0;
+      let startHeight = 0;
 
       resizeHandle.addEventListener('mousedown', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         isResizing = true;
         startX = e.clientX;
         startWidth = img.offsetWidth;
+        startHeight = img.offsetHeight;
 
         const onMouseMove = (e: MouseEvent) => {
           if (!isResizing) return;
 
-          const width = startWidth + (e.clientX - startX);
+          const deltaX = e.clientX - startX;
+          const width = startWidth + deltaX;
+
           if (width > 100) {
+            // Maintain aspect ratio
+            const aspectRatio = startHeight / startWidth;
+            const height = width * aspectRatio;
+
             img.style.width = width + 'px';
-            img.style.height = 'auto';
+            img.style.height = height + 'px';
           }
         };
 
@@ -130,6 +170,7 @@ const ResizableImage = Image.extend({
           if (typeof pos === 'number') {
             editor
               .chain()
+              .focus()
               .setNodeSelection(pos)
               .updateAttributes('image', {
                 width: img.offsetWidth,
@@ -146,8 +187,17 @@ const ResizableImage = Image.extend({
         document.addEventListener('mouseup', onMouseUp);
       });
 
+      // Make the image selectable
+      img.onclick = () => {
+        const pos = getPos();
+        if (typeof pos === 'number') {
+          editor.chain().focus().setNodeSelection(pos).run();
+        }
+      };
+
       container.appendChild(img);
       container.appendChild(resizeHandle);
+      container.appendChild(deleteButton);
 
       return {
         dom: container,
@@ -215,6 +265,8 @@ export function RichTextEditor({
         HTMLAttributes: {
           class: 'max-w-full h-auto rounded-lg',
         },
+        inline: false,
+        allowBase64: true, // Allow base64 images
       }),
       Placeholder.configure({
         placeholder,
@@ -231,6 +283,12 @@ export function RichTextEditor({
       },
     },
   });
+  const prevValueRef = useRef(value);
+
+  if (editor && value !== prevValueRef.current && value !== editor.getHTML()) {
+    editor.commands.setContent(value);
+    prevValueRef.current = value;
+  }
 
   const setLink = useCallback(() => {
     if (!editor) return;
