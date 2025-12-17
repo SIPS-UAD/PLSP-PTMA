@@ -1,25 +1,42 @@
 import NewsCard from '@/components/customs/news-card';
 import SectionCardsLayout from '@/layouts/landingpage/section-cards-layout';
-import { dummyNewsData } from '@/lib/newsData';
 import Layout from '../../../layouts/landingpage/landingpage-layout';
 
-const index = () => {
-    return (
-        <Layout>
-            <SectionCardsLayout section_title="Kegiatan">
-                {dummyNewsData.splice(0, 8).map((news) => (
-                    <NewsCard
-                        key={news.id}
-                        id={news.id}
-                        image_link={news.image_link}
-                        title={news.title}
-                        release_date={news.release_date}
-                        content={news.content}
-                    />
-                ))}
-            </SectionCardsLayout>
-        </Layout>
-    );
+interface Event {
+  id_event: number;
+  judul: string;
+  deskripsi: string;
+  tanggal: string;
+  thumbnail?: string;
+  created_at: string;
+  slug: string;
+}
+
+interface PageProps {
+  events: Event[];
+}
+
+const index = ({ events }: PageProps) => {
+  return (
+    <Layout>
+      <SectionCardsLayout section_title="Kegiatan">
+        {events.map((event) => (
+          <NewsCard
+            key={event.id_event}
+            id={String(event.id_event)}
+            image_link={
+              event.thumbnail
+                ? `/storage/${event.thumbnail}`
+                : '/default-event.jpg'
+            }
+            title={event.judul}
+            release_date={event.tanggal}
+            content={event.deskripsi}
+          />
+        ))}
+      </SectionCardsLayout>
+    </Layout>
+  );
 };
 
 export default index;
