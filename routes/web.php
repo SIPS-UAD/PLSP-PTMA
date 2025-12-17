@@ -24,6 +24,22 @@ Route::middleware(['auth', 'verified', 'role:member'])->group(function () {
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user-dashboard');
 });
 
+Route::get('/berita', function () {
+    return Inertia::render('landingpage/berita/index', [
+        'posts' => \App\Models\Post::where('kategori', 'berita')->latest()->get(),
+    ]);
+})->name('landingpage.berita');
+
+Route::get('/berita/{slug}', function (string $slug) {
+    $post = \App\Models\Post::where('slug', $slug)
+        ->where('kategori', 'berita')
+        ->firstOrFail();
+
+    return Inertia::render('landingpage/berita/detail/index', [
+        'post' => $post,
+    ]);
+})->name('landingpage.berita.detail');
+
 Route::get('/tentang', function () {
     return Inertia::render('landingpage/tentang/index', [
         'posts' => \App\Models\Post::where('kategori', 'tentang')->latest()->get(),
