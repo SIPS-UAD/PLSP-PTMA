@@ -5,6 +5,7 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import { formatDate } from '@/lib/utils';
+import { Link } from '@inertiajs/react';
 import Autoplay from 'embla-carousel-autoplay';
 import { FaRegNewspaper } from 'react-icons/fa';
 
@@ -14,6 +15,7 @@ interface Event {
   deskripsi: string;
   thumbnail?: string;
   tanggal: string;
+  slug: string;
 }
 
 interface KegiatanLayoutProps {
@@ -44,28 +46,30 @@ const KegiatanLayout = ({ events }: KegiatanLayoutProps) => {
             <CarouselContent className="-ml-4">
               {events.map((event) => (
                 <CarouselItem key={event.id_event} className="basis-full pl-4">
-                  <div className="group relative h-64 w-full cursor-pointer overflow-hidden rounded-xl shadow-md">
-                    <img
-                      src={
-                        event.thumbnail
-                          ? `/storage/${event.thumbnail}`
-                          : '/default-event.jpg'
-                      }
-                      alt={event.judul}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
+                  <Link href={`/kegiatan/${event.slug}`}>
+                    <div className="group relative h-64 w-full cursor-pointer overflow-hidden rounded-xl shadow-md">
+                      <img
+                        src={
+                          event.thumbnail
+                            ? `/storage/${event.thumbnail}`
+                            : '/default-event.jpg'
+                        }
+                        alt={event.judul}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
 
-                    <div className="absolute right-0 bottom-0 left-0 flex flex-col items-center justify-end p-4 text-center text-white">
-                      <h1 className="mb-1 line-clamp-2 text-lg leading-snug font-bold">
-                        {event.judul}
-                      </h1>
-                      <p className="text-xs font-medium text-gray-300">
-                        {formatDate(event.tanggal)}
-                      </p>
+                      <div className="absolute right-0 bottom-0 left-0 flex flex-col items-center justify-end p-4 text-center text-white">
+                        <h1 className="mb-1 line-clamp-2 text-lg leading-snug font-bold">
+                          {event.judul}
+                        </h1>
+                        <p className="text-xs font-medium text-gray-300">
+                          {formatDate(event.tanggal)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </CarouselItem>
               ))}
             </CarouselContent>
