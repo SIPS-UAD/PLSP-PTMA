@@ -32,6 +32,8 @@ const index = ({ events }: PageProps) => {
             title={event.judul}
             release_date={event.tanggal}
             content={event.deskripsi}
+            slug={event.slug}
+            type="kegiatan"
           />
         ))}
       </SectionCardsLayout>

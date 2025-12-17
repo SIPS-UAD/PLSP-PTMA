@@ -15,6 +15,7 @@ interface Post {
   kategori: string;
   thumbnail?: string;
   created_at: string;
+  slug: string;
 }
 
 interface Event {
@@ -24,6 +25,7 @@ interface Event {
   tanggal: string;
   thumbnail?: string;
   created_at: string;
+  slug: string;
 }
 
 interface PageProps {
@@ -56,6 +58,8 @@ const Page = ({ posts, events }: PageProps) => {
                   title={post.judul}
                   release_date={post.created_at}
                   content={post.deskripsi}
+                  slug={post.slug}
+                  type="berita"
                 />
               ))}
             </CardsLayout>
