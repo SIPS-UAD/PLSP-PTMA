@@ -87,12 +87,31 @@ const ResizableImage = Image.extend({
           return { height: attributes.height };
         },
       },
+      align: {
+        default: 'left',
+        parseHTML: (element) => element.getAttribute('data-align') || 'left',
+        renderHTML: (attributes) => {
+          return { 'data-align': attributes.align };
+        },
+      },
     };
   },
   addNodeView() {
     return ({ node, getPos, editor }) => {
       const container = document.createElement('div');
-      container.className = 'relative inline-block group my-2';
+      const align = node.attrs.align || 'left';
+
+      // Set container alignment
+      const alignmentClasses = {
+        left: 'text-left',
+        center: 'text-center',
+        right: 'text-right',
+      };
+
+      container.className = `relative my-2 w-full ${alignmentClasses[align as keyof typeof alignmentClasses] || 'text-left'}`;
+
+      const imgWrapper = document.createElement('div');
+      imgWrapper.className = 'inline-block relative group';
 
       const img = document.createElement('img');
       img.src = node.attrs.src;
@@ -111,16 +130,47 @@ const ResizableImage = Image.extend({
         img.style.height = 'auto';
       }
 
+      // Alignment buttons
+      const alignmentControls = document.createElement('div');
+      alignmentControls.className =
+        'absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-white rounded-lg shadow-lg p-1';
+
+      const createAlignButton = (alignType: string, icon: string) => {
+        const button = document.createElement('button');
+        button.className = `w-6 h-6 flex items-center justify-center rounded hover:bg-gray-100 ${node.attrs.align === alignType ? 'bg-blue-100 text-blue-600' : 'text-gray-600'}`;
+        button.innerHTML = icon;
+        button.title = `Align ${alignType}`;
+        button.onclick = (e) => {
+          e.preventDefault();
+          const pos = getPos();
+          if (typeof pos === 'number') {
+            editor
+              .chain()
+              .focus()
+              .setNodeSelection(pos)
+              .updateAttributes('image', { align: alignType })
+              .run();
+          }
+        };
+        return button;
+      };
+
+      alignmentControls.appendChild(createAlignButton('left', '←'));
+      alignmentControls.appendChild(createAlignButton('center', '↔'));
+      alignmentControls.appendChild(createAlignButton('right', '→'));
+
       const resizeHandle = document.createElement('div');
       resizeHandle.className =
-        'absolute bottom-0 right-0 w-4 h-4 bg-blue-500 rounded-full cursor-se-resize opacity-0 group-hover:opacity-100 transition-opacity z-10';
+        'absolute bottom-0 right-0 w-4 h-4 bg-blue-500 rounded-full cursor-se-resize opacity-0 group-hover:opacity-100 transition-opacity z-10 translate-x-1/2 translate-y-1/2';
       resizeHandle.title = 'Drag to resize';
 
       const deleteButton = document.createElement('button');
       deleteButton.className =
-        'absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center hover:bg-red-600';
+        'absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center hover:bg-red-600 text-lg leading-none';
       deleteButton.innerHTML = '×';
       deleteButton.title = 'Delete image';
+      deleteButton.style.lineHeight = '1';
+      deleteButton.style.paddingBottom = '2px'; 
       deleteButton.onclick = (e) => {
         e.preventDefault();
         const pos = getPos();
@@ -153,7 +203,6 @@ const ResizableImage = Image.extend({
           const width = startWidth + deltaX;
 
           if (width > 100) {
-            // Maintain aspect ratio
             const aspectRatio = startHeight / startWidth;
             const height = width * aspectRatio;
 
@@ -187,7 +236,6 @@ const ResizableImage = Image.extend({
         document.addEventListener('mouseup', onMouseUp);
       });
 
-      // Make the image selectable
       img.onclick = () => {
         const pos = getPos();
         if (typeof pos === 'number') {
@@ -195,9 +243,11 @@ const ResizableImage = Image.extend({
         }
       };
 
-      container.appendChild(img);
-      container.appendChild(resizeHandle);
-      container.appendChild(deleteButton);
+      imgWrapper.appendChild(img);
+      imgWrapper.appendChild(resizeHandle);
+      imgWrapper.appendChild(deleteButton);
+      imgWrapper.appendChild(alignmentControls);
+      container.appendChild(imgWrapper);
 
       return {
         dom: container,
@@ -213,6 +263,25 @@ const ResizableImage = Image.extend({
           if (updatedNode.attrs.height) {
             img.style.height = updatedNode.attrs.height + 'px';
           }
+
+          const newAlign = updatedNode.attrs.align || 'left';
+          const alignmentClasses = {
+            left: 'text-left',
+            center: 'text-center',
+            right: 'text-right',
+          };
+          container.className = `relative my-2 w-full ${alignmentClasses[newAlign as keyof typeof alignmentClasses] || 'text-left'}`;
+
+          alignmentControls.querySelectorAll('button').forEach((btn, index) => {
+            const alignTypes = ['left', 'center', 'right'];
+            if (alignTypes[index] === newAlign) {
+              btn.className =
+                'w-6 h-6 flex items-center justify-center rounded bg-blue-100 text-blue-600';
+            } else {
+              btn.className =
+                'w-6 h-6 flex items-center justify-center rounded hover:bg-gray-100 text-gray-600';
+            }
+          });
 
           return true;
         },
