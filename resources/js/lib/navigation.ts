@@ -21,6 +21,7 @@ export const navigationsLink: NavLink[] = [
       { text: 'Proses Lisensi BNSP', link: '/anggota/proses-lisensi-BNSP' },
       { text: 'Tamu Kegiatan', link: '/anggota/tamu-kegiatan' },
       { text: 'Terlisensi BNSP', link: '/anggota/terlisensi-BNSP' },
+      {text: 'SK Pimpinan PTMA', link: '/anggota/sk-pimpinan-ptma' },
     ],
   },
   {
