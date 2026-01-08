@@ -40,130 +40,67 @@ Route::get('/berita/{slug}', function (string $slug) {
     ]);
 })->name('landingpage.berita.detail');
 
-Route::get('/tentang', function () {
-    return Inertia::render('landingpage/tentang/index', [
-        'posts' => \App\Models\Post::where('kategori', 'tentang')->latest()->get(),
-    ]);
-})->name('landingpage.tentang');
-
 Route::prefix('tentang')->name('landingpage.tentang.')->group(function () {
     Route::get('/profil', function () {
-        return Inertia::render('landingpage/tentang/profil/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'profil')->latest()->get(),
+            'sectionTitle' => 'Profil',
         ]);
     })->name('profil');
 
-    Route::get('/profil/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'profil')
-            ->firstOrFail();
 
-        return Inertia::render('landingpage/tentang/profil/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('profil.detail');
 
     Route::get('/ad', function () {
-        return Inertia::render('landingpage/tentang/ad/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'ad')->latest()->get(),
+            'sectionTitle' => 'AD',
         ]);
     })->name('ad');
 
-    Route::get('/ad/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'ad')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/tentang/ad/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('ad.detail');
-
     Route::get('/anggaran-rumah-tangga', function () {
-        return Inertia::render('landingpage/tentang/anggaran-rumah-tangga/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'anggaran rumah tangga')->latest()->get(),
+            'sectionTitle' => 'Anggaran Rumah Tangga',
         ]);
     })->name('anggaran-rumah-tangga');
 
-    Route::get('/anggaran-rumah-tangga/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'anggaran-rumah-tangga')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/tentang/anggaran-rumah-tangga/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('anggaran-rumah-tangga.detail');
-
     Route::get('/hasil-rakernas', function () {
-        return Inertia::render('landingpage/tentang/hasil-rakernas/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'hasil rakernas')->latest()->get(),
+            'sectionTitle' => 'Hasil Rakernas',
         ]);
     })->name('hasil-rakernas');
 
-    Route::get('/hasil-rakernas/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'hasil-rakernas')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/tentang/hasil-rakernas/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('hasil-rakernas.detail');
 
     Route::get('/hasil-munas', function () {
-        return Inertia::render('landingpage/tentang/hasil-munas/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'hasil munas')->latest()->get(),
+            'sectionTitle' => 'Hasil Munas',
         ]);
     })->name('hasil-munas');
-
-    Route::get('/hasil-munas/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'hasil-munas')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/tentang/hasil-munas/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('hasil-munas.detail');
 });
 
 Route::prefix('anggota')->name('landingpage.anggota.')->group(function () {
     Route::get('/form-isian', function () {
-        return Inertia::render('landingpage/anggota/form-isian/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'form isian')->latest()->get(),
+            'sectionTitle' => 'Form Isian',
         ]);
     })->name('form-isian');
 
-    Route::get('/form-isian/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'form-isian')
-            ->firstOrFail();
 
-        return Inertia::render('landingpage/anggota/form-isian/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('form-isian.detail');
 
     Route::get('/proses-lisensi-BNSP', function () {
-        return Inertia::render('landingpage/anggota/proses-lisensi-BNSP/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'proses lisensi BNSP')->latest()->get(),
+            'sectionTitle' => 'Proses Lisensi BNSP',
         ]);
     })->name('proses-lisensi-BNSP');
 
-    Route::get('/proses-lisensi-BNSP/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'proses-lisensi-BNSP')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/anggota/proses-lisensi-BNSP/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('proses-lisensi-BNSP.detail');
-
     Route::get('/sk-pimpinan-ptma', function () {
-        return Inertia::render('landingpage/anggota/sk-pimpinan-ptma/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'sk pimpinan ptma')->latest()->get(),
+            'sectionTitle' => 'SK Pimpinan PTMA',
         ]);
     })->name('sk-pimpinan-ptma');
 
@@ -178,344 +115,166 @@ Route::prefix('anggota')->name('landingpage.anggota.')->group(function () {
     })->name('sk-pimpinan-ptma.detail');
 
     Route::get('/tamu-kegiatan', function () {
-        return Inertia::render('landingpage/anggota/tamu-kegiatan/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'tamu kegiatan')->latest()->get(),
+            'sectionTitle' => 'Tamu Kegiatan',
         ]);
     })->name('tamu-kegiatan');
 
-    Route::get('/tamu-kegiatan/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'tamu-kegiatan')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/anggota/tamu-kegiatan/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('tamu-kegiatan.detail');
-
     Route::get('/terlisensi-BNSP', function () {
-        return Inertia::render('landingpage/anggota/terlisensi-BNSP/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'terlisensi BNSP')->latest()->get(),
+            'sectionTitle' => 'Terlisensi BNSP',
         ]);
     })->name('terlisensi-BNSP');
-
-    Route::get('/terlisensi-BNSP/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'terlisensi-BNSP')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/anggota/terlisensi-BNSP/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('terlisensi-BNSP.detail');
 });
 
 Route::prefix('sumber-daya')->name('landingpage.sumber-daya.')->group(function () {
     Route::get('/asesor', function () {
-        return Inertia::render('landingpage/sumber-daya/asesor/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'asesor')->latest()->get(),
+            'sectionTitle' => 'Asesor',
         ]);
     })->name('asesor');
 
-    Route::get('/asesor/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'asesor')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/sumber-daya/asesor/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('asesor.detail');
-
     Route::get('/cma', function () {
-        return Inertia::render('landingpage/sumber-daya/cma/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'cma')->latest()->get(),
+            'sectionTitle' => 'CMA',
         ]);
     })->name('cma');
 
-    Route::get('/cma/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'cma')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/sumber-daya/cma/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('cma.detail');
-
     Route::get('/skema-sertifikasi', function () {
-        return Inertia::render('landingpage/sumber-daya/skema-sertifikasi/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'skema sertifikasi')->latest()->get(),
+            'sectionTitle' => 'Skema Sertifikasi',
         ]);
     })->name('skema-sertifikasi');
 
-    Route::get('/skema-sertifikasi/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'skema-sertifikasi')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/sumber-daya/skema-sertifikasi/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('skema-sertifikasi.detail');
-
     Route::get('/tuk', function () {
-        return Inertia::render('landingpage/sumber-daya/tuk/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'tuk')->latest()->get(),
+            'sectionTitle' => 'TUK',
         ]);
     })->name('tuk');
-
-    Route::get('/tuk/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'tuk')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/sumber-daya/tuk/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('tuk.detail');
 });
 
 Route::prefix('materi')->name('landingpage.materi.')->group(function () {
     Route::get('/internalisasi', function () {
-        return Inertia::render('landingpage/materi/internalisasi/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'internalisasi')->latest()->get(),
+            'sectionTitle' => 'Internalisasi',
         ]);
     })->name('internalisasi');
 
-    Route::get('/internalisasi/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'internalisasi')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/materi/internalisasi/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('internalisasi.detail');
-
     Route::get('/pelatihan-asesor', function () {
-        return Inertia::render('landingpage/materi/pelatihan-asesor/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'pelatihan asesor')->latest()->get(),
+            'sectionTitle' => 'Pelatihan Asesor',
         ]);
     })->name('pelatihan-asesor');
 
-    Route::get('/pelatihan-asesor/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'pelatihan-asesor')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/materi/pelatihan-asesor/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('pelatihan-asesor.detail');
-
     Route::get('/penyusunan-dokumen', function () {
-        return Inertia::render('landingpage/materi/penyusunan-dokumen/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'penyusunan dokumen')->latest()->get(),
+            'sectionTitle' => 'Penyusunan Dokumen',
         ]);
     })->name('penyusunan-dokumen');
-
-    Route::get('/penyusunan-dokumen/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'penyusunan-dokumen')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/materi/penyusunan-dokumen/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('penyusunan-dokumen.detail');
 });
 
 Route::prefix('pendirian-lisensi')->name('landingpage.pendirian-lisensi.')->group(function () {
     Route::get('/dokumen-internalisasi', function () {
-        return Inertia::render('landingpage/pendirian-lisensi/dokumen-internalisasi/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'dokumen internalisasi')->latest()->get(),
+            'sectionTitle' => 'Dokumen Internalisasi',
         ]);
     })->name('dokumen-internalisasi');
 
     Route::get('/pengajuan-pelatihan-dan-aca', function () {
-        return Inertia::render('landingpage/pendirian-lisensi/pengajuan-pelatihan-dan-aca/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'pengajuan pelatihan dan aca')->latest()->get(),
+            'sectionTitle' => 'Pengajuan Pelatihan dan ACA',
         ]);
     })->name('pengajuan-pelatihan-dan-aca');
 
     Route::get('/apresiasi', function () {
-        return Inertia::render('landingpage/pendirian-lisensi/apresiasi/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'apresiasi')->latest()->get(),
+            'sectionTitle' => 'Apresiasi',
         ]);
     })->name('apresiasi');
 
-    Route::get('/apresiasi/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'apresiasi')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/pendirian-lisensi/apresiasi/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('apresiasi.detail');
-
     Route::get('/pendirian-lsp', function () {
-        return Inertia::render('landingpage/pendirian-lisensi/pendirian-lsp/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'pendirian lsp')->latest()->get(),
+            'sectionTitle' => 'Pendirian LSP',
         ]);
     })->name('pendirian-lsp');
 
-    Route::get('/pendirian-lsp/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'pendirian-lsp')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/pendirian-lisensi/pendirian-lsp/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('pendirian-lsp.detail');
-
     Route::get('/pengajuan-fa', function () {
-        return Inertia::render('landingpage/pendirian-lisensi/pengajuan-fa/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'pengajuan fa')->latest()->get(),
+            'sectionTitle' => 'Pengajuan FA',
         ]);
     })->name('pengajuan-fa');
 
-    Route::get('/pengajuan-fa/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'pengajuan-fa')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/pendirian-lisensi/pengajuan-fa/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('pengajuan-fa.detail');
-
     Route::get('/pengajuan-skema-sertifikasi', function () {
-        return Inertia::render('landingpage/pendirian-lisensi/pengajuan-skema-sertifikasi/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'pengajuan skema sertifikasi')->latest()->get(),
+            'sectionTitle' => 'Pengajuan Skema Sertifikasi',
         ]);
     })->name('pengajuan-skema-sertifikasi');
 
-    Route::get('/pengajuan-skema-sertifikasi/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'pengajuan-skema-sertifikasi')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/pendirian-lisensi/pengajuan-skema-sertifikasi/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('pengajuan-skema-sertifikasi.detail');
-
     Route::get('/pengajuan-witness', function () {
-        return Inertia::render('landingpage/pendirian-lisensi/pengajuan-witness/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'pengajuan witness')->latest()->get(),
+            'sectionTitle' => 'Pengajuan Witness',
         ]);
     })->name('pengajuan-witness');
 
-    Route::get('/pengajuan-witness/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'pengajuan-witness')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/pendirian-lisensi/pengajuan-witness/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('pengajuan-witness.detail');
-
     Route::get('/prl', function () {
-        return Inertia::render('landingpage/pendirian-lisensi/prl/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'prl')->latest()->get(),
+            'sectionTitle' => 'PRL',
         ]);
     })->name('prl');
-
-    Route::get('/prl/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'prl')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/pendirian-lisensi/prl/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('prl.detail');
 });
 
 Route::prefix('regulasi')->name('landingpage.regulasi.')->group(function () {
     Route::get('/iku-pt', function () {
-        return Inertia::render('landingpage/regulasi/iku-pt/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'iku pt')->latest()->get(),
+            'sectionTitle' => 'IKU PT',
         ]);
     })->name('iku-pt');
 
-    Route::get('/iku-pt/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'iku-pt')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/regulasi/iku-pt/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('iku-pt.detail');
-
     Route::get('/peraturan-baru', function () {
-        return Inertia::render('landingpage/regulasi/peraturan-baru/index', [
+        return Inertia::render('landingpages/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'peraturan baru')->latest()->get(),
+            'sectionTitle' => 'Peraturan Baru',
         ]);
     })->name('peraturan-baru');
 
-    Route::get('/peraturan-baru/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'peraturan-baru')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/regulasi/peraturan-baru/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('peraturan-baru.detail');
-
     Route::get('/peraturan-bnsp', function () {
-        return Inertia::render('landingpage/regulasi/peraturan-bnsp/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'peraturan bnsp')->latest()->get(),
+            'sectionTitle' => 'Peraturan BNSP',
         ]);
     })->name('peraturan-bnsp');
 
-    Route::get('/peraturan-bnsp/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'peraturan-bnsp')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/regulasi/peraturan-bnsp/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('peraturan-bnsp.detail');
-
     Route::get('/peraturan-dasar', function () {
-        return Inertia::render('landingpage/regulasi/peraturan-dasar/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'peraturan dasar')->latest()->get(),
+            'sectionTitle' => 'Peraturan Dasar',
         ]);
     })->name('peraturan-dasar');
 
-    Route::get('/peraturan-dasar/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'peraturan-dasar')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/regulasi/peraturan-dasar/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('peraturan-dasar.detail');
-
     Route::get('/proses-lisensi', function () {
-        return Inertia::render('landingpage/regulasi/proses-lisensi/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'proses lisensi')->latest()->get(),
+            'sectionTitle' => 'Proses Lisensi',
         ]);
     })->name('proses-lisensi');
-
-    Route::get('/proses-lisensi/{slug}', function (string $slug) {
-        $post = \App\Models\Post::where('slug', $slug)
-            ->where('kategori', 'proses-lisensi')
-            ->firstOrFail();
-
-        return Inertia::render('landingpage/regulasi/proses-lisensi/detail/index', [
-            'post' => $post,
-        ]);
-    })->name('proses-lisensi.detail');
 });
 
 Route::get('/kegiatan', function () {
