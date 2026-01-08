@@ -21,7 +21,7 @@ export const navigationsLink: NavLink[] = [
       { text: 'Proses Lisensi BNSP', link: '/anggota/proses-lisensi-BNSP' },
       { text: 'Tamu Kegiatan', link: '/anggota/tamu-kegiatan' },
       { text: 'Terlisensi BNSP', link: '/anggota/terlisensi-BNSP' },
-      {text: 'SK Pimpinan PTMA', link: '/anggota/sk-pimpinan-ptma' },
+      { text: 'SK Pimpinan PTMA', link: '/anggota/sk-pimpinan-ptma' },
     ],
   },
   {
@@ -39,8 +39,14 @@ export const navigationsLink: NavLink[] = [
     text: 'PENDIRIAN LISENSI',
     link: '/pendirian-lisensi/apresiasi',
     children: [
-      {text: 'Dokumen Internalisasi', link: '/pendirian-lisensi/dokumen-internalisasi' },
-      { text: 'Pengajuan Pelatihan dan ACA', link: '/pendirian-lisensi/pengajuan-pelatihan-dan-aca' },
+      {
+        text: 'Dokumen Internalisasi',
+        link: '/pendirian-lisensi/dokumen-internalisasi',
+      },
+      {
+        text: 'Pengajuan Pelatihan dan ACA',
+        link: '/pendirian-lisensi/pengajuan-pelatihan-dan-aca',
+      },
       { text: 'Apresiasi', link: '/pendirian-lisensi/apresiasi' },
       { text: 'Pendirian LSP', link: '/pendirian-lisensi/pendirian-lsp' },
       { text: 'Pengajuan FA', link: '/pendirian-lisensi/pengajuan-fa' },
