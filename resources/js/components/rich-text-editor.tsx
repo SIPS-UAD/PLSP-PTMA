@@ -89,7 +89,11 @@ const ResizableImage = Image.extend({
       },
       align: {
         default: 'left',
-        parseHTML: (element) => element.getAttribute('data-align') || 'left',
+        parseHTML: (element) => {
+          const parentAlign = element.parentElement?.getAttribute('data-align');
+          const elementAlign = element.getAttribute('data-align');
+          return parentAlign || elementAlign || 'left';
+        },
         renderHTML: (attributes) => {
           return { 'data-align': attributes.align };
         },
@@ -170,7 +174,7 @@ const ResizableImage = Image.extend({
       deleteButton.innerHTML = '×';
       deleteButton.title = 'Delete image';
       deleteButton.style.lineHeight = '1';
-      deleteButton.style.paddingBottom = '2px'; 
+      deleteButton.style.paddingBottom = '2px';
       deleteButton.onclick = (e) => {
         e.preventDefault();
         const pos = getPos();
