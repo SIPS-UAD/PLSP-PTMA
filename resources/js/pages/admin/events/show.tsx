@@ -84,7 +84,7 @@ export default function EventShow({ event, registrants = [] }: EventShowProps) {
             <div>
               <h3 className="mb-4 text-base font-semibold">Deskripsi</h3>
               <div
-                className="prose dark:prose-invert max-w-none [&_a]:text-blue-600 [&_a]:underline hover:[&_a]:text-blue-800 [&_li]:my-1 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p]:leading-7 [&_ul]:list-disc [&_ul]:pl-6"
+                className="prose dark:prose-invert max-w-none [&_a]:text-blue-600 [&_a]:underline hover:[&_a]:text-blue-800 [&_div[data-align='center']]:text-center [&_div[data-align='left']]:text-left [&_div[data-align='right']]:text-right [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-lg [&_img[data-align='center']]:mx-auto [&_img[data-align='left']]:mr-auto [&_img[data-align='right']]:ml-auto [&_li]:my-1 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p]:leading-7 [&_ul]:list-disc [&_ul]:pl-6"
                 dangerouslySetInnerHTML={{ __html: event.deskripsi }}
               />
             </div>
