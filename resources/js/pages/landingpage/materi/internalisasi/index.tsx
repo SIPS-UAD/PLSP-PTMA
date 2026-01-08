@@ -17,15 +17,12 @@ interface PageProps {
   posts: Post[];
 }
 
-const Page = ({posts} : PageProps) => {
-  console.log(`data:`,posts);
+const Page = ({ posts }: PageProps) => {
+  console.log(`data:`, posts);
   return (
     <Layout>
-      <section className="container h-svh pt-16">
-        <h1 className="text-3xl font-bold underline">Materi Internalisasis</h1>
-      </section>
-      <SectionCardsLayout section_title="[Nama Section]">
-        {/* {posts.map((post) => (
+      <SectionCardsLayout section_title="Internalisasi">
+        {posts.map((post) => (
           <NewsCard
             key={post.id_post}
             id={String(post.id_post)}
@@ -38,9 +35,8 @@ const Page = ({posts} : PageProps) => {
             release_date={post.tanggal}
             content={post.deskripsi}
             slug={post.slug}
-            
           />
-        ))} */}
+        ))}
       </SectionCardsLayout>
     </Layout>
   );
