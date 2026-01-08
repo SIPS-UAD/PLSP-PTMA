@@ -327,6 +327,18 @@ Route::prefix('materi')->name('landingpage.materi.')->group(function () {
 });
 
 Route::prefix('pendirian-lisensi')->name('landingpage.pendirian-lisensi.')->group(function () {
+    Route::get('/dokumen-internalisasi', function () {
+        return Inertia::render('landingpage/pendirian-lisensi/dokumen-internalisasi/index', [
+            'posts' => \App\Models\Post::where('kategori', 'dokumen internalisasi')->latest()->get(),
+        ]);
+    })->name('dokumen-internalisasi');
+
+    Route::get('/pengajuan-pelatihan-dan-aca', function () {
+        return Inertia::render('landingpage/pendirian-lisensi/pengajuan-pelatihan-dan-aca/index', [
+            'posts' => \App\Models\Post::where('kategori', 'pengajuan pelatihan dan aca')->latest()->get(),
+        ]);
+    })->name('pengajuan-pelatihan-dan-aca');
+
     Route::get('/apresiasi', function () {
         return Inertia::render('landingpage/pendirian-lisensi/apresiasi/index', [
             'posts' => \App\Models\Post::where('kategori', 'apresiasi')->latest()->get(),
