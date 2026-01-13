@@ -249,7 +249,7 @@ Route::prefix('regulasi')->name('landingpage.regulasi.')->group(function () {
     })->name('iku-pt');
 
     Route::get('/peraturan-baru', function () {
-        return Inertia::render('landingpages/page-detail/index', [
+        return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'peraturan baru')->latest()->get(),
             'sectionTitle' => 'Peraturan Baru',
         ]);
