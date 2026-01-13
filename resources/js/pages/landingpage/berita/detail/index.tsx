@@ -6,7 +6,7 @@ interface Post {
   id: number;
   judul: string;
   slug: string;
-  konten: string;
+  deskripsi: string;
   thumbnail: string | null;
   kategori: string;
   created_at: string;
@@ -48,24 +48,20 @@ const Index = ({ post }: IndexProps) => {
           </div>
           {/* 1. Gambar Utama */}
           {/* Menggunakan aspect-ratio agar tidak gepeng, rounded corner, dan shadow */}
-          <div className="mb-8 overflow-hidden rounded-2xl shadow-lg md:mb-10">
-            <img
-              src={post.thumbnail || 'https://picsum.photos/seed/home/800/400'}
-              alt={post.judul}
-              className="h-64 w-full object-cover transition-transform duration-500 ease-in-out hover:scale-105 md:h-[450px]"
-            />
-          </div>
 
           {/* 4. Isi Artikel */}
           {/* text-lg (sedikit lebih besar), leading-relaxed (jarak antar baris lega), warna abu-abu tua */}
           <article className="prose prose-lg max-w-none text-justify leading-relaxed text-gray-700">
-            <div dangerouslySetInnerHTML={{ __html: post.konten }} />
+            <div
+              className="prose dark:prose-invert max-w-none [&_a]:text-blue-600 [&_a]:underline hover:[&_a]:text-blue-800 [&_div[data-align='center']]:text-center [&_div[data-align='left']]:text-left [&_div[data-align='right']]:text-right [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-lg [&_img[data-align='center']]:mx-auto [&_img[data-align='left']]:mr-auto [&_img[data-align='right']]:ml-auto [&_li]:my-1 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p]:leading-7 [&_ul]:list-disc [&_ul]:pl-6"
+              dangerouslySetInnerHTML={{ __html: post.deskripsi }}
+            />
           </article>
 
           {/* 5. Tombol Kembali (Opsional Tambahan UX) */}
           <div className="mt-12 border-t border-gray-100 pt-8">
             <Link
-              href={"/berita"}
+              href={'/berita'}
               className="inline-flex items-center font-medium text-blue-600 transition-colors hover:text-blue-800"
             >
               <svg
