@@ -34,18 +34,6 @@ const Index = ({ event }: PageProps) => {
             <span>{formatDate(event.tanggal)}</span>
           </div>
 
-          {/* Gambar Utama */}
-          <div className="mb-8 overflow-hidden rounded-2xl shadow-lg md:mb-10">
-            <img
-              src={
-                event.thumbnail
-                  ? `/storage/${event.thumbnail}`
-                  : '/default-event.jpg'
-              }
-              alt={event.judul}
-              className="h-64 w-full object-cover transition-transform duration-500 ease-in-out hover:scale-105 md:h-[450px]"
-            />
-          </div>
 
           {/* Deskripsi Kegiatan */}
           <article className="prose prose-lg max-w-none leading-relaxed text-gray-700">

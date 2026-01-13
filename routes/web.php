@@ -52,7 +52,7 @@ Route::prefix('tentang')->name('landingpage.tentang.')->group(function () {
 
     Route::get('/ad', function () {
         return Inertia::render('landingpage/page-detail/index', [
-            'posts' => \App\Models\Post::where('kategori', 'ad')->latest()->get(),
+            'posts' => \App\Models\Post::where('kategori', 'anggaran dasar')->latest()->get(),
             'sectionTitle' => 'AD',
         ]);
     })->name('ad');
@@ -169,7 +169,7 @@ Route::prefix('materi')->name('landingpage.materi.')->group(function () {
 
     Route::get('/pelatihan-asesor', function () {
         return Inertia::render('landingpage/page-detail/index', [
-            'posts' => \App\Models\Post::where('kategori', 'pelatihan asesor')->latest()->get(),
+            'posts' => \App\Models\Post::where('kategori', 'pelatihan assesor')->latest()->get(),
             'sectionTitle' => 'Pelatihan Asesor',
         ]);
     })->name('pelatihan-asesor');
