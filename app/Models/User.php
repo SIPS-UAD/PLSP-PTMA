@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,14 +13,21 @@ class User extends Authenticatable
 
     protected $primaryKey = 'id_user';
 
+    public function getRouteKeyName(): string
+    {
+        return 'id_user';
+    }
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'nama_lsp',
         'nama_ptma',
+        'nama_ketua',
         'no_hp',
         'role',
+        'status',
     ];
 
     protected $hidden = [
@@ -34,6 +40,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'status' => 'boolean',
         ];
     }
 

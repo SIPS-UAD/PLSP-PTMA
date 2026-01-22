@@ -14,8 +14,18 @@ class UserController extends Controller
     {
         $users = User::latest()->paginate(10);
 
+        // Calculate statistics
+        $totalUsers = User::count();
+        $activeUsers = User::where('status', true)->count();
+        $inactiveUsers = User::where('status', false)->count();
+
         return Inertia::render('admin/users/index', [
-            'users' => $users
+            'users' => $users,
+            'stats' => [
+                'totalUsers' => $totalUsers,
+                'activeUsers' => $activeUsers,
+                'inactiveUsers' => $inactiveUsers,
+            ],
         ]);
     }
 
