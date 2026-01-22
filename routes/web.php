@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\MemberController;
 
 Route::get('/home', function () {
     return Inertia::render('welcome');
@@ -303,6 +304,13 @@ Route::middleware(['auth', 'verified', 'role:admin,super_admin'])->group(functio
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('users/{id}', [UserController::class, 'show'])->name('users.show');
     Route::post('users/{id}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
+
+    // Member Management Routes
+    Route::get('members', [MemberController::class, 'index'])->name('members.index');
+    Route::get('members/{member}', [MemberController::class, 'show'])->name('members.show');
+    Route::patch('members/{member}/aktifkan', [MemberController::class, 'aktifkan'])->name('members.aktifkan');
+    Route::patch('members/{member}/nonaktifkan', [MemberController::class, 'nonaktifkan'])->name('members.nonaktifkan');
+    Route::delete('members/{member}', [MemberController::class, 'destroy'])->name('members.destroy');
 })->name('dashboard');
 
 
