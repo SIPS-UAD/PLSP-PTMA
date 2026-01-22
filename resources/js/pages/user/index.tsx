@@ -1,9 +1,8 @@
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import LandingPageLayout from '@/layouts/landingpage/landingpage-layout';
 import { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { LogOut, Search } from 'lucide-react';
 
 interface Attendance {
     id: number;
@@ -31,96 +30,115 @@ export default function UserProfile({
         <LandingPageLayout>
             <Head title="Profil Pengguna" />
 
-            <div className="min-h-screen w-full bg-gradient-to-b from-gray-50 to-white">
-                {/* Kolom Pencarian */}
-                <div className="container mx-auto px-4 py-8">
-                    <div className="mx-auto mb-12 max-w-4xl pl-40">
-                        <div className="relative">
-                            <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
-                            <Input
-                                type="text"
-                                placeholder="Cari"
-                                className="w-full rounded-full border-2 border-gray-300 py-3 pl-12 focus:border-green-muhi focus:outline-none"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Konten Utama */}
-                    <div className="grid grid-cols-1 gap-8 lg:mx-auto lg:max-w-6xl lg:grid-cols-4">
-                        {/* Sidebar Kiri - Info Pengguna */}
-                        <div className="lg:col-span-1">
-                            <div className="space-y-4 rounded-lg bg-white p-6 shadow-md">
-                                <div>
-                                    <h2 className="text-2xl font-bold text-gray-900">
-                                        {user?.name}
-                                    </h2>
-                                </div>
-
-                                {/* Daftar Detail Pengguna */}
-                                <div className="space-y-2 border-t pt-4 text-sm text-gray-600">
-                                    <div className="font-medium text-gray-700">
-                                        {user?.nama_lsp}
-                                    </div>
-                                    <div>{user?.nama_ptma}</div>
-                                    <div className="font-medium">
-                                        {user?.no_hp}
-                                    </div>
-                                    <div className="font-medium">
-                                        {user?.email}
-                                    </div>
-                                </div>
-
-                                {/* Tombol Keluar */}
-                                <div className="border-t pt-6">
-                                    <Link
-                                        href="/logout"
-                                        method="post"
-                                        as="button"
-                                        className="w-full"
-                                    >
-                                        <Button className="w-full rounded-full bg-gradient-to-r from-red-300 to-red-400 font-semibold text-gray-800 shadow-md hover:from-red-400 hover:to-red-500">
-                                            <LogOut className="mr-2 h-4 w-4" />
-                                            Keluar
-                                        </Button>
-                                    </Link>
-                                </div>
+            <div className="min-h-screen w-full bg-gradient-to-b from-gray-50 to-white py-8">
+                <div className="container mx-auto px-4">
+                    <div className="mx-auto max-w-4xl">
+                        {/* Header */}
+                        <div className="mb-8 flex items-center justify-between">
+                            <h1 className="text-3xl font-bold text-gray-900">
+                                Data Pengguna
+                            </h1>
+                            <div className="flex items-center gap-4">
+                                <span className="rounded-full bg-green-500 px-6 py-2 text-sm font-semibold text-white">
+                                    AKTIF
+                                </span>
+                                <Link
+                                    href="/logout"
+                                    method="post"
+                                    as="button"
+                                >
+                                    <button className="text-red-500 hover:text-red-700 font-medium">
+                                        Keluar
+                                    </button>
+                                </Link>
                             </div>
                         </div>
 
-                        {/* Konten Kanan - Kehadiran */}
-                        <div className="lg:col-span-3">
-                            {/* Header Kehadiran */}
-                            <div className="mb-6 rounded-lg bg-gradient-to-r from-blue-muhi to-green-muhi p-6 shadow-md">
-                                <h3 className="text-lg font-semibold text-white">
-                                    Kehadiran (Terakhir Diperbarui {lastUpdate})
-                                </h3>
-                            </div>
-
-                            {/* Daftar Kehadiran */}
-                            <div className="space-y-3">
-                                {attendances.length > 0 ? (
-                                    attendances.map((attendance) => (
-                                        <div
-                                            key={attendance.id}
-                                            className="flex items-center justify-between rounded-lg border-l-4 border-green-muhi bg-white p-4 shadow-md transition-shadow hover:shadow-lg"
-                                        >
-                                            <Button className="rounded-full bg-gradient-to-r from-green-500 to-green-600 px-8 py-2 font-semibold text-white shadow-md hover:from-green-600 hover:to-green-700">
-                                                {attendance.status}
-                                            </Button>
-                                            <span className="font-medium text-gray-700">
-                                                {attendance.event.title}
-                                            </span>
+                        {/* Card View */}
+                        <Card className="shadow-lg">
+                            <CardContent className="pt-6">
+                                <div className="space-y-6">
+                                    {/* Nama */}
+                                    <div className="flex items-start">
+                                        <div className="w-48 font-semibold text-gray-700">
+                                            Nama
                                         </div>
-                                    ))
-                                ) : (
-                                    <div className="rounded-lg bg-white p-8 text-center shadow-md">
-                                        <p className="text-gray-500">
-                                            Belum ada kehadiran.
-                                        </p>
+                                        <div className="flex-1 text-gray-600">
+                                            {user?.name || '-'}
+                                        </div>
                                     </div>
-                                )}
-                            </div>
-                        </div>
+
+                                    {/* Nama LSP */}
+                                    <div className="flex items-start">
+                                        <div className="w-48 font-semibold text-gray-700">
+                                            Nama LSP
+                                        </div>
+                                        <div className="flex-1 text-gray-600">
+                                            {user?.nama_lsp || '-'}
+                                        </div>
+                                    </div>
+
+                                    {/* Nama PTMA */}
+                                    <div className="flex items-start">
+                                        <div className="w-48 font-semibold text-gray-700">
+                                            Nama PTMA
+                                        </div>
+                                        <div className="flex-1 text-gray-600">
+                                            {user?.nama_ptma || '-'}
+                                        </div>
+                                    </div>
+
+                                    {/* Nama Ketua */}
+                                    <div className="flex items-start">
+                                        <div className="w-48 font-semibold text-gray-700">
+                                            Nama Ketua
+                                        </div>
+                                        <div className="flex-1 text-gray-600">
+                                            {user?.nama_ketua || '-'}
+                                        </div>
+                                    </div>
+
+                                    {/* Nomor Handphone */}
+                                    <div className="flex items-start">
+                                        <div className="w-48 font-semibold text-gray-700">
+                                            Nomor Handphone
+                                        </div>
+                                        <div className="flex-1 text-gray-600">
+                                            {user?.no_hp || '-'}
+                                        </div>
+                                    </div>
+
+                                    {/* Alamat Surel */}
+                                    <div className="flex items-start">
+                                        <div className="w-48 font-semibold text-gray-700">
+                                            Alamat Surel
+                                        </div>
+                                        <div className="flex-1 text-gray-600">
+                                            {user?.email || '-'}
+                                        </div>
+                                    </div>
+
+                                    {/* Password */}
+                                    <div className="flex items-start">
+                                        <div className="w-48 font-semibold text-gray-700">
+                                            Password
+                                        </div>
+                                        <div className="flex-1 text-gray-600">
+                                            *******
+                                        </div>
+                                    </div>
+
+                                    {/* Edit Button */}
+                                    <div className="flex justify-end pt-6 border-t">
+                                        <Link href="/user/edit">
+                                            <Button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2">
+                                                Edit
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
             </div>
