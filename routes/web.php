@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\UserProfileController;
 
 Route::get('/home', function () {
     return Inertia::render('welcome');
@@ -22,6 +23,9 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified', 'role:member'])->group(function () {
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user-dashboard');
+    Route::get('/user/profile', [UserDashboardController::class, 'index'])->name('user.profile');
+    Route::get('/user/edit', [UserProfileController::class, 'edit'])->name('user.edit');
+    Route::put('/user/profile', [UserProfileController::class, 'update'])->name('user.update');
 });
 
 Route::get('/berita', function () {
