@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class EventController extends Controller
 {
@@ -21,10 +22,27 @@ class EventController extends Controller
             ->latest()
             ->paginate(10)
             ->withQueryString();
+
+        // Map setiap event dengan status berdasarkan tanggal
+        $events->through(function ($event) {
+            $event->status = $event->status; // Mengakses accessor getStatusAttribute()
+            return $event;
+        });
+
+        $sekarang = Carbon::now();
+        $akanDatang = Event::where('tanggal', '>', $sekarang)->count();
+        $sedangBerlangsung = Event::whereDate('tanggal', $sekarang->format('Y-m-d'))->count();
+        $terlewat = Event::where('tanggal', '<', $sekarang)->count();
+
         return Inertia::render('admin/events/index', [
             'events' => $events,
             'filters' => [
                 'search' => $search,
+            ],
+            'stats' => [
+                'akanDatang' => $akanDatang,
+                'sedangBerlangsung' => $sedangBerlangsung,
+                'terlewat' => $terlewat,
             ],
         ]);
     }

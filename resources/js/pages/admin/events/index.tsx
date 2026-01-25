@@ -35,6 +35,7 @@ interface Event {
   judul: string;
   deskripsi: string;
   tanggal: string;
+  status?: string;
 }
 
 interface EventsProps {
@@ -104,6 +105,23 @@ export default function EventsIndex({ events, filters }: EventsProps) {
   const clearSearch = () => {
     setSearchQuery('');
     router.get('/events', {}, { preserveState: true, replace: true });
+  };
+
+  // TAMBAH HELPER FUNCTION INI
+  const getStatusBadge = (tanggal: string) => {
+    const d = new Date(tanggal);
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    const eventDate = new Date(d);
+    eventDate.setHours(0, 0, 0, 0);
+
+    if (eventDate > now) {
+      return { text: 'Akan Datang', color: 'bg-yellow-100 text-yellow-800' };
+    } else if (eventDate.getTime() === now.getTime()) {
+      return { text: 'Sedang Berlangsung', color: 'bg-green-100 text-green-800' };
+    } else {
+      return { text: 'Terlewat', color: 'bg-red-100 text-red-800' };
+    }
   };
 
   return (
@@ -206,50 +224,59 @@ export default function EventsIndex({ events, filters }: EventsProps) {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Judul</TableHead>
-                    <TableHead>Tanggal</TableHead>
-                    <TableHead>Aksi</TableHead>
+                    <TableHead className="w-1/3">Judul</TableHead>
+                    <TableHead className="w-1/3">Tanggal</TableHead>
+                    <TableHead className="w-1/3">Status</TableHead>
+                    <TableHead className="w-1/3">Aksi</TableHead>
                   </TableRow>
                 </TableHeader>
 
                 <TableBody>
                   {events.data.length > 0 ? (
-                    events.data.map((event) => (
-                      <TableRow key={event.id_event}>
-                        <TableCell className="font-medium">
-                          {event.judul}
-                        </TableCell>
-                        <TableCell>{formatDate(event.tanggal)}</TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex gap-2">
-                            <Link href={`/events/${event.id_event}`}>
-                              <Button variant="outline" size="sm">
-                                <Eye className="h-4 w-4" />
-                                Detail
+                    events.data.map((event) => {
+                      const statusBadge = getStatusBadge(event.tanggal);
+                      return (
+                        <TableRow key={event.id_event}>
+                          <TableCell className="font-medium">
+                            {event.judul}
+                          </TableCell>
+                          <TableCell>{formatDate(event.tanggal)}</TableCell>
+                          <TableCell>
+                            <span className={`px-2 py-1 rounded text-sm font-medium ${statusBadge.color}`}>
+                              {statusBadge.text}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex gap-2">
+                              <Link href={`/events/${event.id_event}`}>
+                                <Button variant="outline" size="sm">
+                                  <Eye className="h-4 w-4" />
+                                  Detail
+                                </Button>
+                              </Link>
+                              <Link href={`/events/${event.id_event}/edit`}>
+                                <Button variant="outline" size="sm">
+                                  <Edit className="h-4 w-4" />
+                                  Edit
+                                </Button>
+                              </Link>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleDelete(event.id_event)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                                Hapus
                               </Button>
-                            </Link>
-                            <Link href={`/events/${event.id_event}/edit`}>
-                              <Button variant="outline" size="sm">
-                                <Edit className="h-4 w-4" />
-                                Edit
-                              </Button>
-                            </Link>
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              onClick={() => handleDelete(event.id_event)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                              Hapus
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
                   ) : (
                     <TableRow>
                       <TableCell
-                        colSpan={3}
+                        colSpan={4}
                         className="py-6 text-center text-muted-foreground"
                       >
                         {filters.search
