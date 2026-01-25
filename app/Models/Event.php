@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class Event extends Model
 {
@@ -56,6 +57,21 @@ class Event extends Model
                 }
             }
         });
+    }
+
+    // Accessor untuk menghitung status berdasarkan tanggal
+    public function getStatusAttribute()
+    {
+        $tanggal = Carbon::parse($this->tanggal);
+        $sekarang = Carbon::now();
+
+        if ($tanggal->isFuture()) {
+            return 'akan_datang';
+        } elseif ($tanggal->isToday()) {
+            return 'sedang_berlangsung';
+        } else {
+            return 'terlewat';
+        }
     }
 
     // Relationships
