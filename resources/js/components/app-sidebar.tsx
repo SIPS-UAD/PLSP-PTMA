@@ -17,6 +17,7 @@ import {
   FileText,
   LayoutGrid,
   MessageSquare,
+  UserCog,
   Users,
 } from 'lucide-react';
 import AppLogo from './app-logo';
@@ -37,11 +38,11 @@ const mainNavItems: NavItem[] = [
     href: '/events',
     icon: Calendar,
   },
-  {
-    title: 'Comments',
-    href: '/comments',
-    icon: MessageSquare,
-  },
+  // {
+  //   title: 'Comments',
+  //   href: '/comments',
+  //   icon: MessageSquare,
+  // },
   {
     title: 'Users',
     href: '/users',
@@ -50,7 +51,7 @@ const mainNavItems: NavItem[] = [
   {
     title: 'Members',
     href: '/members',
-    icon: Users,
+    icon: UserCog,
   }
 ];
 
@@ -61,7 +62,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href={dashboard()} prefetch>
+              <Link href='/'>
                 <AppLogo />
               </Link>
             </SidebarMenuButton>

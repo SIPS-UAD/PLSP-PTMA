@@ -64,13 +64,13 @@ export default function UsersIndex({ users }: UsersProps) {
         if (role === 'admin') {
             return <Badge className="bg-blue-500">Admin</Badge>;
         }
-        return <Badge variant="secondary">Member</Badge>;
+        return <Badge variant="secondary">Anggota</Badge>;
     };
 
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Users Management" />
+            <Head title="Manajemen Pengguna" />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 {/* Stats Overview */}
@@ -78,14 +78,14 @@ export default function UsersIndex({ users }: UsersProps) {
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                Total Users
+                                Total Pengguna
                             </CardTitle>
                             <UsersIcon className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">{users.total}</div>
                             <p className="text-xs text-muted-foreground">
-                                User yang terdaftar
+                                Pengguna yang terdaftar
                             </p>
                         </CardContent>
                     </Card>
@@ -93,7 +93,7 @@ export default function UsersIndex({ users }: UsersProps) {
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
-                                Administrators
+                                Administrator
                             </CardTitle>
                             <Shield className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
@@ -157,7 +157,7 @@ export default function UsersIndex({ users }: UsersProps) {
                                         <TableHead>Email</TableHead>
                                         <TableHead>Role</TableHead>
                                         <TableHead>Bergabung</TableHead>
-                                        <TableHead className="text-right">Actions</TableHead>
+                                        <TableHead className="text-right">Aksi</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
