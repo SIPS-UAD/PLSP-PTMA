@@ -116,11 +116,11 @@ export default function EventsIndex({ events, filters }: EventsProps) {
     eventDate.setHours(0, 0, 0, 0);
 
     if (eventDate > now) {
-      return { text: 'Akan Datang', color: 'bg-yellow-100 text-yellow-800' };
+      return { text: 'Mendatang', color: 'bg-yellow-100 text-yellow-800' };
     } else if (eventDate.getTime() === now.getTime()) {
-      return { text: 'Sedang Berlangsung', color: 'bg-green-100 text-green-800' };
+      return { text: 'Berlangsung', color: 'bg-green-100 text-green-800' };
     } else {
-      return { text: 'Terlewat', color: 'bg-red-100 text-red-800' };
+      return { text: 'Terselenggarakan', color: 'bg-blue-100 text-blue-800' };
     }
   };
 

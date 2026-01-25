@@ -14,6 +14,7 @@ import { formatDate } from '@/lib/dateFormat';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, Users } from 'lucide-react';
+import { useMemo } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -31,6 +32,7 @@ interface Event {
   judul: string;
   deskripsi: string;
   tanggal: string;
+  status?: 'mendatang' | 'berlangsung' | 'terselenggarakan';
 }
 
 interface Registrant {
@@ -48,6 +50,37 @@ interface EventShowProps {
 }
 
 export default function EventShow({ event, registrants = [] }: EventShowProps) {
+  const getStatusBadge = (status?: string) => {
+    switch (status) {
+      case 'mendatang':
+        return <Badge className="bg-yellow-100 text-yellow-800">Mendatang</Badge>;
+      case 'berlangsung':
+        return <Badge className="bg-green-100 text-green-800">Berlangsung</Badge>;
+      case 'terselenggarakan':
+        return <Badge className="bg-blue-100 text-blue-800">Terselenggarakan</Badge>;
+      default:
+        return <Badge variant="secondary">Tidak Diketahui</Badge>;
+    }
+  };
+
+  // Calculate status if not provided
+  const eventStatus = useMemo(() => {
+    if (event.status) return event.status;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const eventDate = new Date(event.tanggal);
+    eventDate.setHours(0, 0, 0, 0);
+
+    if (eventDate > today) {
+      return 'mendatang';
+    } else if (eventDate.getTime() === today.getTime()) {
+      return 'berlangsung';
+    } else {
+      return 'terselenggarakan';
+    }
+  }, [event.tanggal, event.status]);
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title={`Lihat Event - ${event.judul}`} />
@@ -79,6 +112,10 @@ export default function EventShow({ event, registrants = [] }: EventShowProps) {
                   {formatDate(event.tanggal)}
                 </span>
               </div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold">Status:</span>
+                {getStatusBadge(eventStatus)}
+              </div>
             </div>
 
             <div>
@@ -91,60 +128,45 @@ export default function EventShow({ event, registrants = [] }: EventShowProps) {
           </CardContent>
         </Card>
 
-        {/* Daftar Pendaftar Event */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+        {/* Registrants Section */}
+        {registrants.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
-                <CardTitle>Pendaftar Event</CardTitle>
-              </div>
-              <Badge variant="secondary" className="text-sm">
-                {registrants.length}{' '}
-                {registrants.length === 1 ? 'Pendaftar' : 'Pendaftar'}
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {registrants.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <Users className="mb-4 h-12 w-12 text-muted-foreground/50" />
-                <p className="text-muted-foreground">Belum ada pendaftar</p>
-              </div>
-            ) : (
-              <div className="rounded-md border">
+                Daftar Peserta ({registrants.length})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-lg border">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[50px]">No</TableHead>
                       <TableHead>Nama</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>No. HP</TableHead>
                       <TableHead>LSP</TableHead>
                       <TableHead>PTMA</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Telepon</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {registrants.map((registrant, index) => (
+                    {registrants.map((registrant) => (
                       <TableRow key={registrant.id}>
-                        <TableCell className="font-medium">
-                          {index + 1}
-                        </TableCell>
                         <TableCell className="font-medium">
                           {registrant.nama}
                         </TableCell>
-                        <TableCell>{registrant.nama_lsp}</TableCell>
-                        <TableCell>{registrant.nama_ptma}</TableCell>
                         <TableCell>{registrant.email}</TableCell>
                         <TableCell>{registrant.no_hp}</TableCell>
+                        <TableCell>{registrant.nama_lsp}</TableCell>
+                        <TableCell>{registrant.nama_ptma}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </AppLayout>
   );
