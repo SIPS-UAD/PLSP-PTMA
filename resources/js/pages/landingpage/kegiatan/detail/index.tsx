@@ -2,6 +2,7 @@ import DetailLayout from '@/layouts/landingpage/detail-layout';
 import LandingPageLayout from '@/layouts/landingpage/landingpage-layout';
 import { formatDate } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
+import { useMemo } from 'react';
 
 interface Event {
   id_event: number;
@@ -17,7 +18,32 @@ interface PageProps {
   event: Event;
 }
 
+interface StatusBadge {
+  text: string;
+  color: string;
+}
+
 const Index = ({ event }: PageProps) => {
+  // Get event status based on date
+  const getStatusBadge = (tanggal: string): StatusBadge => {
+    const eventDate = new Date(tanggal);
+    const now = new Date();
+
+    eventDate.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
+
+    if (eventDate > now) {
+      return { text: 'Mendatang', color: 'bg-yellow-100 text-yellow-800' };
+    } else if (eventDate.getTime() === now.getTime()) {
+      return { text: 'Berlangsung', color: 'bg-green-100 text-green-800' };
+    } else {
+      return { text: 'Terselenggarakan', color: 'bg-blue-100 text-blue-800' };
+    }
+  };
+
+  // Calculate status badge
+  const statusBadge = useMemo(() => getStatusBadge(event.tanggal), [event.tanggal]);
+
   return (
     <LandingPageLayout>
       <DetailLayout section_title="Kegiatan">
@@ -28,10 +54,15 @@ const Index = ({ event }: PageProps) => {
           </h1>
 
           {/* Metadata (Tanggal) */}
-          <div className="mb-8 flex items-center border-b border-gray-200 pb-6 text-sm text-gray-500 md:text-base">
-            <span className="mr-2 font-semibold text-blue-600">Kegiatan</span>
-            <span className="mx-2 text-gray-300">•</span>
-            <span>{formatDate(event.tanggal)}</span>
+          <div className="mb-8 flex items-center justify-between border-b border-gray-200 pb-6 md:text-base">
+            <div className="flex items-center text-sm text-gray-500">
+              <span className="mr-2 font-semibold text-blue-600">Kegiatan</span>
+              <span className="mx-2 text-gray-300">•</span>
+              <span>{formatDate(event.tanggal)}</span>
+            </div>
+            <span className={`px-3 py-1 rounded text-sm font-medium whitespace-nowrap ${statusBadge.color}`}>
+              {statusBadge.text}
+            </span>
           </div>
 
 
