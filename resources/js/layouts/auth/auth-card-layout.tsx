@@ -1,4 +1,3 @@
-import AppLogoIcon from '@/components/app-logo-icon';
 import {
     Card,
     CardContent,
