@@ -1,15 +1,54 @@
 <?php
 
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\ConfirmablePasswordController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\DashboardController;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
-use App\Http\Controllers\MemberController;
-use App\Http\Controllers\UserProfileController;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+
+Route::middleware('guest')->group(function () {
+    Route::get('register', [RegisteredUserController::class, 'create'])
+        ->name('register');
+
+    Route::post('register', [RegisteredUserController::class, 'store']);
+
+    Route::get('register/pending', function () {
+        return Inertia::render('auth/register-pending');
+    })->name('register.pending');
+
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+        ->name('login');
+
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+        ->name('password.request');
+
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->name('password.email');
+
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->name('password.reset');
+
+    Route::post('reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.store');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
+});
 
 Route::get('/home', function () {
     return Inertia::render('welcome');
@@ -54,7 +93,6 @@ Route::prefix('tentang')->name('landingpage.tentang.')->group(function () {
     })->name('profil');
 
 
-
     Route::get('/ad', function () {
         return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'anggaran dasar')->latest()->get(),
@@ -92,7 +130,6 @@ Route::prefix('anggota')->name('landingpage.anggota.')->group(function () {
             'sectionTitle' => 'Form Isian',
         ]);
     })->name('form-isian');
-
 
 
     Route::get('/proses-lisensi-BNSP', function () {
