@@ -63,10 +63,13 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified', 'role:member'])->group(function () {
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('user-dashboard');
-    Route::get('/user/profile', [UserDashboardController::class, 'index'])->name('user.profile');
-    Route::get('/user/edit', [UserProfileController::class, 'edit'])->name('user.edit');
-    Route::put('/user/profile', [UserProfileController::class, 'update'])->name('user.update');
+    Route::get('/user/edit', [UserDashboardController::class, 'edit'])->name('user.edit');
+    Route::put('/user/profile', [UserDashboardController::class, 'update'])->name('user.profile.update');
 });
+
+Route::get('/user/profile', function () {
+    return redirect()->route('user-dashboard');
+})->middleware(['auth', 'verified'])->name('user.profile');
 
 Route::get('/berita', function () {
     return Inertia::render('landingpage/berita/index', [

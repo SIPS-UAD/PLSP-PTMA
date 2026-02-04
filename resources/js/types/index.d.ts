@@ -36,6 +36,8 @@ export interface User {
   email: string;
   nama_lsp?: string;
   nama_ptma?: string;
+  nama_ketua?: string;
+  status?: boolean
   no_hp?: string;
   avatar?: string;
   email_verified_at: string | null;
