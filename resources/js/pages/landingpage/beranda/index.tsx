@@ -38,10 +38,10 @@ const Page = ({ posts, events }: PageProps) => {
     <LandingPageLayout>
       <Head title="Beranda" />
 
-      <section className="container flex h-auto flex-col items-center pt-6 xl:px-20">
+      <section className="mx-auto flex h-auto w-full max-w-7xl flex-col items-center px-5 pt-6 sm:px-6 lg:px-8">
         <Welcome />
 
-        <section className="container mt-2 flex flex-col gap-1 xl:flex-row">
+        <section className="mt-2 flex w-full flex-col gap-1 xl:flex-row">
           <section className="xl:w-3/4">
             <KegiatanLayout events={events} />
 
