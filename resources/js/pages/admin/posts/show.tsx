@@ -33,7 +33,6 @@ interface PostShowProps {
 }
 
 export default function PostShow({ post }: PostShowProps) {
-  console.log(post.deskripsi);
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title={`Lihat Postingan - ${post.judul}`} />

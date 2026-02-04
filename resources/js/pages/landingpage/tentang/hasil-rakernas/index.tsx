@@ -18,7 +18,6 @@ interface PageProps {
 }
 
 const Page = ({ posts }: PageProps) => {
-  console.log(`data:`, posts);
   return (
     <Layout>
       <SectionCardsLayout section_title="Hasil Rakernas">

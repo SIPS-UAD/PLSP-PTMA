@@ -470,7 +470,6 @@ export function RichTextEditor({
     return null;
   }
 
-  console.log(editor.getHTML());
 
   return (
     <div className={cn('overflow-hidden rounded-lg border', className)}>
