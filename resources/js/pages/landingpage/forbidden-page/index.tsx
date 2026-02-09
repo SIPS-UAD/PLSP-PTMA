@@ -4,7 +4,7 @@ import { ArrowLeft, LockKeyhole, LogIn } from 'lucide-react';
 export default function ForbiddenPage() {
   return (
     <>
-      <Head title="Login Required" />
+      <Head title="Diperlukan Login" />
 
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4">
         <div className="w-full max-w-md">
@@ -16,13 +16,14 @@ export default function ForbiddenPage() {
 
             {/* Heading */}
             <h1 className="mb-3 text-3xl font-bold text-gray-900">
-              Authentication Required
+              Anda Perlu Login
             </h1>
 
             {/* Description */}
             <p className="mb-8 leading-relaxed text-gray-600">
-              You need to be logged in to access this page. Please sign in to
-              continue or create an account if you don't have one yet.
+              Anda harus login terlebih dahulu untuk mengakses halaman ini.
+              Silakan masuk untuk melanjutkan atau buat akun jika Anda belum
+              memilikinya.
             </p>
 
             {/* Actions */}
@@ -32,7 +33,7 @@ export default function ForbiddenPage() {
                 className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
               >
                 <LogIn className="h-5 w-5" />
-                Sign In
+                Masuk
               </Link>
 
               <Link
@@ -40,19 +41,19 @@ export default function ForbiddenPage() {
                 className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gray-100 px-6 py-3 font-semibold text-gray-700 transition-colors duration-200 hover:bg-gray-200"
               >
                 <ArrowLeft className="h-5 w-5" />
-                Go Back Home
+                Kembali ke Beranda
               </Link>
             </div>
 
             {/* Additional Info */}
             <div className="mt-8 border-t border-gray-200 pt-6">
               <p className="text-sm text-gray-500">
-                Don't have an account?{' '}
+                Belum punya akun?{' '}
                 <Link
                   href="/register"
                   className="font-medium text-blue-600 underline hover:text-blue-700"
                 >
-                  Sign up here
+                  Daftar di sini
                 </Link>
               </p>
             </div>
@@ -60,7 +61,7 @@ export default function ForbiddenPage() {
 
           {/* Footer Note */}
           <p className="mt-6 text-center text-sm text-gray-500">
-            Your session may have expired or you haven't logged in yet.
+            Sesi Anda mungkin telah habis atau Anda belum login.
           </p>
         </div>
       </div>

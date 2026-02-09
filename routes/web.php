@@ -17,6 +17,12 @@ use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+
+Route::get('/forbidden', function () {
+    return Inertia::render('landingpage/forbidden-page/index');
+})->name('forbidden');
+
+
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
@@ -204,7 +210,7 @@ Route::prefix('sumber-daya')->name('landingpage.sumber-daya.')->group(function (
     })->name('tuk');
 });
 
-Route::prefix('materi')->name('landingpage.materi.')->group(function () {
+Route::prefix('materi')->name('landingpage.materi.')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/internalisasi', function () {
         return Inertia::render('landingpage/page-detail/index', [
             'posts' => \App\Models\Post::where('kategori', 'internalisasi')->latest()->get(),

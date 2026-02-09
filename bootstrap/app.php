@@ -26,6 +26,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => EnsureUserHasRole::class,
         ]);
+
+        // Use custom authenticate middleware
+        $middleware->redirectGuestsTo('/forbidden');
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
