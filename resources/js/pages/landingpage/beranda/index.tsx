@@ -67,15 +67,15 @@ const Page = ({ posts, events }: PageProps) => {
 
           <aside className="flex flex-col px-1 md:flex-row xl:block xl:w-1/4 xl:px-3">
             <MaterialsLayout section_title="Materi">
-              <DocumentLink document_link="Materi Internal" />
-              <DocumentLink document_link="Materi PLSP" />
-              <DocumentLink document_link="Materi Pelatihan" />
+              <DocumentLink document_link="Materi Internal" nav_link="/materi/internalisasi" />
+              <DocumentLink document_link="Materi Pelatihan Asesor" nav_link="/materi/pelatihan-asesor" />
+              <DocumentLink document_link="Materi Penyusunan Dokumen" nav_link="/materi/penyusunan-dokumen" />
             </MaterialsLayout>
 
-            <MaterialsLayout section_title="Dokumen">
-              <DocumentLink document_link="Dokumen Internal" />
-              <DocumentLink document_link="Dokumen Eksternal" />
-            </MaterialsLayout>
+            {/* <MaterialsLayout section_title="Dokumen">
+              <DocumentLink document_link="Dokumen Internal" nav_link="/dokumen/internal" />
+              <DocumentLink document_link="Dokumen Eksternal" nav_link="/dokumen/eksternal" />
+            </MaterialsLayout> */}
           </aside>
         </section>
       </section>
