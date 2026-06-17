@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
@@ -42,19 +43,58 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         /** @var User|null $user */
-        $user = Auth::getProvider()->retrieveByCredentials($this->only('email', 'password'));
+        $user = User::where('email', $this->input('email'))->first();
 
-        if (! $user || ! Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
+        if (! $user || ! Hash::check($this->input('password'), $user->password)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'email' => trans('auth.failed'),
+            ]);
+        }
+
+        // Check if user is a member and not activated
+        if ($user->role === 'member' && $user->status === false) {
+            throw ValidationException::withMessages([
+                'email' => 'Akun Anda belum diaktifkan. Silakan tunggu persetujuan admin.',
             ]);
         }
 
         RateLimiter::clear($this->throttleKey());
 
         return $user;
+    }
+
+    /**
+     * Attempt to authenticate the request's credentials.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function authenticate(): void
+    {
+        $this->ensureIsNotRateLimited();
+
+        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'email' => trans('auth.failed'),
+            ]);
+        }
+
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Check if user is a member and not activated
+        if ($user->role === 'member' && $user->status === false) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => 'Akun Anda belum diaktifkan. Silakan tunggu persetujuan admin.',
+            ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
     }
 
     /**
@@ -73,7 +113,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => __('auth.throttle', [
+            'email' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -81,14 +121,10 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Get the rate-limiting throttle key for the request.
+     * Get the rate limiting throttle key for the request.
      */
     public function throttleKey(): string
     {
-        return $this->string('email')
-            ->lower()
-            ->append('|'.$this->ip())
-            ->transliterate()
-            ->value();
+        return str($this->input('email') . '|' . $this->ip())->transliterate()->lower()->toString();
     }
 }

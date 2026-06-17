@@ -24,7 +24,11 @@ export default function AuthSplitLayout({
                     href={home()}
                     className="relative z-20 flex items-center text-lg font-medium"
                 >
-                    <AppLogoIcon className="mr-2 size-8 fill-current text-white" />
+                    <img
+                        src="/plsp-ptma-logo.svg"
+                        alt="PLSP PTMA"
+                        className="mr-2 h-8 w-8 object-contain"
+                    />
                     {name}
                 </Link>
                 {quote && (

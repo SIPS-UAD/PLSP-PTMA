@@ -32,22 +32,30 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'nama_lsp' => 'required|string|max:255',
+            'nama_ptma' => 'required|string|max:255',
+            'nama_ketua' => 'required|string|max:255',
+            'no_hp' => 'required|string|max:20',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'nama_lsp' => $request->nama_lsp,
+            'nama_ptma' => $request->nama_ptma,
+            'nama_ketua' => $request->nama_ketua,
+            'no_hp' => $request->no_hp,
+            'role' => 'member',
+            'status' => false, // Set status to false by default
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Don't login the user automatically
+        // Redirect to pending approval page
+        return redirect()->route('register.pending');
     }
 }
